@@ -1,0 +1,43 @@
+{
+  "name": "node-form-data",
+  "version": "0.1.0",
+  "description": "Node.js FormData implementation over the Readable stream.",
+  "repository": "https://github.com/octet-stream/form-data",
+  "author": "Nick K. <nick.kruchinin@gmail.com>",
+  "license": "MIT",
+  "main": "lib/FormData.js",
+  "engines": {
+    "node": ">=7.6"
+  },
+  "scripts": {
+    "lint": "node_modules/.bin/eslint src",
+    "make": "node_modules/.bin/babel src -d .",
+    "watch": "node_modules/.bin/babel src -w -d .",
+    "make:ci": "node_modules/.bin/babel src -s -d .",
+    "m": "yarn make",
+    "w": "yarn watch",
+    "cleanup": "node_modules/.bin/rimraf lib test lib/FormData.js lib/FormData.js.map",
+    "test": "node_modules/.bin/ava"
+  },
+  "devDependencies": {
+    "@octetstream/eslint-config": "2.0.2",
+    "ava": "0.22.0",
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.0",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-plugin-transform-decorators-legacy": "1.3.4",
+    "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
+    "codecov": "2.3.0",
+    "eslint": "4.8.0",
+    "eslint-plugin-ava": "4.2.2",
+    "husky": "0.14.3",
+    "nyc": "11.2.1",
+    "proxyquire": "1.8.0",
+    "rimraf": "2.6.2",
+    "sinon": "4.0.1"
+  },
+  "dependencies": {
+    "@octetstream/invariant": "1.1.0",
+    "nanoid": "0.2.2"
+  }
+}
