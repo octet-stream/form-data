@@ -8,8 +8,11 @@ import bind from "./util/bind"
 import concat from "./util/concat"
 import isBuffer from "./util/isBuffer"
 import isReadable from "./util/isReadable"
+import nextTick from "./util/nextTick"
 
-import Content from "./util/Content"
+import StreamIterator from "./util/StreamIterator"
+
+// import Content from "./util/Content"
 
 class FormData {
   constructor() {
@@ -21,9 +24,14 @@ class FormData {
     // TODO: Remove all non alpha-numeric characters from boundary
     this.__boundary = concat("--", nano())
 
-    this.__contents = new Content()
-    this.__curr = this.__contents.read()
-    this.__pending = 0
+    // this.__contents = new Content()
+    // this.__curr = this.__contents.read()
+
+
+    this.__contents = new Map()
+    this.__entries = this.__contents.entries()
+
+    this.__curr = this.__getField()
 
     const read = this.__read
 
@@ -39,7 +47,7 @@ class FormData {
   __generateHead(name) {
     const head = [
       this.__boundary, this.__caret,
-      "Content-Disposition: form-data; ", "name=\"", name, "\";",
+      "Content-Disposition: form-data; ", "name=\"", name, "\"",
       this.__caret.repeat(2)
     ]
 
@@ -49,14 +57,28 @@ class FormData {
   /**
    * @private
    */
-  __generateField(name, value) {
-    // push(Buffer.from(this.__generateHead(name, value)))
+  async* __getField() {
+    while (true) {
+      await nextTick()
 
-    if (isBuffer(value)) {
-      return value
+      const curr = this.__entries.next()
+
+      if (curr.done === true) {
+        return null
+      }
+
+      const [, {value}] = curr.value
+
+      if (isReadable(value)) {
+        const iterator = new StreamIterator(value)
+
+        for await (const ch of iterator) {
+          yield ch
+        }
+      } else {
+        yield isBuffer(value) ? value : Buffer.from(value)
+      }
     }
-
-    return Buffer.from(concat(value, this.__caret))
   }
 
   /**
@@ -68,11 +90,9 @@ class FormData {
         return this.__stream.push(null)
       }
 
-      const [name, {value, filename}] = curr.value
+      const ch = curr.value
 
-      // const push = ch => process.nextTick(() => this.__stream.push(ch))
-
-      this.__stream.push(this.__generateField(name, value, filename))
+      this.__stream.push(ch)
     }
 
     const onRejected = err => this.__stream.emit("error", err)

@@ -68,7 +68,7 @@ test("Foo", async t => {
 
   fd.set("name", createReadStream("/usr/share/dict/words"))
 
-  // console.log((await read(fd)))
+  // console.log(String(await read(fd)))
 
   await read(fd)
 
