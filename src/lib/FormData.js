@@ -12,19 +12,16 @@ import boundary from "./util/boundary"
 
 import StreamIterator from "./util/StreamIterator"
 
-// import Content from "./util/Content"
-
 class FormData {
   constructor() {
-    bind([Symbol.iterator, "keys", "values", "entries"], this)
+    bind([
+      Symbol.iterator, Symbol.asyncIterator, "keys", "values", "entries"
+    ], this)
 
     this.__caret = "\r\n"
     this.__defaultContentType = "application/octet-steam"
 
     this.__boundary = concat("--", boundary())
-
-    // this.__contents = new Content()
-    // this.__curr = this.__contents.read()
 
 
     this.__contents = new Map()
@@ -170,7 +167,13 @@ class FormData {
     return this
   }
 
-  [Symbol.iterator] = () => this.__contents[Symbol.iterator]()
+  [Symbol.iterator]() {
+    return this.__contents[Symbol.iterator]()
+  }
+
+  [Symbol.asyncIterator]() {
+    return this.__curr
+  }
 
   keys() {
     return this.__contents.keys()

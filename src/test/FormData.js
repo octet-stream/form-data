@@ -1,10 +1,10 @@
-import {createReadStream} from "fs"
+// import {createReadStream} from "fs"
 
 import test from "ava"
 
 import FormData from "../lib/FormData"
 
-import read from "./__helper__/read"
+// import read from "./__helper__/read"
 
 test("Should have iterator metohds", t => {
   t.plan(4)
