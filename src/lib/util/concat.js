@@ -14,7 +14,7 @@ function concat(...strings) {
     [strings] = strings
   }
 
-  return Array.prototype.join.call(strings)
+  return Array.prototype.join.call(strings, "")
 }
 
 module.exports = concat

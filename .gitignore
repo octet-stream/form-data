@@ -8,3 +8,4 @@ coverage
 .map
 lib/**/*.js
 test/FormData.js
+test/__helper__/read.js

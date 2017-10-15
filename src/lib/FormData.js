@@ -9,30 +9,38 @@ import concat from "./util/concat"
 import isBuffer from "./util/isBuffer"
 import isReadable from "./util/isReadable"
 
+import Content from "./Content"
+
 class FormData {
   constructor() {
     bind([Symbol.iterator, "keys", "values", "entries"], this)
 
     this.__caret = "\r\n"
     this.__defaultContentType = "application/octet-steam"
+
+    // TODO: Remove all non alpha-numeric characters from boundary
     this.__boundary = concat("--", nano())
 
-    this.__contents = new Map()
-    this.__curr = this.__contents.entries()
+    this.__contents = new Content()
+    this.__curr = this.__contents.read()
+    this.__pending = 0
 
     const read = this.__read
 
     this.__stream = new Readable({read})
 
     this.headers = {
-      "Content-Type": concat("multipart/form-data; ", this.__boundary)
+      "Content-Type": concat(
+        "multipart/form-data; boundary=", this.__boundary
+      )
     }
   }
 
   __generateHead(name) {
     const head = [
       this.__boundary, this.__caret,
-      "Content-Disposition: form-data;", "name=\"", name, "\";"
+      "Content-Disposition: form-data; ", "name=\"", name, "\";",
+      this.__caret.repeat(2)
     ]
 
     return concat(head)
@@ -41,32 +49,45 @@ class FormData {
   /**
    * @private
    */
-  __generateField(name, value) {
-    const field = [
-      this.__generateHead(name, value),
-      this.__generateContent(value)
-    ]
+  __generateField(name, value, filename, push) {
+    push(Buffer.from(this.__generateHead(name, value)))
 
-    for (const [idx, val] of field.entries()) {
-      field[idx] = Buffer.from(val)
+    if (isBuffer(value)) {
+      return push(value)
     }
 
-    return Buffer.concat(field)
+    return push(Buffer.from(concat(value, this.__caret)))
+
+    // if (!isReadable(value)) {
+    //   return push(Buffer.from(concat(value, this.__caret)))
+    // }
+
+    // const onError = err => this.__stream.emit("error", err)
+
+    // value
+    //   .on("error", onError)
+    //   .on("data", push)
   }
 
   /**
    * @private
    */
   __read = () => {
-    const curr = this.__curr.next()
+    function onFulfilled(curr) {
+      if (curr.done) {
+        return void this.__stream.push(null)
+      }
 
-    if (curr.done) {
-      return void this.__stream.push(null)
+      const [name, {value, filename}] = curr.value
+
+      const push = ch => process.nextTick(() => this.__stream.push(ch))
+
+      this.__generateField(name, value, filename, push)
     }
 
-    const [name, {value, filename}] = curr.value
+    const onRejected = err => this.__stream.emit("error", err)
 
-    this.__stream.push(this.__generateField(name, value, filename))
+    this.__curr.next().then(onFulfilled, onRejected)
   }
 
   __setField(name, value, filename, append = false) {
