@@ -1,7 +1,6 @@
 import {Readable} from "stream"
 import {basename} from "path"
 
-import nano from "nanoid"
 import invariant from "@octetstream/invariant"
 
 import bind from "./util/bind"
@@ -9,6 +8,7 @@ import concat from "./util/concat"
 import isBuffer from "./util/isBuffer"
 import isReadable from "./util/isReadable"
 import nextTick from "./util/nextTick"
+import boundary from "./util/boundary"
 
 import StreamIterator from "./util/StreamIterator"
 
@@ -21,8 +21,7 @@ class FormData {
     this.__caret = "\r\n"
     this.__defaultContentType = "application/octet-steam"
 
-    // TODO: Remove all non alpha-numeric characters from boundary
-    this.__boundary = concat("--", nano())
+    this.__boundary = concat("--", boundary())
 
     // this.__contents = new Content()
     // this.__curr = this.__contents.read()
@@ -44,12 +43,18 @@ class FormData {
     }
   }
 
-  __generateHead(name) {
+  __generateHead(name, filename) {
     const head = [
       this.__boundary, this.__caret,
       "Content-Disposition: form-data; ", "name=\"", name, "\"",
-      this.__caret.repeat(2)
     ]
+
+    if (filename) {
+      head.push(`; filename="${filename}"${this.__caret}`)
+      head.push(`Content-Type: "${this.__defaultContentType}"`)
+    }
+
+    head.push(this.__caret.repeat(2))
 
     return concat(head)
   }
@@ -64,10 +69,14 @@ class FormData {
       const curr = this.__entries.next()
 
       if (curr.done === true) {
+        yield Buffer.from(concat(this.__boundary, this.__caret.repeat(2)))
+
         return null
       }
 
-      const [, {value}] = curr.value
+      const [name, {value, filename}] = curr.value
+
+      yield this.__generateHead(name, filename)
 
       if (isReadable(value)) {
         const iterator = new StreamIterator(value)
@@ -78,6 +87,8 @@ class FormData {
       } else {
         yield isBuffer(value) ? value : Buffer.from(value)
       }
+
+      yield Buffer.from(this.__caret)
     }
   }
 
@@ -116,17 +127,17 @@ class FormData {
     this.__contents.set(String(name), {append, value, filename})
   }
 
-  append = (name, value, filename) => {
-    if (this.has(name) === false) {
-      return this.__setField(name, value, filename, true)
-    }
+  // append = (name, value, filename) => {
+  //   if (this.has(name) === false) {
+  //     return this.__setField(name, value, filename, true)
+  //   }
 
-    const field = this.get(name)
+  //   const field = this.get(name)
 
-    if (field.append === true) {
-      this.__setField(name, `${field.value}${value}`, filename)
-    }
-  }
+  //   if (field.append === true) {
+  //     this.__setField(name, `${field.value}${value}`, filename)
+  //   }
+  // }
 
   /**
    * Set new field on FormData
