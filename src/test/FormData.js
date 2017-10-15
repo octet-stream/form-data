@@ -63,12 +63,14 @@ test("Should delete field by it key", t => {
   t.false(fd.has("name"))
 })
 
-// test("Foo", async t => {
-//   const fd = new FormData()
+test("Foo", async t => {
+  const fd = new FormData()
 
-//   fd.set("name", createReadStream("/usr/share/dict/words"))
+  fd.set("name", createReadStream("/usr/share/dict/words"))
 
-//   console.log(String(await read(fd)))
+  // console.log((await read(fd)))
 
-//   t.pass()
-// })
+  await read(fd)
+
+  t.pass()
+})

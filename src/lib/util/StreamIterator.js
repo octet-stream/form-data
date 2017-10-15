@@ -1,4 +1,4 @@
-const nextTick = () => new Promise(resolve => process.nextTick(resolve))
+import nextTick from "./nextTick"
 
 class StreamIterator {
   constructor(stream) {

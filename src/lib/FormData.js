@@ -9,7 +9,7 @@ import concat from "./util/concat"
 import isBuffer from "./util/isBuffer"
 import isReadable from "./util/isReadable"
 
-import Content from "./Content"
+import Content from "./util/Content"
 
 class FormData {
   constructor() {
@@ -49,40 +49,30 @@ class FormData {
   /**
    * @private
    */
-  __generateField(name, value, filename, push) {
-    push(Buffer.from(this.__generateHead(name, value)))
+  __generateField(name, value) {
+    // push(Buffer.from(this.__generateHead(name, value)))
 
     if (isBuffer(value)) {
-      return push(value)
+      return value
     }
 
-    return push(Buffer.from(concat(value, this.__caret)))
-
-    // if (!isReadable(value)) {
-    //   return push(Buffer.from(concat(value, this.__caret)))
-    // }
-
-    // const onError = err => this.__stream.emit("error", err)
-
-    // value
-    //   .on("error", onError)
-    //   .on("data", push)
+    return Buffer.from(concat(value, this.__caret))
   }
 
   /**
    * @private
    */
   __read = () => {
-    function onFulfilled(curr) {
+    const onFulfilled = curr => {
       if (curr.done) {
-        return void this.__stream.push(null)
+        return this.__stream.push(null)
       }
 
       const [name, {value, filename}] = curr.value
 
-      const push = ch => process.nextTick(() => this.__stream.push(ch))
+      // const push = ch => process.nextTick(() => this.__stream.push(ch))
 
-      this.__generateField(name, value, filename, push)
+      this.__stream.push(this.__generateField(name, value, filename))
     }
 
     const onRejected = err => this.__stream.emit("error", err)
