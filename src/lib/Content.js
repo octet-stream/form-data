@@ -1,3 +1,4 @@
+import StreamIterator from "./util/StreamIterator"
 import isReadable from "./util/isReadable"
 
 class Content extends Map {
@@ -16,18 +17,10 @@ class Content extends Map {
 
     const [, {value}] = curr.value
 
-    console.log(value)
-
     if (isReadable(value)) {
-      while (true) {
-        const ch = value.read()
+      const iterator = new StreamIterator(value)
 
-        console.log(ch)
-
-        if (ch == null) {
-          break
-        }
-
+      for await (const ch of iterator) {
         yield ch
       }
     } else {

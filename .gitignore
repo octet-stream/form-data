@@ -6,6 +6,6 @@ node_modules
 coverage
 ..map
 .map
+
 lib/**/*.js
-test/FormData.js
-test/__helper__/read.js
+test/**/*.js
