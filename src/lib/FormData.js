@@ -13,6 +13,8 @@ import boundary from "./util/boundary"
 
 import StreamIterator from "./util/StreamIterator"
 
+const isString = val => typeof val === "string"
+
 class FormData {
   constructor() {
     bind([
@@ -122,12 +124,20 @@ class FormData {
   }
 
   __setField(name, value, filename, append = false) {
-    if (isBuffer(value)) {
-      invariant(!filename, Error, "Filename required for Buffer values.")
+    invariant(
+      !isString(name), TypeError,
+      "Field name should be a string. Received %s", typeof name
+    )
 
+    invariant(
+      filename && !isString(filename), TypeError,
+      "Filename should be a string (if passed). Received %s", typeof filename
+    )
+
+    if (isBuffer(value) && filename) {
       filename = basename(filename)
-    } else if (isReadable(value)) {
-      filename = basename(filename || value.path)
+    } else if (isReadable(value) && (value.path || filename)) {
+      filename = basename(value.path || filename)
     } else {
       value = String(value)
     }

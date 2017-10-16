@@ -94,3 +94,38 @@ test("Should correctly add field AND file together", async t => {
 
   t.deepEqual(body, {field, file})
 })
+
+test(
+  "Should throw a TypeError on field setting when the name is not a string",
+  t => {
+    t.plan(3)
+
+    const fd = new FormData()
+
+    const trap = () => fd.set({})
+
+    const err = t.throws(trap)
+
+    t.true(err instanceof TypeError)
+    t.is(err.message, "Field name should be a string. Received object")
+  }
+)
+
+test(
+  "Should throw a TypeError on field setting when the filename passed, " +
+  "but it's not a string value.",
+  t => {
+    t.plan(3)
+
+    const fd = new FormData()
+
+    const trap = () => fd.set("key", "value", 451)
+
+    const err = t.throws(trap)
+
+    t.true(err instanceof TypeError)
+    t.is(
+      err.message, "Filename should be a string (if passed). Received number"
+    )
+  }
+)
