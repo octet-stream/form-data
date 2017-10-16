@@ -22,7 +22,8 @@ class FormData {
     this.__caret = "\r\n"
     this.__defaultContentType = "application/octet-steam"
 
-    this.__boundary = concat("--", boundary())
+    this.__dashes = "--"
+    this.__boundary = concat("NodeJSFormDataStream", boundary())
 
 
     this.__contents = new Map()
@@ -45,7 +46,7 @@ class FormData {
 
   __getHeader(name, filename) {
     const head = [
-      this.__boundary, this.__caret,
+      this.__dashes, this.__boundary, this.__caret,
       "Content-Disposition: form-data; ", `name="${name}"`,
     ]
 
@@ -69,9 +70,14 @@ class FormData {
       const curr = this.__entries.next()
 
       if (curr.done === true) {
-        yield Buffer.from(concat(this.__boundary, this.__caret.repeat(2)))
+        yield Buffer.from(
+          concat(
+            this.__dashes, this.__boundary,
+            this.__dashes, this.__caret.repeat(2)
+          )
+        )
 
-        return null
+        return
       }
 
       const [name, {value, filename}] = curr.value
@@ -127,6 +133,10 @@ class FormData {
     this.__contents.set(String(name), {append, value, filename})
   }
 
+  get boundary() {
+    return this.__boundary
+  }
+
   // append = (name, value, filename) => {
   //   if (this.has(name) === false) {
   //     return this.__setField(name, value, filename, true)
@@ -162,7 +172,7 @@ class FormData {
 
   delete = name => void this.__contents.delete(name)
 
-  pipe = (...args) => this.__stream.pipe(...args)
+  pipe = (dest, options) => this.__stream.pipe(dest, options)
 
   on = (name, fn) => {
     this.__stream.on(name, fn)

@@ -1,10 +1,13 @@
-// import {createReadStream} from "fs"
+import {createReadStream, readFile} from "promise-fs"
 
 import test from "ava"
 
+import req from "supertest"
+
 import FormData from "../lib/FormData"
 
-// import read from "./__helper__/read"
+import read from "./__helper__/read"
+import server from "./__helper__/server"
 
 test("Should have iterator metohds", t => {
   t.plan(4)
@@ -63,15 +66,25 @@ test("Should delete field by it key", t => {
   t.false(fd.has("name"))
 })
 
-// test("Foo", async t => {
-//   const fd = new FormData()
+test("Should correctly add field AND file together", async t => {
+  const fd = new FormData()
 
-//   // fd.set("file", createReadStream("/usr/share/dict/words"))
-//   fd.set("file", createReadStream(__filename))
+  fd.set("field", "Hello, World!")
 
-//   // console.log(String(await read(fd)))
+  fd.set("file", createReadStream(__filename))
 
-//   await read(fd)
+  const file = await readFile(__filename, "utf8")
 
-//   t.pass()
-// })
+  const data = await read(fd)
+
+  const {body} = await req(server())
+    .post("/")
+    .set("content-type", `multipart/form-data; boundary=${fd.boundary}`)
+    .send(data)
+
+  t.deepEqual(body, {
+    field: "Hello, World!", file
+  })
+
+  t.pass()
+})

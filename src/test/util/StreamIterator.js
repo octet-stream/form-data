@@ -50,7 +50,7 @@ test("Should return a value in correct format", async t => {
   t.false(actual.done)
 })
 
-test("Should return corectly object on stream ending", async t => {
+test("Should return correctly object on stream ending", async t => {
   t.plan(1)
 
   const stream = new Readable({
@@ -67,7 +67,7 @@ test("Should return corectly object on stream ending", async t => {
   })
 })
 
-test("Should corectly reat a content from the stream", async t => {
+test("Should correctly reat a content from the stream", async t => {
   const iterator = new StreamIterator(createReadStream("/usr/share/dict/words"))
 
   const chunks = []

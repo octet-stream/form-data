@@ -37,7 +37,7 @@ class StreamIterator {
     // eslint-disable-next-line
     const state = this.__stream._readableState
 
-    return state.ended
+    return state.ended && state.endEmitted
   }
 
   __isErrorState = () => this.__isState(this.__states.error)
@@ -74,6 +74,8 @@ class StreamIterator {
       }
 
       const value = this.__stream.read()
+
+      // console.log(String(value))
 
       if (value == null) {
         this.__setState(this.__states.pending)
