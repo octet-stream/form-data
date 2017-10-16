@@ -123,6 +123,16 @@ class FormData {
     this.__curr.next().then(onFulfilled, onRejected)
   }
 
+  /**
+   * Set a new filed to internal FormData Map object
+   *
+   * @param {string} name
+   * @param {any} value
+   * @param {string} filename
+   * @param {boolean} append
+   *
+   * @return {void}
+   */
   __setField(name, value, filename, append = false) {
     invariant(
       !isString(name), TypeError,
@@ -134,11 +144,15 @@ class FormData {
       "Filename should be a string (if passed). Received %s", typeof filename
     )
 
+    // Try to get a filename for buffer and stream values
     if (isBuffer(value) && filename) {
       filename = basename(filename)
     } else if (isReadable(value) && (value.path || filename)) {
       filename = basename(value.path || filename)
-    } else {
+    }
+
+    // Convers value to a string if it not stream or buffer
+    if (!isBuffer(value) && !isReadable(value)) {
       value = String(value)
     }
 
@@ -168,16 +182,26 @@ class FormData {
    *
    * @param {string} name – field name
    * @param {any} value – field value
+   * @param {string} filename
+   *
+   * @return {void}
    */
   set = (name, value, filename) => this.__setField(name, value, filename)
 
+  /**
+   * Check if the value with given key exists
+   *
+   * @param {string} name – name of a value you are looking for
+   *
+   * @return {boolean}
+   */
   has = name => this.__contents.has(name)
 
-  // NOTE: This method should return only the first field value.
-  // I should add this behaviour somehow
   get = name => {
     const field = this.__contents.get(name)
 
+    // NOTE: This method should return only the first field value.
+    // I should add this behaviour somehow
     return field ? field.value : void 0
   }
 
