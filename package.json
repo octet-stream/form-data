@@ -20,7 +20,7 @@
     "test": "node_modules/.bin/ava",
     "coverage": "yarn make:ci && node_modules/.bin/nyc yarn test && yarn cleanup",
     "report": "yarn make:ci && node_modules/.bin/nyc yarn test && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup",
-    "ci": "yarn make:ci && node_modules/.bin/nyc yarn test && node_modules/.bin/nyc report --reporter=lcov yarn test && yarn cleanup",
+    "ci": "yarn make:ci && node_modules/.bin/nyc yarn test && node_modules/.bin/nyc report --reporter=lcov yarn test && node_modules/.bin/codecov && yarn cleanup",
     "precommit": "yarn lint",
     "prepush": "yarn report"
   },
