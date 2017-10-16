@@ -52,6 +52,14 @@ test("Should just add a primitive value", t => {
   t.is(fd.get("name"), "value")
 })
 
+test("Should return \"undefined\" on getting nonexistent field", t => {
+  t.plan(1)
+
+  const fd = new FormData()
+
+  t.is(fd.get("nope"), void 0)
+})
+
 test("Should delete field by it key", t => {
   t.plan(2)
 
