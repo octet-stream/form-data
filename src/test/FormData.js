@@ -69,7 +69,9 @@ test("Should delete field by it key", t => {
 test("Should correctly add field AND file together", async t => {
   const fd = new FormData()
 
-  fd.set("field", "Hello, World!")
+  const field = "Hello, World!"
+
+  fd.set("field", field)
 
   fd.set("file", createReadStream(__filename))
 
@@ -82,9 +84,5 @@ test("Should correctly add field AND file together", async t => {
     .set("content-type", `multipart/form-data; boundary=${fd.boundary}`)
     .send(data)
 
-  t.deepEqual(body, {
-    field: "Hello, World!", file
-  })
-
-  t.pass()
+  t.deepEqual(body, {field, file})
 })

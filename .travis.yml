@@ -1,0 +1,10 @@
+language: node_js
+cache: yarn
+node_js:
+  - 7
+  - 8
+  - stable
+install:
+  - yarn
+script:
+  - yarn ci
