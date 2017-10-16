@@ -2,6 +2,7 @@ import {Readable} from "stream"
 import {basename} from "path"
 
 import invariant from "@octetstream/invariant"
+import mimes from "mime-types"
 
 import bind from "./util/bind"
 import concat from "./util/concat"
@@ -40,15 +41,17 @@ class FormData {
     }
   }
 
-  __generateHead(name, filename) {
+  __getMime = filename => mimes.lookup(filename) || this.__defaultContentType
+
+  __getHeader(name, filename) {
     const head = [
       this.__boundary, this.__caret,
-      "Content-Disposition: form-data; ", "name=\"", name, "\"",
+      "Content-Disposition: form-data; ", `name="${name}"`,
     ]
 
     if (filename) {
       head.push(`; filename="${filename}"${this.__caret}`)
-      head.push(`Content-Type: "${this.__defaultContentType}"`)
+      head.push(`Content-Type: "${this.__getMime(filename)}"`)
     }
 
     head.push(this.__caret.repeat(2))
@@ -73,7 +76,7 @@ class FormData {
 
       const [name, {value, filename}] = curr.value
 
-      yield this.__generateHead(name, filename)
+      yield this.__getHeader(name, filename)
 
       if (isReadable(value)) {
         const iterator = new StreamIterator(value)
@@ -172,7 +175,7 @@ class FormData {
   }
 
   [Symbol.asyncIterator]() {
-    return this.__curr
+    return new StreamIterator(this.__stream)
   }
 
   keys() {
