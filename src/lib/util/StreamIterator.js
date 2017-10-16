@@ -75,8 +75,6 @@ class StreamIterator {
 
       const value = this.__stream.read()
 
-      // console.log(String(value))
-
       if (value == null) {
         this.__setState(this.__states.pending)
 

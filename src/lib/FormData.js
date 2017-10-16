@@ -57,8 +57,17 @@ class FormData {
 
     head.push(this.__caret.repeat(2))
 
-    return concat(head)
+    return Buffer.from(concat(head))
   }
+
+  __getFooter = () => (
+    Buffer.from(
+      concat(
+        this.__dashes, this.__boundary,
+        this.__dashes, this.__caret.repeat(2)
+      )
+    )
+  )
 
   /**
    * @private
@@ -70,12 +79,7 @@ class FormData {
       const curr = this.__entries.next()
 
       if (curr.done === true) {
-        yield Buffer.from(
-          concat(
-            this.__dashes, this.__boundary,
-            this.__dashes, this.__caret.repeat(2)
-          )
-        )
+        yield this.__getFooter()
 
         return
       }
