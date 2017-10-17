@@ -1,6 +1,15 @@
 import nextTick from "./nextTick"
 
+/**
+ * StreamIterator helps with getting data from a Readable stream using an
+ * async iterator
+ *
+ * @api private
+ */
 class StreamIterator {
+  /**
+   * @param {stream.Readable} stream
+   */
   constructor(stream) {
     this.__stream = stream
 
@@ -50,6 +59,11 @@ class StreamIterator {
     while (true) {
       await nextTick()
 
+      if (this.__isErrorState()) {
+        throw this.__error
+      }
+
+      // Ensure of a Readable ending
       if (this.__isEndState()) {
         return {
           value: void 0,
@@ -57,6 +71,8 @@ class StreamIterator {
         }
       }
 
+      // Set the "readable" event listener (using once method)
+      // and wait for the event emitting
       if (this.__isPendingState()) {
         await this.__ensureRead()
 
@@ -65,6 +81,7 @@ class StreamIterator {
 
       const value = this.__stream.read()
 
+      // Back to the "pending" state if given value is nullish
       if (value == null) {
         this.__setState(this.__states.pending)
 

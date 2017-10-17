@@ -23,7 +23,7 @@ async function mapFiles(obj, cb, ctx) {
 
 const server = () => createServer((req, res) => {
   const onData = data => mapFiles(
-    data, async value => isFile(value) ? String(await value.read()) : value
+    data, async value => String(isFile(value) ? await value.read() : value)
   )
 
   function onFulfilled(data) {

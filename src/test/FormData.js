@@ -74,16 +74,14 @@ test("Should delete field by it key", t => {
   t.false(fd.has("name"))
 })
 
-test("Should correctly add field AND file together", async t => {
+test("Should correctly add a filed to FormData request body", async t => {
+  t.plan(1)
+
   const fd = new FormData()
 
   const field = "Hello, World!"
 
   fd.set("field", field)
-
-  fd.set("file", createReadStream(__filename))
-
-  const file = await readFile(__filename, "utf8")
 
   const data = await read(fd)
 
@@ -92,7 +90,79 @@ test("Should correctly add field AND file together", async t => {
     .set("content-type", `multipart/form-data; boundary=${fd.boundary}`)
     .send(data)
 
-  t.deepEqual(body, {field, file})
+  t.deepEqual(body, {field})
+})
+
+test("Should correctly add a file to FormData request body", async t => {
+  t.plan(1)
+
+  const fd = new FormData()
+
+  fd.set("file", createReadStream("/usr/share/dict/words"))
+
+  const file = await readFile("/usr/share/dict/words", "utf8")
+
+  const data = await read(fd)
+
+  const {body} = await req(server())
+    .post("/")
+    .set("content-type", `multipart/form-data; boundary=${fd.boundary}`)
+    .send(data)
+
+  t.deepEqual(body, {file})
+})
+
+test(
+  "Should correctly add field AND file together to FormData request body",
+  async t => {
+    t.plan(1)
+
+    const fd = new FormData()
+
+    const field = "Hello, World!"
+
+    fd.set("field", field)
+
+    fd.set("file", createReadStream(__filename))
+
+    const file = await readFile(__filename, "utf8")
+
+    const data = await read(fd)
+
+    const {body} = await req(server())
+      .post("/")
+      .set("content-type", `multipart/form-data; boundary=${fd.boundary}`)
+      .send(data)
+
+    t.deepEqual(body, {field, file})
+  }
+)
+
+test("Should correctly add a field with Buffer data", async t => {
+  t.plan(1)
+
+  const phrase = Buffer.from(
+    "I've seen things you people wouldn't believe. " +
+    "Attack ships on fire off the shoulder of Orion. " +
+    "I watched C-beams glitter in the dark near the Tannhäuser Gate. " +
+    "All those moments will be lost in time, like tears in rain. " +
+    "Time to die."
+  )
+
+  const fd = new FormData()
+
+  fd.set("field", phrase)
+
+  const data = await read(fd)
+
+  const {body} = await req(server())
+    .post("/")
+    .set("content-type", `multipart/form-data; boundary=${fd.boundary}`)
+    .send(data)
+
+  t.deepEqual(body, {
+    field: String(phrase)
+  })
 })
 
 test(
