@@ -1,6 +1,6 @@
 # FormData
 
-Yet another FormData implementation for Node.js. Built over Readable stream and async generators.
+FormData implementation for Node.js. Built over Readable stream and async generators.
 
 [![dependencies Status](https://david-dm.org/octet-stream/form-data/status.svg)](https://david-dm.org/octet-stream/form-data)
 [![devDependencies Status](https://david-dm.org/octet-stream/form-data/dev-status.svg)](https://david-dm.org/octet-stream/form-data?type=dev)
