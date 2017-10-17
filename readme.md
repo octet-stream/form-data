@@ -73,4 +73,4 @@ Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/
 
 ##### `[Symbol.iterator]() -> {iterator}`
 
-An alias of [entries](#entries)
+An alias of [entries](#entries---iterator)
