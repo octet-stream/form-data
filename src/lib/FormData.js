@@ -18,10 +18,11 @@ const isString = val => typeof val === "string"
 class FormData {
   constructor() {
     bind([
-      Symbol.iterator, Symbol.asyncIterator, "keys", "values", "entries"
+      Symbol.iterator, Symbol.asyncIterator,
+      "toString", "toJSON", "inspect"
     ], this)
 
-    this.__caret = "\r\n"
+    this.__carriage = "\r\n"
     this.__defaultContentType = "application/octet-steam"
 
     this.__dashes = "--"
@@ -48,16 +49,16 @@ class FormData {
 
   __getHeader(name, filename) {
     const head = [
-      this.__dashes, this.__boundary, this.__caret,
+      this.__dashes, this.__boundary, this.__carriage,
       "Content-Disposition: form-data; ", `name="${name}"`,
     ]
 
     if (filename) {
-      head.push(`; filename="${filename}"${this.__caret}`)
+      head.push(`; filename="${filename}"${this.__carriage}`)
       head.push(`Content-Type: "${this.__getMime(filename)}"`)
     }
 
-    head.push(this.__caret.repeat(2))
+    head.push(this.__carriage.repeat(2))
 
     return Buffer.from(concat(head))
   }
@@ -66,7 +67,7 @@ class FormData {
     Buffer.from(
       concat(
         this.__dashes, this.__boundary,
-        this.__dashes, this.__caret.repeat(2)
+        this.__dashes, this.__carriage.repeat(2)
       )
     )
   )
@@ -100,7 +101,7 @@ class FormData {
         yield isBuffer(value) ? value : Buffer.from(value)
       }
 
-      yield Buffer.from(this.__caret)
+      yield Buffer.from(this.__carriage)
     }
   }
 
@@ -218,32 +219,30 @@ class FormData {
     return this
   }
 
+  keys = () => this.__contents.keys()
+
+  values = () => this.__contents.values()
+
+  entries = () => this.__contents.entries()
+
+  toString() {
+    return `[object ${this.constructor.name}]`
+  }
+
+  toJSON() {
+    return this.constructor.name
+  }
+
+  inspect() {
+    return this.constructor.name
+  }
+
   [Symbol.iterator]() {
     return this.__contents[Symbol.iterator]()
   }
 
   [Symbol.asyncIterator]() {
     return new StreamIterator(this.__stream)
-  }
-
-  keys() {
-    return this.__contents.keys()
-  }
-
-  values() {
-    return this.__contents.values()
-  }
-
-  entries() {
-    return this.__contents.entries()
-  }
-
-  toString() {
-    return "[object FormData]"
-  }
-
-  inspect() {
-    return "FormData { }"
   }
 }
 

@@ -1,5 +1,5 @@
 {
-  "name": "node-form-data",
+  "name": "node-formdata",
   "version": "0.1.0",
   "description": "Node.js FormData implementation over the Readable stream.",
   "repository": "https://github.com/octet-stream/form-data",

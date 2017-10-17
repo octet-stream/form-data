@@ -9,30 +9,6 @@ import FormData from "../lib/FormData"
 import read from "./__helper__/read"
 import server from "./__helper__/server"
 
-test("Should have iterator metohds", t => {
-  t.plan(4)
-
-  const fd = new FormData()
-
-  t.true(typeof fd[Symbol.iterator] === "function")
-  t.true(typeof fd.keys === "function")
-  t.true(typeof fd.values === "function")
-  t.true(typeof fd.entries === "function")
-})
-
-test("Should have all methods from the FormData specification", t => {
-  t.plan(4)
-
-  const fd = new FormData()
-
-  // TODO: Don't forget to add a getAll method
-  t.true(typeof fd.get === "function")
-  t.true(typeof fd.set === "function")
-  t.true(typeof fd.has === "function")
-  // t.true(typeof fd.append === "function")
-  t.true(typeof fd.delete === "function")
-})
-
 test("Should have a \"pipe\" method", t => {
   t.plan(1)
 
