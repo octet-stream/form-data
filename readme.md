@@ -71,6 +71,6 @@ Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/
 
 Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)** allowing to go through the **FormData** key/value pairs
 
-##### `[Symbol.terator]() -> {iterator}`
+##### `[Symbol.iterator]() -> {iterator}`
 
 An alias of [entries](#entries)
