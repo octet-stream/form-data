@@ -5,24 +5,16 @@ class StreamIterator {
     this.__stream = stream
 
     this.__states = {
-      init: Symbol("init"),
       pending: Symbol("pending"),
       read: Symbol("read"),
-      end: Symbol("end"),
       error: Symbol("error")
     }
-
-    this.__errors = new Set()
 
     this.__state = this.__states.pending
 
     this.__error = null
 
-    this.__stream.on("error", err => {
-      this.__error = err
-
-      this.__setState(this.__states.error)
-    })
+    this.__stream.on("error", this.__onError)
   }
 
   __setState = state => void (this.__state = state)
@@ -42,19 +34,17 @@ class StreamIterator {
 
   __isErrorState = () => this.__isState(this.__states.error)
 
+  __onError = err => {
+    this.__error = err
+
+    this.__setState(this.__states.error)
+  }
+
   __ensureRead = () => new Promise(resolve => {
-    const fulfill = () => {
-      resolve(this.__setState(this.__states.read))
-    }
+    const fulfill = () => resolve(this.__setState(this.__states.read))
 
     this.__stream.once("readable", fulfill)
   })
-
-  // __ensureEnd = () => new Promise(resolve => {
-  //   const fulfill = () => resolve(this.__setState(this.__states.end))
-
-  //   this.__stream.once("end", fulfill)
-  // })
 
   next = async () => {
     while (true) {
