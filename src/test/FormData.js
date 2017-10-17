@@ -9,14 +9,6 @@ import FormData from "../lib/FormData"
 import read from "./__helper__/read"
 import server from "./__helper__/server"
 
-test("Should have a \"pipe\" method", t => {
-  t.plan(1)
-
-  const fd = new FormData()
-
-  t.true(typeof fd.pipe === "function")
-})
-
 test("Should just add a primitive value", t => {
   t.plan(2)
 
