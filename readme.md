@@ -1,4 +1,4 @@
-# node-form-data
+# FormData
 
 Yet another FormData implementation for Node.js. Built over Readable stream and async generators.
 
@@ -59,4 +59,18 @@ Deletes a key and its value(s) from a **FormData** object.
 
   - **{string}** name – The name of the key you want to delete.
 
+##### `keys() -> {iterator}`
+
+Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)** allowing to go through the **FormData** keys
+
+##### `values() -> {iterator}`
+
+Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)** allowing to go through the **FormData** values
+
 ##### `entries() -> {iterator}`
+
+Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)** allowing to go through the **FormData** key/value pairs
+
+##### `[Symbol.terator]() -> {iterator}`
+
+An alias of [entries](#entries)
