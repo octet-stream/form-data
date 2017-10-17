@@ -15,11 +15,14 @@ import StreamIterator from "./util/StreamIterator"
 
 const isString = val => typeof val === "string"
 
+const isArray = Array.isArray
+
 class FormData {
   constructor() {
     bind([
       Symbol.iterator, Symbol.asyncIterator,
-      "toString", "toJSON", "inspect"
+      "toString", "toJSON", "inspect",
+      "keys", "values", "entries"
     ], this)
 
     this.__carriage = "\r\n"
@@ -219,12 +222,6 @@ class FormData {
     return this
   }
 
-  keys = () => this.__contents.keys()
-
-  values = () => this.__contents.values()
-
-  entries = () => this.__contents.entries()
-
   toString() {
     return `[object ${this.constructor.name}]`
   }
@@ -237,8 +234,36 @@ class FormData {
     return this.constructor.name
   }
 
+  * keys() {
+    for (const key of this.__contents.keys()) {
+      yield key
+    }
+  }
+
+  * values() {
+    for (let value of this.__contents.values()) {
+      if (typeof value !== "object" || isArray(value)) {
+        value = String(value)
+      }
+
+      yield value
+    }
+  }
+
+  * entries() {
+    for (const [name, value] of this.__contents) {
+      if ((typeof value === "object" && value != null) || !isArray(value)) {
+        yield [name, value]
+      } else {
+        yield [
+          name, String(value)
+        ]
+      }
+    }
+  }
+
   [Symbol.iterator]() {
-    return this.__contents[Symbol.iterator]()
+    return this.entries()
   }
 
   [Symbol.asyncIterator]() {
