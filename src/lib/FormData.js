@@ -10,7 +10,6 @@ import nextTick from "./util/nextTick"
 import boundary from "./util/boundary"
 
 import isString from "./util/isString"
-import isObject from "./util/isObject"
 
 import isBuffer from "./util/isBuffer"
 import isReadable from "./util/isReadable"
@@ -86,14 +85,16 @@ class FormData {
         return
       }
 
-      const [name, {value, filename}] = curr.value
+      const [name, {values, filename}] = curr.value
 
       yield this.__getHeader(name, filename)
 
-      if (isReadable(value)) {
-        yield* new StreamIterator(value) // Read the stream contents
-      } else {
-        yield value
+      for (const value of values) {
+        if (isReadable(value)) {
+          yield* new StreamIterator(value) // Read the stream contents
+        } else {
+          yield value
+        }
       }
 
       yield this.__carriage
@@ -101,6 +102,8 @@ class FormData {
   }
 
   /**
+   * Read values from internal storage and push it to the internal stream
+   *
    * @private
    */
   __read = () => {
@@ -147,31 +150,44 @@ class FormData {
       filename = basename(value.path || filename)
     }
 
-    // Convers value to a string if it not stream or buffer
-    if (!isBuffer(value) && !isReadable(value)) {
-      value = String(value)
-    }
-
     append = Boolean(append)
 
-    this.__contents.set(String(name), {append, value, filename})
+    const field = this.__contents.get(name)
+
+    if (!field) {
+      this.__contents.set(String(name), {append, filename, values: [value]})
+
+      return
+    }
+
+    if (!append) {
+      return
+    }
+
+    field.values.push(value)
+
+    this.__contents.set(String(name), field)
   }
 
+  /**
+   * Returns boundary string
+   */
   get boundary() {
     return this.__boundary
   }
 
-  // append = (name, value, filename) => {
-  //   if (this.has(name) === false) {
-  //     return this.__setField(name, value, filename, true)
-  //   }
+  /**
+   * Returns the internal stream
+   *
+   * @return {stream.Readable}
+   */
+  get stream() {
+    return this.__stream
+  }
 
-  //   const field = this.get(name)
-
-  //   if (field.append === true) {
-  //     this.__setField(name, `${field.value}${value}`, filename)
-  //   }
-  // }
+  append = (name, value, filename) => (
+    this.__setField(name, value, filename, true)
+  )
 
   /**
    * Set new field on FormData
@@ -202,13 +218,24 @@ class FormData {
       return void 0
     }
 
-    const value = field.value
+    const [value] = field.values
 
     return isBuffer(value) || isReadable(value) ? value : String(value)
   }
 
-  // TODO: Implement this method due to spec
-  // getAll = () => {}
+  getAll = name => {
+    const res = []
+
+    const field = this.__contents.get(name)
+
+    if (field) {
+      for (const value of field.values) {
+        res.push(isBuffer(value) || isReadable(value) ? value : String(value))
+      }
+    }
+
+    return res
+  }
 
   delete = name => void this.__contents.delete(name)
 
