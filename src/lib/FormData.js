@@ -16,8 +16,6 @@ import isReadable from "./util/isReadable"
 
 import StreamIterator from "./util/StreamIterator"
 
-const isArray = Array.isArray
-
 class FormData {
   constructor() {
     bind([
@@ -41,6 +39,18 @@ class FormData {
     const read = this.__read
 
     this.__stream = new Readable({read})
+  }
+
+  /**
+   * Check if given value is instance of FormData
+   * Note: This method is not a part of client-side FormData interface.
+   *
+   * @param {any} value
+   *
+   * @return {boolean}
+   */
+  static isFormData(value) {
+    return value instanceof FormData
   }
 
   __getMime = filename => mimes.lookup(filename) || this.__defaultContentType
@@ -248,8 +258,8 @@ class FormData {
   }
 
   forEach = (fn, ctx = null) => {
-    for (const name of this.keys()) {
-      fn.call(ctx, this.get(name), name, this)
+    for (const [name, value] of this.entries()) {
+      fn.call(ctx, value, name, this)
     }
   }
 
@@ -273,13 +283,17 @@ class FormData {
 
   * values() {
     for (const name of this.keys()) {
-      yield this.get(name)
+      const value = this.getAll(name)
+
+      yield value.length === 1 ? value[0] : value
     }
   }
 
   * entries() {
     for (const name of this.keys()) {
-      yield [name, this.get(name)]
+      const value = this.getAll(name)
+
+      yield [name, value.length === 1 ? value[0] : value]
     }
   }
 
@@ -287,6 +301,12 @@ class FormData {
     return this.entries()
   }
 
+  /**
+   * This method allows to read a content from internal stream
+   * using async generators and for-await..of APIs
+   *
+   * @return {StreamIterator}
+   */
   [Symbol.asyncIterator]() {
     return new StreamIterator(this.__stream)
   }
