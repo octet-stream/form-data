@@ -6,14 +6,16 @@ import mimes from "mime-types"
 
 import bind from "./util/bind"
 import concat from "./util/concat"
-import isBuffer from "./util/isBuffer"
-import isReadable from "./util/isReadable"
 import nextTick from "./util/nextTick"
 import boundary from "./util/boundary"
 
-import StreamIterator from "./util/StreamIterator"
+import isString from "./util/isString"
+import isObject from "./util/isObject"
 
-const isString = val => typeof val === "string"
+import isBuffer from "./util/isBuffer"
+import isReadable from "./util/isReadable"
+
+import StreamIterator from "./util/StreamIterator"
 
 const isArray = Array.isArray
 
@@ -40,12 +42,6 @@ class FormData {
     const read = this.__read
 
     this.__stream = new Readable({read})
-
-    this.headers = {
-      "Content-Type": concat(
-        "multipart/form-data; boundary=", this.__boundary
-      )
-    }
   }
 
   __getMime = filename => mimes.lookup(filename) || this.__defaultContentType
@@ -95,16 +91,12 @@ class FormData {
       yield this.__getHeader(name, filename)
 
       if (isReadable(value)) {
-        const iterator = new StreamIterator(value)
-
-        for await (const ch of iterator) {
-          yield ch
-        }
+        yield* new StreamIterator(value) // Read the stream contents
       } else {
-        yield isBuffer(value) ? value : Buffer.from(value)
+        yield value
       }
 
-      yield Buffer.from(this.__carriage)
+      yield this.__carriage
     }
   }
 
@@ -117,9 +109,9 @@ class FormData {
         return this.__stream.push(null)
       }
 
-      const ch = curr.value
+      const chunk = curr.value
 
-      this.__stream.push(ch)
+      this.__stream.push(isBuffer(chunk) ? chunk : Buffer.from(chunk))
     }
 
     const onRejected = err => this.__stream.emit("error", err)
@@ -206,7 +198,13 @@ class FormData {
 
     // NOTE: This method should return only the first field value.
     // I should add this behaviour somehow
-    return field ? field.value : void 0
+    if (!field) {
+      return void 0
+    }
+
+    const value = field.value
+
+    return isBuffer(value) || isReadable(value) ? value : String(value)
   }
 
   // TODO: Implement this method due to spec
@@ -220,6 +218,12 @@ class FormData {
     this.__stream.on(name, fn)
 
     return this
+  }
+
+  forEach = (fn, ctx = null) => {
+    for (const name of this.keys()) {
+      fn.call(ctx, this.get(name), name, this)
+    }
   }
 
   toString() {
@@ -241,24 +245,14 @@ class FormData {
   }
 
   * values() {
-    for (let value of this.__contents.values()) {
-      if (typeof value !== "object" || isArray(value)) {
-        value = String(value)
-      }
-
-      yield value
+    for (const name of this.keys()) {
+      yield this.get(name)
     }
   }
 
   * entries() {
-    for (const [name, value] of this.__contents) {
-      if ((typeof value === "object" && value != null) || !isArray(value)) {
-        yield [name, value]
-      } else {
-        yield [
-          name, String(value)
-        ]
-      }
+    for (const name of this.keys()) {
+      yield [name, this.get(name)]
     }
   }
 
