@@ -124,7 +124,7 @@ class FormData {
 
       const chunk = curr.value
 
-      this.__stream.push(isBuffer(chunk) ? chunk : Buffer.from(chunk))
+      this.__stream.push(isBuffer(chunk) ? chunk : Buffer.from(String(chunk)))
     }
 
     const onRejected = err => this.__stream.emit("error", err)
