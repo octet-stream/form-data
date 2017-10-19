@@ -115,6 +115,8 @@ class FormData {
    * Read values from internal storage and push it to the internal stream
    *
    * @private
+   *
+   * @return {void}
    */
   __read = () => {
     const onFulfilled = curr => {
@@ -153,7 +155,7 @@ class FormData {
       "Filename should be a string (if passed). Received %s", typeof filename
     )
 
-    // Try to get a filename for buffer and stream values
+    // Try to get a filename for buffer and Readable values
     if (isBuffer(value) && filename) {
       filename = basename(filename)
     } else if (isReadable(value) && (value.path || filename)) {
@@ -174,6 +176,7 @@ class FormData {
       return void this.__contents.set(name, {append, filename, values: [value]})
     }
 
+    // Do nothing if the field has been created from .set()
     if (!field.append) {
       return
     }
@@ -186,6 +189,8 @@ class FormData {
 
   /**
    * Returns boundary string
+   *
+   * @return {string}
    */
   get boundary() {
     return this.__boundary
