@@ -91,3 +91,9 @@ Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/
 ##### `[Symbol.iterator]() -> {iterator}`
 
 An alias of [FormData#entries](#entries---iterator)
+
+## Related packages
+
+- [then-busboy](https://github.com/octet-stream/then-busboy) – Promise-based wrapper around Busboy.
+  Process multipart/form-data content and returns it as a single object.
+  Will be helpful to handle your data on the server-side applications.
