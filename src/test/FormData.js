@@ -9,17 +9,6 @@ import FormData from "../lib/FormData"
 import read from "./__helper__/read"
 import server from "./__helper__/server"
 
-test("Should just add a primitive value", t => {
-  t.plan(2)
-
-  const fd = new FormData()
-
-  fd.set("name", "value")
-
-  t.true(fd.has("name"))
-  t.is(fd.get("name"), "value")
-})
-
 test("Should return \"undefined\" on getting nonexistent field", t => {
   t.plan(1)
 

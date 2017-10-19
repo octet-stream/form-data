@@ -138,11 +138,14 @@ class FormData {
    * @param {string} name
    * @param {any} value
    * @param {string} filename
-   * @param {boolean} append
+   * @param {number} mode – a value setting mode. Can be:
+   *   * 0 – disallow appending or replacing existing field
+   *   * 1 – replace existing field value
+   *   * 2 – append a new value for existing field
    *
    * @return {void}
    */
-  __setField(name, value, filename, append = false) {
+  __setField(name, value, filename, mode = 0) {
     invariant(
       !isString(name), TypeError,
       "Field name should be a string. Received %s", typeof name
@@ -160,23 +163,23 @@ class FormData {
       filename = basename(value.path || filename)
     }
 
-    append = Boolean(append)
-
     const field = this.__contents.get(name)
 
     if (!field) {
-      this.__contents.set(String(name), {append, filename, values: [value]})
+      return void this.__contents.set(name, {filename, values: [value]})
+    }
 
+    if (!mode || mode > 2) {
       return
     }
 
-    if (!append) {
-      return
+    if (mode === 1) {
+      return void this.__contents.set(name, {filename, values: [value]})
     }
 
     field.values.push(value)
 
-    this.__contents.set(String(name), field)
+    this.__contents.set(name, field)
   }
 
   /**
@@ -195,9 +198,7 @@ class FormData {
     return this.__stream
   }
 
-  append = (name, value, filename) => (
-    this.__setField(name, value, filename, true)
-  )
+  append = (name, value, filename) => this.__setField(name, value, filename, 2)
 
   /**
    * Set new field on FormData
@@ -208,7 +209,7 @@ class FormData {
    *
    * @return {void}
    */
-  set = (name, value, filename) => this.__setField(name, value, filename)
+  set = (name, value, filename) => this.__setField(name, value, filename, 1)
 
   /**
    * Check if the value with given key exists
