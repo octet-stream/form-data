@@ -71,7 +71,7 @@ test("Should not allow to .append() new value to an existing key", t => {
 
   fd.append("name", "Max")
 
-  t.is(fd.get("name"), "John")
+  t.deepEqual(fd.getAll("name"), ["John"])
 })
 
 test("Should set a Readable stream", t => {
