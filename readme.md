@@ -40,10 +40,27 @@ or add the new field if it does not already exist.
     Note that Arrays and Object will be converted to **string** by using **String** function.
   - **{string}** [filename = undefined] – A filename of given field. Can be added only for **Buffer** and **Readable** .
 
+##### `append(name, value[, filename]) -> {void}`
+
+Appends a new value onto an existing key inside a FormData object,
+or adds the key if it does not already exist.
+
+  - **{string}** name – The name of the field whose data is contained in **value**
+  - **{any}** value – The field value. You can pass any JavaScript primitive type (including **null** and **undefined**),
+    **[Buffer](https://nodejs.org/api/buffer.html#buffer_buffer)** or **[Readable](https://nodejs.org/api/stream.html#stream_class_stream_readable)** stream.
+    Note that Arrays and Object will be converted to **string** by using **String** function.
+  - **{string}** [filename = undefined] – A filename of given field. Can be added only for **Buffer** and **Readable** .
+
 ##### `get(name) -> {string | Buffer | stream.Readable}`
 
 Returns the first value associated with the given name.
 **Buffer** and **Readable** values will be returned as-is.
+
+  - **{string}** – A name of the value you want to retrieve.
+
+##### `getAll(name) -> {string[] | Buffer[] | stream.Readable[]}`
+
+Returns all the values associated with a given key from within a **FormData** object.
 
   - **{string}** – A name of the value you want to retrieve.
 
@@ -73,4 +90,4 @@ Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/
 
 ##### `[Symbol.iterator]() -> {iterator}`
 
-An alias of [entries](#entries---iterator)
+An alias of [FormData#entries](#entries---iterator)
