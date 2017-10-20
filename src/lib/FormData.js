@@ -266,7 +266,7 @@ class FormData {
   }
 
   forEach = (fn, ctx = null) => {
-    for (const [name, value] of this.entries()) {
+    for (const [name, value] of this) {
       fn.call(ctx, value, name, this)
     }
   }

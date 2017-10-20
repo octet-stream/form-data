@@ -27,6 +27,16 @@ yarn add formdata-node
 
 Initialize new FormData instance
 
+#### Instance properties
+
+##### `get boundary() -> {string}`
+
+Returns a boundary string of the current FormData instance.
+
+##### `get stream() -> {stream.Readable}`
+
+Returns an internal Readable stream.
+
 #### Instance methods
 
 ##### `set(name, value[, filename]) -> {void}`
@@ -76,6 +86,16 @@ Deletes a key and its value(s) from a **FormData** object.
 
   - **{string}** name – The name of the key you want to delete.
 
+#### `forEach(callback[, ctx]) -> {void}`
+
+Executes a given **callback** on for each field of the FormData instance
+
+  - **{function}** callback – Function to execute for each element, taking three arguments:
+    + **{any}** value – A value(s) of the current field.
+    + **{string}** name – Name of the current field.
+    + **{FormData}** fd – The FormData instance that **forEach** is being applied to
+  - **{any}** [ctx = null] – Value to use as **this** context when executing the given **callback**
+
 ##### `keys() -> {iterator}`
 
 Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)** allowing to go through the **FormData** keys
@@ -91,6 +111,11 @@ Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/
 ##### `[Symbol.iterator]() -> {iterator}`
 
 An alias of [FormData#entries](#entries---iterator)
+
+##### `[Symbol.asyncIterator]() -> {asyncIterator}`
+
+Returns an async iterator which allows to read the data from internal Readable stream using.
+Read the [async iteration proposal](https://github.com/tc39/proposal-async-iteration) for more info about async generator functions.
 
 ## Related packages
 
