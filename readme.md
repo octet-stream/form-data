@@ -12,13 +12,13 @@ FormData implementation for Node.js. Built over Readable stream and async genera
 You can install this package from npm:
 
 ```
-npm install --save then-busboy
+npm install --save formdata-node
 ```
 
 Or with yarn:
 
 ```
-yarn add then-busboy
+yarn add formdata-node
 ```
 
 ## API
