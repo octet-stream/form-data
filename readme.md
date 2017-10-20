@@ -88,7 +88,7 @@ Deletes a key and its value(s) from a **FormData** object.
 
 #### `forEach(callback[, ctx]) -> {void}`
 
-Executes a given **callback** on for each field of the FormData instance
+Executes a given **callback** for each field of the FormData instance
 
   - **{function}** callback – Function to execute for each element, taking three arguments:
     + **{any}** value – A value(s) of the current field.
