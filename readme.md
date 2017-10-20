@@ -23,9 +23,14 @@ yarn add formdata-node
 
 ## API
 
-### `constructor FormData()`
+### `constructor FormData([fields])`
 
 Initialize new FormData instance
+
+  - **{array}** [fields = null] – an optional FormData initial fields.
+    Each initial field should be passed as an array with 3 elemtnts
+    as a collection of the objects with "name", "value" and "filename" props.
+    See the FormData#append for more info about the available format.
 
 #### Instance properties
 
