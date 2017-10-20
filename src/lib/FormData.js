@@ -68,13 +68,21 @@ class FormData {
    * @param {any} value
    *
    * @return {boolean}
+   *
+   * @public
    */
   static isFormData(value) {
     return value instanceof FormData
   }
 
+  /**
+   * @private
+   */
   __getMime = filename => mimes.lookup(filename) || this.__defaultContentType
 
+  /**
+   * @private
+   */
   __getHeader(name, filename) {
     const head = [
       this.__dashes, this.__boundary, this.__carriage,
@@ -91,6 +99,9 @@ class FormData {
     return Buffer.from(concat(head))
   }
 
+  /**
+   * @private
+   */
   __getFooter = () => (
     Buffer.from(
       concat(
@@ -136,9 +147,9 @@ class FormData {
   /**
    * Read values from internal storage and push it to the internal stream
    *
-   * @private
-   *
    * @return {void}
+   *
+   * @private
    */
   __read = () => {
     const onFulfilled = curr => {
@@ -162,6 +173,8 @@ class FormData {
    * @param {array} fields
    *
    * @return {void}
+   *
+   * @private
    */
   __appendFromInitialFields = fields => {
     for (let field of fields) {
@@ -190,6 +203,8 @@ class FormData {
    *   Can be added only for Buffer and Readable
    *
    * @return {void}
+   *
+   * @private
    */
   __setField(name, value, filename, append = false) {
     invariant(
@@ -241,6 +256,8 @@ class FormData {
    * Returns boundary string
    *
    * @return {string}
+   *
+   * @public
    */
   get boundary() {
     return this.__boundary
@@ -250,6 +267,8 @@ class FormData {
    * Returns the internal stream
    *
    * @return {stream.Readable}
+   *
+   * @public
    */
   get stream() {
     return this.__stream
@@ -271,6 +290,8 @@ class FormData {
    *   Can be added only for Buffer and Readable
    *
    * @return {void}
+   *
+   * @public
    */
   append = (name, value, filename) => this.__setField(name, value, filename, 1)
 
@@ -290,6 +311,8 @@ class FormData {
    *   Can be added only for Buffer and Readable
    *
    * @return {void}
+   *
+   * @public
    */
   set = (name, value, filename) => this.__setField(name, value, filename)
 
@@ -299,6 +322,8 @@ class FormData {
    * @param {string} name – A name of the field you want to test for.
    *
    * @return {boolean}
+   *
+   * @public
    */
   has = name => this.__contents.has(name)
 
@@ -307,6 +332,8 @@ class FormData {
    * Buffer and Readable values will be returned as-is.
    *
    * @param {string} name – A name of the value you want to retrieve.
+   *
+   * @public
    */
   get = name => {
     const field = this.__contents.get(name)
@@ -326,6 +353,8 @@ class FormData {
    * a given key from within a FormData object.
    *
    * @param {string} name – A name of the value you want to retrieve.
+   *
+   * @public
    */
   getAll = name => {
     const res = []
@@ -345,6 +374,8 @@ class FormData {
    * Deletes a key and its value(s) from a FormData object.
    *
    * @param {string} name – The name of the key you want to delete.
+   *
+   * @public
    */
   delete = name => void this.__contents.delete(name)
 
@@ -367,6 +398,8 @@ class FormData {
    *       is being applied to
    *
    * @param {any} [ctx = null]
+   *
+   * @public
    */
   forEach = (fn, ctx = null) => {
     for (const [name, value] of this) {
@@ -417,6 +450,8 @@ class FormData {
    * using async generators and for-await-of APIs
    *
    * @return {StreamIterator}
+   *
+   * @public
    */
   [Symbol.asyncIterator]() {
     return new StreamIterator(this.__stream)
