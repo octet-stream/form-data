@@ -96,18 +96,16 @@ class FormData {
 
     head.push(this.__carriage.repeat(2))
 
-    return Buffer.from(concat(head))
+    return concat(...head)
   }
 
   /**
    * @private
    */
   __getFooter = () => (
-    Buffer.from(
-      concat(
-        this.__dashes, this.__boundary,
-        this.__dashes, this.__carriage.repeat(2)
-      )
+    concat(
+      this.__dashes, this.__boundary,
+      this.__dashes, this.__carriage.repeat(2)
     )
   )
 
@@ -130,8 +128,10 @@ class FormData {
 
       const [name, {values, filename}] = curr.value
 
+      // Get field header
       yield this.__getHeader(name, filename)
 
+      // Get the field body
       for (const value of values) {
         if (isReadable(value)) {
           yield* new StreamIterator(value) // Read the stream contents
@@ -140,6 +140,7 @@ class FormData {
         }
       }
 
+      // Add trailing carriage
       yield this.__carriage
     }
   }
@@ -412,7 +413,7 @@ class FormData {
   }
 
   toJSON() {
-    return this.constructor.name
+    return `[object ${this.constructor.name}]`
   }
 
   inspect() {

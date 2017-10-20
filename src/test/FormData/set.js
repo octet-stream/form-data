@@ -105,6 +105,36 @@ test("Should correctly add a field with Buffer data", t => {
   t.true(actual.equals(phrase))
 })
 
+test("Should set given filename for a Buffer value", async t => {
+  t.plan(2)
+
+  const buffer = Buffer.from(
+    "I beat Twilight Sparkle and all I got was this lousy t-shirt"
+  )
+
+  const fd = new FormData()
+
+  fd.set("file", buffer, "note.txt")
+
+  const iterator = fd[Symbol.asyncIterator]()
+
+  const {value} = await iterator.next()
+
+  const [head, body] = String(value).split("\r\n\r\n")
+
+  t.is(
+    String(head),
+    `--${fd.boundary}\r\n` +
+    "Content-Disposition: form-data; name=\"file\"; filename=\"note.txt\"" +
+    "\r\nContent-Type: \"text/plain\""
+  )
+
+  t.is(
+    String(body),
+    "I beat Twilight Sparkle and all I got was this lousy t-shirt"
+  )
+})
+
 test(
   "Should throw a TypeError on field setting when the name is not a string",
   t => {
