@@ -8,16 +8,32 @@ import bind from "./util/bind"
 import concat from "./util/concat"
 import nextTick from "./util/nextTick"
 import boundary from "./util/boundary"
-
+import getType from "./util/getType"
 import isString from "./util/isString"
-
+import isObject from "./util/isObject"
 import isBuffer from "./util/isBuffer"
 import isReadable from "./util/isReadable"
 
 import StreamIterator from "./util/StreamIterator"
 
+const isArray = Array.isArray
+
+/**
+ * FormData implementation for Node.js environments.
+ * Bult over Readable stream and async generators.
+ * Can be useful for universavl (isomorphic) applications
+ * or in Node.js HTTP client that sending a data in multipart/form-data format.
+ *
+ * @api public
+ */
 class FormData {
-  constructor() {
+  /**
+   * @param {array} fields – an optional FormData initial fields.
+   *   Each initial field should be passed as an array with 3 elemtnts
+   *   as a collection of the objects with "name", "value" and "filename" props.
+   *   See the FormData#append for more info about the available format.
+   */
+  constructor(fields = null) {
     bind([
       Symbol.iterator, Symbol.asyncIterator,
       "toString", "toJSON", "inspect",
@@ -39,6 +55,10 @@ class FormData {
     const read = this.__read
 
     this.__stream = new Readable({read})
+
+    if (isArray(fields)) {
+      this.__appendFromInitialFields(fields)
+    }
   }
 
   /**
@@ -81,6 +101,8 @@ class FormData {
   )
 
   /**
+   * Get each field from internal Map
+   *
    * @private
    */
   async* __getField() {
@@ -135,30 +157,58 @@ class FormData {
   }
 
   /**
-   * Set a new filed to internal FormData Map object
+   * Append initial fields
    *
-   * @param {string} name
-   * @param {any} value
-   * @param {string} filename
-   * @param {boolean} append
+   * @param {array} fields
+   *
+   * @return {void}
+   */
+  __appendFromInitialFields = fields => {
+    for (let field of fields) {
+      // If the "field" is object, get its properties and reassign them as array
+      if (isObject(field)) {
+        field = [field.name, field.value, field.filename]
+      }
+
+      this.append(...field)
+    }
+  }
+
+  /**
+   * Appends a new value onto an existing key inside a FormData object,
+   * or adds the key if it does not already exist.
+   *
+   * @param {string} name – The name of the field whose data
+   *   is contained in value
+   *
+   * @param {any} value – The field value. You can pass any primitive type
+   *   (including null and undefined), Buffer or Readable stream.
+   *   Note that Arrays and Object will be converted to string
+   *   by using String function.
+   *
+   * @param {string} [filename = undefined] A filename of given field.
+   *   Can be added only for Buffer and Readable
    *
    * @return {void}
    */
   __setField(name, value, filename, append = false) {
     invariant(
       !isString(name), TypeError,
-      "Field name should be a string. Received %s", typeof name
+      "Field name should be a string. Received %s", getType(name)
     )
 
     invariant(
       filename && !isString(filename), TypeError,
-      "Filename should be a string (if passed). Received %s", typeof filename
+      "Filename should be a string (if passed). Received %s", getType(filename)
     )
 
     // Try to get a filename for buffer and Readable values
     if (isBuffer(value) && filename) {
       filename = basename(filename)
     } else if (isReadable(value) && (value.path || filename)) {
+      // Readable stream which created from fs.createReadStream
+      // have a "path" property. So, we can get a "filename"
+      // from the stream itself.
       filename = basename(value.path || filename)
     }
 
@@ -205,32 +255,62 @@ class FormData {
     return this.__stream
   }
 
+  /**
+   * Appends a new value onto an existing key inside a FormData object,
+   * or adds the key if it does not already exist.
+   *
+   * @param {string} name – The name of the field whose data
+   *   is contained in value
+   *
+   * @param {any} value – The field value. You can pass any primitive type
+   *   (including null and undefined), Buffer or Readable stream.
+   *   Note that Arrays and Object will be converted to string
+   *   by using String function.
+   *
+   * @param {string} [filename = undefined] A filename of given field.
+   *   Can be added only for Buffer and Readable
+   *
+   * @return {void}
+   */
   append = (name, value, filename) => this.__setField(name, value, filename, 1)
 
   /**
-   * Set new field on FormData
+   * Set a new value for an existing key inside FormData,
+   * or add the new field if it does not already exist.
    *
-   * @param {string} name – field name
-   * @param {any} value – field value
-   * @param {string} filename
+   * @param {string} name – The name of the field whose data
+   *   is contained in value
+   *
+   * @param {any} value – The field value. You can pass any primitive type
+   *   (including null and undefined), Buffer or Readable stream.
+   *   Note that Arrays and Object will be converted to string
+   *   by using String function.
+   *
+   * @param {string} [filename = undefined] A filename of given field.
+   *   Can be added only for Buffer and Readable
    *
    * @return {void}
    */
   set = (name, value, filename) => this.__setField(name, value, filename)
 
   /**
-   * Check if the value with given key exists
+   * Check if a field with the given name exists inside FormData.
    *
-   * @param {string} name – name of a value you are looking for
+   * @param {string} name – A name of the field you want to test for.
    *
    * @return {boolean}
    */
   has = name => this.__contents.has(name)
 
+  /**
+   * Returns the first value associated with the given name.
+   * Buffer and Readable values will be returned as-is.
+   *
+   * @param {string} name – A name of the value you want to retrieve.
+   */
   get = name => {
     const field = this.__contents.get(name)
 
-    // NOTE: This method should return only the first field value.
     // I should add this behaviour somehow
     if (!field) {
       return void 0
@@ -241,6 +321,12 @@ class FormData {
     return isBuffer(value) || isReadable(value) ? value : String(value)
   }
 
+  /**
+   * Returns all the values associated with
+   * a given key from within a FormData object.
+   *
+   * @param {string} name – A name of the value you want to retrieve.
+   */
   getAll = name => {
     const res = []
 
@@ -255,6 +341,11 @@ class FormData {
     return res
   }
 
+  /**
+   * Deletes a key and its value(s) from a FormData object.
+   *
+   * @param {string} name – The name of the key you want to delete.
+   */
   delete = name => void this.__contents.delete(name)
 
   pipe = (dest, options) => this.__stream.pipe(dest, options)
@@ -265,6 +356,18 @@ class FormData {
     return this
   }
 
+  /**
+   * Executes a given callback for each field of the FormData instance
+   *
+   * @param {function} fn – Function to execute for each element,
+   *   taking three arguments:
+   *     + {any} value – A value(s) of the current field.
+   *     + {string} – Name of the current field.
+   *     + {FormData} fd – The FormData instance that forEach
+   *       is being applied to
+   *
+   * @param {any} [ctx = null]
+   */
   forEach = (fn, ctx = null) => {
     for (const [name, value] of this) {
       fn.call(ctx, value, name, this)
@@ -311,7 +414,7 @@ class FormData {
 
   /**
    * This method allows to read a content from internal stream
-   * using async generators and for-await..of APIs
+   * using async generators and for-await-of APIs
    *
    * @return {StreamIterator}
    */
