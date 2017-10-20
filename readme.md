@@ -114,7 +114,7 @@ An alias of [FormData#entries](#entries---iterator)
 
 ##### `[Symbol.asyncIterator]() -> {asyncIterator}`
 
-Returns an async iterator which allows to read the data from internal Readable stream using.
+Returns an async iterator which allows to read the data from internal Readable stream using **for-await** syntax.
 Read the [async iteration proposal](https://github.com/tc39/proposal-async-iteration) for more info about async generator functions.
 
 ## Related packages
