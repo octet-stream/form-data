@@ -18,8 +18,8 @@
     "w": "yarn watch",
     "cleanup": "node_modules/.bin/rimraf lib test",
     "test": "node_modules/.bin/ava",
-    "coverage": "yarn make:ci && node_modules/.bin/nyc yarn test && yarn cleanup && yarn make",
-    "report": "yarn make:ci && node_modules/.bin/nyc yarn test && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup && yarn make",
+    "coverage": "yarn cleanup && yarn make:ci && node_modules/.bin/nyc yarn test && yarn cleanup && yarn make",
+    "report": "yarn cleanup && yarn make:ci && node_modules/.bin/nyc yarn test && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup && yarn make",
     "ci": "yarn make:ci && node_modules/.bin/nyc yarn test && node_modules/.bin/nyc report --reporter=lcov yarn test && node_modules/.bin/codecov && yarn cleanup && yarn make",
     "precommit": "yarn lint",
     "prepush": "yarn report"
