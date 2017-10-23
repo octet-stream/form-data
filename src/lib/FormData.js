@@ -428,9 +428,9 @@ class FormData {
 
   * entries() {
     for (const name of this.keys()) {
-      const value = this.getAll(name)
+      const values = this.getAll(name)
 
-      yield [name, value.length === 1 ? value[0] : value]
+      yield [name, values.length === 1 ? values[0] : values]
     }
   }
 
