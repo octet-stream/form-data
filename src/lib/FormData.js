@@ -426,19 +426,17 @@ class FormData {
     }
   }
 
-  * values() {
-    for (const name of this.keys()) {
-      const value = this.getAll(name)
-
-      yield value.length === 1 ? value[0] : value
-    }
-  }
-
   * entries() {
     for (const name of this.keys()) {
       const value = this.getAll(name)
 
       yield [name, value.length === 1 ? value[0] : value]
+    }
+  }
+
+  * values() {
+    for (const [, values] of this.entries()) {
+      yield values
     }
   }
 
