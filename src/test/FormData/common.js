@@ -118,7 +118,7 @@ test("Should correctly add a filed to FormData request body", async t => {
 
   fd.set("field", field)
 
-  const data = await read(fd)
+  const data = await read(fd.stream)
 
   const {body} = await req(server())
     .post("/")
@@ -137,7 +137,7 @@ test("Should correctly add a file to FormData request body", async t => {
 
   const file = await readFile("/usr/share/dict/words", "utf8")
 
-  const data = await read(fd)
+  const data = await read(fd.stream)
 
   const {body} = await req(server())
     .post("/")
@@ -162,7 +162,7 @@ test(
 
     const file = await readFile(__filename, "utf8")
 
-    const data = await read(fd)
+    const data = await read(fd.stream)
 
     const {body} = await req(server())
       .post("/")

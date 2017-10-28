@@ -380,13 +380,10 @@ class FormData {
    */
   delete = name => void this.__contents.delete(name)
 
+  /**
+   * An alias of FormData#stream.pipe
+   */
   pipe = (dest, options) => this.__stream.pipe(dest, options)
-
-  on = (name, fn) => {
-    this.__stream.on(name, fn)
-
-    return this
-  }
 
   /**
    * Executes a given callback for each field of the FormData instance
