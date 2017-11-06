@@ -218,7 +218,7 @@ class FormData {
       "Filename should be a string (if passed). Received %s", getType(filename)
     )
 
-    // Try to get a filename for buffer and Readable values
+    // Try to get a filename for Buffer and Readable values
     if (isBuffer(value) && filename) {
       filename = basename(filename)
     } else if (isReadable(value) && (value.path || filename)) {
@@ -226,6 +226,9 @@ class FormData {
       // have a "path" property. So, we can get a "filename"
       // from the stream itself.
       filename = basename(value.path || filename)
+    } else {
+      // The regular values shouldn't have "filename" property
+      filename = void 0
     }
 
     append = Boolean(append)
