@@ -3,6 +3,7 @@ cache: yarn
 node_js:
   - 7
   - 8
+  - 9
   - stable
 install:
   - yarn
