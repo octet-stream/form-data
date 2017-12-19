@@ -388,26 +388,6 @@ class FormData {
    */
   pipe = (dest, options) => this.__stream.pipe(dest, options)
 
-  /**
-   * Executes a given callback for each field of the FormData instance
-   *
-   * @param {function} fn – Function to execute for each element,
-   *   taking three arguments:
-   *     + {any} value – A value(s) of the current field.
-   *     + {string} – Name of the current field.
-   *     + {FormData} fd – The FormData instance that forEach
-   *       is being applied to
-   *
-   * @param {any} [ctx = null]
-   *
-   * @public
-   */
-  forEach = (fn, ctx = null) => {
-    for (const [name, value] of this) {
-      fn.call(ctx, value, name, this)
-    }
-  }
-
   toString() {
     return `[object ${this.constructor.name}]`
   }
@@ -435,8 +415,28 @@ class FormData {
   }
 
   * values() {
-    for (const [, values] of this.entries()) {
+    for (const [, values] of this) {
       yield values
+    }
+  }
+
+  /**
+   * Executes a given callback for each field of the FormData instance
+   *
+   * @param {function} fn – Function to execute for each element,
+   *   taking three arguments:
+   *     + {any} value – A value(s) of the current field.
+   *     + {string} – Name of the current field.
+   *     + {FormData} fd – The FormData instance that forEach
+   *       is being applied to
+   *
+   * @param {any} [ctx = null]
+   *
+   * @public
+   */
+  forEach = (fn, ctx = null) => {
+    for (const [name, value] of this) {
+      fn.call(ctx, value, name, this)
     }
   }
 
