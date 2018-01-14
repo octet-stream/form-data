@@ -1,6 +1,6 @@
 {
   "name": "formdata-node",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "FormData implementation for Node.js. Built over Readable stream and async generators.",
   "repository": "octet-stream/form-data",
   "author": "Nick K. <nick.kruchinin@gmail.com>",
