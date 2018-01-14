@@ -218,7 +218,7 @@ class FormData {
       "Filename should be a string (if passed). Received %s", getType(filename)
     )
 
-    // Try to get a filename for Buffer and Readable values
+    // Getting a filename for Buffer and Readable values
     if (isBuffer(value) && filename) {
       filename = basename(filename)
     } else if (isReadable(value) && (value.path || filename)) {
@@ -235,7 +235,7 @@ class FormData {
 
     const field = this.__contents.get(name)
 
-    // Set a new field
+    // Set a new field if given name is not exists
     if (!field) {
       return void this.__contents.set(name, {append, filename, values: [value]})
     }
