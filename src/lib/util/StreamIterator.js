@@ -66,7 +66,7 @@ class StreamIterator {
       // Ensure of a Readable ending
       if (this.__isEndState()) {
         return {
-          value: void 0,
+          value: undefined,
           done: true
         }
       }

@@ -7,8 +7,8 @@ coverage
 ..map
 .map
 
-src
-test
+/src
+/test
 yarn.lock
 .travis.yml
 .editorconfig

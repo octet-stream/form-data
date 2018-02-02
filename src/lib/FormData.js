@@ -228,7 +228,7 @@ class FormData {
       filename = basename(value.path || filename)
     } else {
       // The regular values shouldn't have "filename" property
-      filename = void 0
+      filename = undefined
     }
 
     append = Boolean(append)
@@ -344,7 +344,7 @@ class FormData {
 
     // I should add this behaviour somehow
     if (!field) {
-      return void 0
+      return undefined
     }
 
     const [value] = field.values
