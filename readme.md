@@ -1,6 +1,7 @@
 # FormData
 
 FormData implementation for Node.js. Built over Readable stream and async generators.
+Can be used to communicate between servers with multipart/form-data format.
 
 [![dependencies Status](https://david-dm.org/octet-stream/form-data/status.svg)](https://david-dm.org/octet-stream/form-data)
 [![devDependencies Status](https://david-dm.org/octet-stream/form-data/dev-status.svg)](https://david-dm.org/octet-stream/form-data?type=dev)
@@ -122,8 +123,10 @@ An alias of [FormData#entries](#entries---iterator)
 Returns an async iterator which allows to read the data from internal Readable stream using **for-await** syntax.
 Read the [async iteration proposal](https://github.com/tc39/proposal-async-iteration) for more info about async generator functions.
 
-## Related packages
+## Related links
 
-- [then-busboy](https://github.com/octet-stream/then-busboy) – Promise-based wrapper around Busboy.
-  Process multipart/form-data content and returns it as a single object.
-  Will be helpful to handle your data on the server-side applications.
+  - [then-busboy](https://github.com/octet-stream/then-busboy) is a promise-based wrapper around Busboy.
+    Process multipart/form-data content and returns it as a single object.
+    Will be helpful to handle your data on the server-side applications.
+  – [@octetstream/object-to-form-data](https://github.com/octet-stream/object-to-form-data) converts JavaScript object to FormData.
+  – [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) interface documentation on MDN

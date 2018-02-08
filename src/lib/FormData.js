@@ -21,8 +21,7 @@ const isArray = Array.isArray
 /**
  * FormData implementation for Node.js environments.
  * Bult over Readable stream and async generators.
- * Can be useful for universavl (isomorphic) applications
- * or in Node.js HTTP client that sending a data in multipart/form-data format.
+ * Can be used to communicate between servers with multipart/form-data format.
  *
  * @api public
  */

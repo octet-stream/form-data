@@ -1,7 +1,7 @@
 {
   "name": "formdata-node",
   "version": "0.3.3",
-  "description": "FormData implementation for Node.js. Built over Readable stream and async generators.",
+  "description": "FormData implementation for Node.js. Built over Readable stream and async generators. Can be used to communicate between servers with multipart/form-data format.",
   "repository": "octet-stream/form-data",
   "keywords": [
     "form-data",
