@@ -128,5 +128,5 @@ Read the [async iteration proposal](https://github.com/tc39/proposal-async-itera
   - [then-busboy](https://github.com/octet-stream/then-busboy) is a promise-based wrapper around Busboy.
     Process multipart/form-data content and returns it as a single object.
     Will be helpful to handle your data on the server-side applications.
-  – [@octetstream/object-to-form-data](https://github.com/octet-stream/object-to-form-data) converts JavaScript object to FormData.
-  – [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) interface documentation on MDN
+  - [@octetstream/object-to-form-data](https://github.com/octet-stream/object-to-form-data) converts JavaScript object to FormData.
+  - [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) interface documentation on MDN
