@@ -45,7 +45,6 @@ class FormData {
     this.__dashes = "--"
     this.__boundary = concat("NodeJSFormDataStream", boundary())
 
-
     this.__contents = new Map()
     this.__entries = this.__contents.entries()
 
