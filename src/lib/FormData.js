@@ -340,7 +340,6 @@ class FormData {
   get = name => {
     const field = this.__contents.get(name)
 
-    // I should add this behaviour somehow
     if (!field) {
       return undefined
     }

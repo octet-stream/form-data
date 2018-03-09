@@ -4,7 +4,7 @@ node_js:
   - 7
   - 8
   - 9
-  - stable
+  - node
 install:
   - yarn
 script:
