@@ -150,7 +150,7 @@ test("Should correctly add a file to FormData request body", async t => {
 test(
   "Should correctly add field AND file together to FormData request body",
   async t => {
-    t.plan(1)
+    t.plan(2)
 
     const fd = new FormData()
 
@@ -160,7 +160,7 @@ test(
 
     fd.set("file", createReadStream(__filename))
 
-    const file = await readFile(__filename, "utf8")
+    const expectedFile = await readFile(__filename)
 
     const data = await read(fd.stream)
 
@@ -169,7 +169,8 @@ test(
       .set("content-type", `multipart/form-data; boundary=${fd.boundary}`)
       .send(data)
 
-    t.deepEqual(body, {field, file})
+    t.is(body.field, field)
+    t.true(Buffer.from(body.file).equals(expectedFile))
   }
 )
 

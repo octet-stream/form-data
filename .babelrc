@@ -1,10 +1,12 @@
 {
   "plugins": [
     "@babel/transform-runtime",
-    "@babel/transform-modules-commonjs",
     "@babel/proposal-decorators",
     "@babel/proposal-class-properties",
     "@babel/transform-async-to-generator",
     "@babel/proposal-async-generator-functions",
+    ["@babel/transform-modules-commonjs", {
+      "mjsStrictNamespace": false
+    }]
   ]
 }
