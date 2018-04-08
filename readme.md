@@ -22,6 +22,37 @@ Or with yarn:
 yarn add formdata-node
 ```
 
+## Usage
+
+FormData instance have `.pipe()` and `.[Symbol.asyncIterator]()` methods
+to get an access to the internal Readable stream. You also can get the stream
+from `FormData#stream` getter.
+
+You can send queries via HTTP clients that supports headers setting
+and Readable stream as POST body.
+
+Let's take a look at minimal example with [got](https://github.com/sindresorhus/got):
+
+```js
+import FormData from "formdata-node"
+import got from "got"
+
+const fd = new FormData()
+
+const options = {
+  body: fd.stream, // Set FormData instance internal stream as request
+  headers: {
+    // Assign required headers to the request manually.
+    // We need to set a content type and boundary.
+    "content-type": `multipart/form-data; boundary=${fd.boundary}`
+  }
+}
+
+got.post("http://example.com", options)
+  .then(res => console.log("Res: ", res.body))
+  .catch(err => console.error("Error: ", err))
+```
+
 ## API
 
 ### `constructor FormData([fields])`
