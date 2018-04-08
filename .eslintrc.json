@@ -2,6 +2,13 @@
   "env": {
     "browser": true
   },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".mjs"]
+      }
+    }
+  },
   "plugins": [
     "ava"
   ],

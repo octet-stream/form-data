@@ -7,5 +7,5 @@ coverage
 ..map
 .map
 
-lib/**/*.js
-test/**/*.js
+/lib
+/test
