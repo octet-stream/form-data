@@ -43,7 +43,7 @@ class FormData {
     this.__defaultContentType = "application/octet-steam"
 
     this.__dashes = "--"
-    this.__boundary = concat("NodeJSFormDataStream", boundary())
+    this.__boundary = concat(["NodeJSFormDataStream", boundary()])
 
     this.__contents = new Map()
     this.__entries = this.__contents.entries()
@@ -94,18 +94,16 @@ class FormData {
 
     head.push(this.__carriage.repeat(2))
 
-    return concat(...head)
+    return concat(head)
   }
 
   /**
    * @private
    */
-  __getFooter = () => (
-    concat(
-      this.__dashes, this.__boundary,
-      this.__dashes, this.__carriage.repeat(2)
-    )
-  )
+  __getFooter = () => concat([
+    this.__dashes, this.__boundary,
+    this.__dashes, this.__carriage.repeat(2)
+  ])
 
   /**
    * Get each field from internal Map
@@ -132,7 +130,7 @@ class FormData {
       // Get the field body
       for (const value of values) {
         if (isReadable(value)) {
-          yield* new StreamIterator(value) // Read the stream contents
+          yield* new StreamIterator(value) // Read the stream content
         } else {
           yield value
         }
@@ -151,14 +149,12 @@ class FormData {
    * @private
    */
   __read = () => {
-    const onFulfilled = curr => {
-      if (curr.done) {
+    const onFulfilled = ({done, value}) => {
+      if (done) {
         return this.__stream.push(null)
       }
 
-      const chunk = curr.value
-
-      this.__stream.push(isBuffer(chunk) ? chunk : Buffer.from(String(chunk)))
+      this.__stream.push(isBuffer(value) ? value : Buffer.from(String(value)))
     }
 
     const onRejected = err => this.__stream.emit("error", err)
@@ -245,7 +241,7 @@ class FormData {
 
     // Do nothing if the field has been created from .set()
     if (!field.append) {
-      return
+      return undefined
     }
 
     // Append a new value to the existing field
