@@ -39,8 +39,10 @@ import got from "got"
 
 const fd = new FormData()
 
+fd.set("greeting", "Hello, World!")
+
 const options = {
-  body: fd.stream, // Set FormData instance internal stream as request body
+  body: fd.stream, // Set internal stream as request body
   headers: {
     // Assign required headers to the request manually.
     // We need to set a content type and boundary.
