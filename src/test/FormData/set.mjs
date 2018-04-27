@@ -122,11 +122,12 @@ test(
 
     const {value} = await iterator.next()
 
-    t.is(
-      String(value),
-      `--${fd.boundary}\r\n` +
-      "Content-Disposition: form-data; name=\"file\"; filename=\"note.txt\"" +
-      "\r\nContent-Type: \"text/plain\"\r\n\r\n"
+    t.true(
+      String(value).startsWith(
+        `--${fd.boundary}\r\n` +
+        "Content-Disposition: form-data; name=\"file\"; filename=\"note.txt\"" +
+        "\r\nContent-Type: \"text/plain\"\r\n\r\n"
+      )
     )
   }
 )

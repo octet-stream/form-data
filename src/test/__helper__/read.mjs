@@ -1,13 +1,19 @@
 const read = stream => new Promise((resolve, reject) => {
-  const chunks = []
+  const contents = []
 
-  const onData = chunk => void chunks.push(chunk)
+  const onData = () => {
+    const chunk = stream.read()
 
-  const onEnd = () => void resolve(Buffer.concat(chunks))
+    if (chunk != null) {
+      contents.push(chunk)
+    }
+  }
+
+  const onEnd = () => void resolve(Buffer.concat(contents))
 
   stream
     .on("error", reject)
-    .on("data", onData)
+    .on("readable", onData)
     .on("end", onEnd)
 })
 
