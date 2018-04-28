@@ -170,7 +170,9 @@ test(
       .send(data)
 
     t.is(body.field, field)
-    t.true(Buffer.from(body.file).equals(expectedFile))
+
+    // I don't now why, but sometimes test fails here because file is empty -_-
+    t.is(body.file, String(expectedFile))
   }
 )
 

@@ -1,7 +1,9 @@
 {
   "plugins": [
     "@babel/transform-runtime",
-    "@babel/proposal-decorators",
+    ["@babel/proposal-decorators", {
+      "legacy": true
+    }],
     "@babel/proposal-class-properties",
     "@babel/transform-async-to-generator",
     "@babel/proposal-async-generator-functions",
