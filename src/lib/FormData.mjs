@@ -13,7 +13,7 @@ import isString from "./util/isString"
 import isObject from "./util/isObject"
 import isBuffer from "./util/isBuffer"
 import isReadable from "./util/isReadable"
-// import isFunction from "./util/isFunction"
+import isFunction from "./util/isFunction"
 
 import StreamIterator from "./util/StreamIterator"
 
@@ -131,12 +131,16 @@ class FormData {
       // Get the field body
       for (const value of values) {
         if (isReadable(value)) {
+          // TODO:
+          // Node.js 10 allows to use Symbol.asyncIterator directly from
+          // Readable, but the feature is experimental.
+          // Uncomment it after stabilization
+          // yield* isFunction(value[Symbol.asyncIterator])
+          //   ? value
+          //   : new StreamIterator(value)
+
           // Read the stream content
           yield* new StreamIterator(value)
-
-          // yield* isFunction(value[Symbol.asyncIterator])
-          //   ? value[Symbol.asyncIterator]
-          //   : new StreamIterator(value)
         } else {
           yield value
         }
