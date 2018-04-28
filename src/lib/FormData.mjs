@@ -13,7 +13,7 @@ import isString from "./util/isString"
 import isObject from "./util/isObject"
 import isBuffer from "./util/isBuffer"
 import isReadable from "./util/isReadable"
-import isFunction from "./util/isFunction"
+// import isFunction from "./util/isFunction"
 
 import StreamIterator from "./util/StreamIterator"
 
