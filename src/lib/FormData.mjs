@@ -29,8 +29,8 @@ const isArray = Array.isArray
 class FormData {
   /**
    * @param {array} fields – an optional FormData initial fields.
-   *   Each initial field should be passed as an array with 3 elemtnts
-   *   as a collection of the objects with "name", "value" and "filename" props.
+   *   Each initial field should be passed as a collection of the objects
+   *   with "name", "value" and "filename" props.
    *   See the FormData#append for more info about the available format.
    */
   constructor(fields = null) {
@@ -125,10 +125,10 @@ class FormData {
 
       const [name, {values, filename}] = curr.value
 
-      // Get field header
+      // Set field header
       yield this.__getHeader(name, filename)
 
-      // Get the field body
+      // Set the field body
       for (const value of values) {
         if (isReadable(value)) {
           // TODO:
@@ -182,13 +182,10 @@ class FormData {
    * @private
    */
   __appendFromInitialFields = fields => {
-    for (let field of fields) {
-      // If the "field" is object, get its properties and reassign them as array
+    for (const field of fields) {
       if (isObject(field)) {
-        field = [field.name, field.value, field.filename]
+        this.append(field.name, field.value, field.filename)
       }
-
-      this.append(...field)
     }
   }
 

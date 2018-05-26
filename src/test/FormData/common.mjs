@@ -73,21 +73,6 @@ test("Should have no fields by default", t => {
   t.is(count(fd), 0)
 })
 
-test("Should add initial fields from an array", t => {
-  t.plan(3)
-
-  const fields = [
-    ["nick", "Rarara"],
-    ["eyes", "blue"]
-  ]
-
-  const fd = new FormData(fields)
-
-  t.is(count(fd), 2)
-  t.is(fd.get("nick"), "Rarara")
-  t.is(fd.get("eyes"), "blue")
-})
-
 test("Should add initial fields from a collection", t => {
   t.plan(3)
 
