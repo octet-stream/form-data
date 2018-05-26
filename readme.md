@@ -13,7 +13,7 @@ Can be used to communicate between servers with multipart/form-data format.
 You can install this package from npm:
 
 ```
-npm install --save formdata-node
+npm install formdata-node
 ```
 
 Or with yarn:
@@ -28,8 +28,7 @@ FormData instance have `.pipe()` and `.[Symbol.asyncIterator]()` methods
 to get an access to the internal Readable stream. You can also get the stream
 from `FormData#stream` getter.
 
-You can send queries via HTTP clients that supports headers setting
-and Readable stream as POST body.
+You can send queries via HTTP clients that supports headers setting Readable stream as body.
 
 Let's take a look at minimal example with [got](https://github.com/sindresorhus/got):
 
@@ -153,8 +152,8 @@ An alias of [FormData#entries](#entries---iterator)
 
 ##### `[Symbol.asyncIterator]() -> {asyncIterator}`
 
-Returns an async iterator which allows to read the data from internal Readable stream using **for-await** syntax.
-Read the [async iteration proposal](https://github.com/tc39/proposal-async-iteration) for more info about async generator functions.
+Returns an async iterator allowing to read a data from internal Readable stream using **for-await** syntax.
+Read the [async iteration proposal](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
 
 ## Related links
 
