@@ -12,7 +12,7 @@ import boundary from "../../lib/util/boundary"
 import FormData from "../../lib/FormData"
 
 import count from "../__helper__/count"
-import read from "../__helper__/read"
+import read from "../__helper__/readFormData"
 import server from "../__helper__/server"
 
 test("The stream accessor should return Readable stream", t => {
@@ -118,14 +118,14 @@ test("Should correctly add a filed to FormData request body", async t => {
 
   fd.set("field", field)
 
-  const data = await read(fd.stream)
+  const data = await read(fd)
 
   const {body} = await req(server())
     .post("/")
     .set("content-type", `multipart/form-data; boundary=${fd.boundary}`)
     .send(data)
 
-  t.deepEqual(body, {field})
+  t.is(body.field, field)
 })
 
 test("Should correctly add a file to FormData request body", async t => {
@@ -135,16 +135,16 @@ test("Should correctly add a file to FormData request body", async t => {
 
   fd.set("file", createReadStream("/usr/share/dict/words"))
 
-  const file = await readFile("/usr/share/dict/words", "utf8")
+  const file = String(await readFile("/usr/share/dict/words"))
 
-  const data = await read(fd.stream)
+  const data = await read(fd)
 
   const {body} = await req(server())
     .post("/")
     .set("content-type", `multipart/form-data; boundary=${fd.boundary}`)
     .send(data)
 
-  t.deepEqual(body, {file})
+  t.is(body.file, String(file))
 })
 
 test(
@@ -162,7 +162,7 @@ test(
 
     const expectedFile = await readFile(__filename)
 
-    const data = await read(fd.stream)
+    const data = await read(fd)
 
     const {body} = await req(server())
       .post("/")

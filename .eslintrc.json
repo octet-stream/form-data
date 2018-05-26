@@ -17,8 +17,6 @@
     "plugin:ava/recommended"
   ],
   "rules": {
-    "no-void": 0,
-
     "import/no-unresolved": "error",
 
     "ava/no-ignored-test-files": ["error", {

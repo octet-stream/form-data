@@ -13,7 +13,7 @@ test("Should set a primitive value", t => {
   fd.set("null", null)
   fd.set("number", 3310)
   fd.set("string", "string")
-  fd.set("undefined", void 0)
+  fd.set("undefined", undefined)
 
   // All returned values should be stringified by String() call
   t.is(fd.get("null"), "null")

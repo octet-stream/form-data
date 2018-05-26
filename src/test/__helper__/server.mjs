@@ -37,7 +37,7 @@ const server = () => createServer((req, res) => {
     res.end(String(err))
   }
 
-  busboy(req).then(onData).then(onFulfilled, onRejected)
+  busboy(req).then(onData).then(onFulfilled).catch(onRejected)
 })
 
 export default server

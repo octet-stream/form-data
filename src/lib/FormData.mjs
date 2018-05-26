@@ -169,7 +169,7 @@ class FormData {
 
     const onRejected = err => this.__stream.emit("error", err)
 
-    this.__curr.next().then(onFulfilled, onRejected)
+    this.__curr.next().then(onFulfilled).catch(onRejected)
   }
 
   /**

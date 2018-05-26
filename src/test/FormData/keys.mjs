@@ -11,7 +11,7 @@ test("Should be done on the first call when FormData have no fields", t => {
 
   t.deepEqual(curr, {
     done: true,
-    value: void 0
+    value: undefined
   })
 })
 

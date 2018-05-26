@@ -13,7 +13,7 @@ test("Should return \"undefined\" on getting nonexistent field", t => {
 
   const fd = new FormData()
 
-  t.is(fd.get("nope"), void 0)
+  t.is(fd.get("nope"), undefined)
 })
 
 test("Should return a value of the existing field by given name", t => {
