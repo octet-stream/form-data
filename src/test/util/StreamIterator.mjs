@@ -4,6 +4,8 @@ import test from "ava"
 
 import {createReadStream, readFile} from "promise-fs"
 
+import read from "../__helper__/readStreamWithAsyncIterator"
+
 import StreamIterator from "../../lib/util/StreamIterator"
 
 test("Should have a \"next\" method", t => {
@@ -63,11 +65,11 @@ test("Should return correctly object on stream ending", async t => {
 
   t.deepEqual(actual, {
     done: true,
-    value: void 0
+    value: undefined
   })
 })
 
-test("Should correctly reat a content from the stream", async t => {
+test("Should correctly read a content from the stream", async t => {
   const iterator = new StreamIterator(createReadStream("/usr/share/dict/words"))
 
   const chunks = []
@@ -80,4 +82,23 @@ test("Should correctly reat a content from the stream", async t => {
   const actual = Buffer.concat(chunks)
 
   t.true(actual.equals(expected))
+})
+
+test("Should throw an error from strem event", async t => {
+  t.plan(1)
+
+  const stream = createReadStream("/usr/share/dict/words")
+
+  const trap = () => {
+    const iterator = new StreamIterator(stream)
+
+    stream.emit("error", new Error("Just an error."))
+
+    const foo = read(iterator)
+
+    return foo
+  }
+
+
+  await t.throws(trap(), "Just an error.")
 })

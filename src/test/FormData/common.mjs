@@ -12,7 +12,7 @@ import boundary from "../../lib/util/boundary"
 import FormData from "../../lib/FormData"
 
 import count from "../__helper__/count"
-import read from "../__helper__/readFormData"
+import read from "../__helper__/readStreamWithAsyncIterator"
 import server from "../__helper__/server"
 
 test("The stream accessor should return Readable stream", t => {
@@ -175,4 +175,3 @@ test(
     t.is(body.file, String(expectedFile))
   }
 )
-

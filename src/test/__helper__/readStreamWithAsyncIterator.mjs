@@ -1,4 +1,4 @@
-async function readFormData(fd) {
+async function readStreamWithAsyncIterator(fd) {
   const contents = []
 
   for await (const chunk of fd) {
@@ -8,4 +8,4 @@ async function readFormData(fd) {
   return Buffer.concat(contents)
 }
 
-export default readFormData
+export default readStreamWithAsyncIterator
