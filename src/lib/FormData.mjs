@@ -117,10 +117,9 @@ class FormData {
 
       const curr = this.__entries.next()
 
+      // Send a footer when iterator ends
       if (curr.done === true) {
-        yield this.__getFooter()
-
-        return
+        return this.__getFooter()
       }
 
       const [name, {values, filename}] = curr.value
@@ -160,11 +159,11 @@ class FormData {
    */
   __read = () => {
     const onFulfilled = ({done, value}) => {
-      if (done) {
-        return this.__stream.push(null)
-      }
-
       this.__stream.push(isBuffer(value) ? value : Buffer.from(String(value)))
+
+      if (done) {
+        this.__stream.push(null)
+      }
     }
 
     const onRejected = err => this.__stream.emit("error", err)
