@@ -106,7 +106,7 @@ Returns the first value associated with the given name.
 
   - **{string}** name – A name of the value you want to retrieve.
 
-##### `getAll(name) -> {string[] | Buffer[] | stream.Readable[]}`
+##### `getAll(name) -> {Array<string | Buffer | stream.Readable>}`
 
 Returns all the values associated with a given key from within a **FormData** object.
 
