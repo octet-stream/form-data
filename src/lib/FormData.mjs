@@ -6,7 +6,6 @@ import mimes from "mime-types"
 
 import bind from "./util/bind"
 import concat from "./util/concat"
-import nextTick from "./util/nextTick"
 import boundary from "./util/boundary"
 import getType from "./util/getType"
 import isString from "./util/isString"
@@ -113,8 +112,6 @@ class FormData {
    */
   async* __getField() {
     while (true) {
-      await nextTick()
-
       const curr = this.__entries.next()
 
       // Send a footer when iterator ends
