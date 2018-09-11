@@ -17,7 +17,7 @@
     "plugin:ava/recommended"
   ],
   "rules": {
-    "operator-linebreak": ["error", "after", {
+    "operator-linebreak": ["error", "before", {
       "overrides": {
         "+": "ignore"
       }
