@@ -1,4 +1,5 @@
 import {Readable} from "stream"
+import {join} from "path"
 
 import test from "ava"
 
@@ -14,6 +15,8 @@ import FormData from "../../lib/FormData"
 import count from "../__helper__/count"
 import read from "../__helper__/readStreamWithAsyncIterator"
 import server from "../__helper__/server"
+
+const path = join(__dirname, "..", "..", "package.json")
 
 test("The stream accessor should return Readable stream", t => {
   t.plan(1)
@@ -143,9 +146,9 @@ test(
 
     fd.set("field", field)
 
-    fd.set("file", createReadStream(__filename))
+    fd.set("file", createReadStream(path))
 
-    const expectedFile = await readFile(__filename)
+    const expectedFile = await readFile(path)
 
     const data = await read(fd)
 

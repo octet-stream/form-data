@@ -1,10 +1,13 @@
 import {createReadStream, readFile} from "promise-fs"
+import {join} from "path"
 
 import test from "ava"
 
 import FormData from "../../lib/FormData"
 
 const isArray = Array.isArray
+
+const path = join(__dirname, "..", "..", "package.json")
 
 test(
   "Should always return an array, even if the FormData have no fileds",
@@ -32,7 +35,7 @@ test("Should return an array with non-stringified Readable", t => {
 
   const fd = new FormData()
 
-  const stream = createReadStream(__filename)
+  const stream = createReadStream(path)
 
   fd.set("stream", stream)
 
@@ -47,7 +50,7 @@ test("Should return an array with non-stringified Buffer", async t => {
 
   const fd = new FormData()
 
-  const buffer = await readFile(__filename)
+  const buffer = await readFile(path)
 
   fd.set("buffer", buffer)
 

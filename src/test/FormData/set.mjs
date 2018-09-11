@@ -1,9 +1,12 @@
 import {createReadStream} from "fs"
 import {Readable} from "stream"
+import {join} from "path"
 
 import test from "ava"
 
 import FormData from "../../lib/FormData"
+
+const path = join(__dirname, "..", "..", "package.json")
 
 test("Should set a primitive value", t => {
   t.plan(4)
@@ -79,7 +82,7 @@ test("Should set a Readable stream", t => {
 
   const fd = new FormData()
 
-  fd.set("stream", createReadStream(__filename))
+  fd.set("stream", createReadStream(path))
 
   t.true(fd.get("stream") instanceof Readable)
 })

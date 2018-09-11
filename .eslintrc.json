@@ -17,6 +17,12 @@
     "plugin:ava/recommended"
   ],
   "rules": {
+    "operator-linebreak": ["error", "after", {
+      "overrides": {
+        "+": "ignore"
+      }
+    }],
+
     "import/no-unresolved": "error",
 
     "ava/no-ignored-test-files": ["error", {

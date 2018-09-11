@@ -1,4 +1,5 @@
 import {Readable} from "stream"
+import {join} from "path"
 
 import test from "ava"
 
@@ -8,10 +9,12 @@ import read from "../__helper__/readStreamWithAsyncIterator"
 
 import StreamIterator from "../../lib/util/StreamIterator"
 
+const path = join(__dirname, "..", "..", "package.json")
+
 test("Should have a \"next\" method", t => {
   t.plan(1)
 
-  const iterator = new StreamIterator(createReadStream(__filename))
+  const iterator = new StreamIterator(createReadStream(path))
 
   t.is(typeof iterator.next, "function")
 })
