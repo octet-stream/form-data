@@ -152,14 +152,14 @@ test(
 
     const data = await read(fd)
 
-    const {body} = await req(server())
+    const res = await req(server())
       .post("/")
       .set("content-type", `multipart/form-data; boundary=${fd.boundary}`)
       .send(data)
 
-    t.is(body.field, field)
+    t.is(res.body.field, field)
 
     // I don't now why, but sometimes test fails here because file is empty -_-
-    t.is(body.file, String(expectedFile))
+    t.is(res.body.file, String(expectedFile))
   }
 )
