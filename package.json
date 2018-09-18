@@ -13,7 +13,7 @@
   "license": "MIT",
   "main": "lib/FormData.js",
   "engines": {
-    "node": ">=7.6"
+    "node": ">= 8"
   },
   "scripts": {
     "lint": "node_modules/.bin/eslint src",
