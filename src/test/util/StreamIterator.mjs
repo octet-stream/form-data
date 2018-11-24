@@ -97,9 +97,7 @@ test("Should throw an error from strem event", async t => {
 
     stream.emit("error", new Error("Just an error."))
 
-    const foo = read(iterator)
-
-    return foo
+    return read(iterator)
   }
 
 
