@@ -116,7 +116,14 @@ class FormData {
 
       // Send a footer when iterator ends
       if (curr.done === true) {
-        return this.__getFooter()
+        yield this.__getFooter()
+
+        // In some cases I can't just return footer to stop iterator,
+        // so this might help.
+        // According to tests, it happens only Node 8.x
+        // eslint-disable-next-line max-len
+        // @see: https://travis-ci.org/octet-stream/apollo-link-form-data/jobs/465480482#L485-L490
+        return
       }
 
       const [name, {values, filename}] = curr.value
@@ -150,11 +157,11 @@ class FormData {
    */
   __read = () => {
     const onFulfilled = ({done, value}) => {
-      this.__stream.push(isBuffer(value) ? value : Buffer.from(String(value)))
-
       if (done) {
-        this.__stream.push(null)
+        return this.__stream.push(null)
       }
+
+      this.__stream.push(isBuffer(value) ? value : Buffer.from(String(value)))
     }
 
     const onRejected = err => this.__stream.emit("error", err)
