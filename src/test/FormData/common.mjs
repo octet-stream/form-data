@@ -26,7 +26,7 @@ test("The stream accessor should return Readable stream", t => {
   t.true(fd.stream instanceof Readable)
 })
 
-test("Boundary accessor should return a correct string", t => {
+test("Boundary accessor should return a correct value", t => {
   t.plan(1)
 
   const spyondary = spy(boundary)
@@ -42,6 +42,31 @@ test("Boundary accessor should return a correct string", t => {
   const actual = fd.boundary
 
   t.is(actual, `NodeJSFormDataStream${spyondary.lastCall.returnValue}`)
+})
+
+test("Should return a correct headers", t => {
+  t.plan(1)
+
+  const spyondary = spy(boundary)
+
+  const MockedFD = pq("../../lib/FormData", {
+    "./util/boundary": {
+      default: spyondary
+    }
+  }).default
+
+  const fd = new MockedFD()
+
+  const actual = fd.headers
+
+  const expected = {
+    "content-type": (
+      "multipart/form-data; boundary=" +
+      `NodeJSFormDataStream${spyondary.lastCall.returnValue}`
+    )
+  }
+
+  t.deepEqual(actual, expected)
 })
 
 test("Should return a correct string on .toString() convertation", t => {
@@ -146,15 +171,15 @@ test(
 
     fd.set("field", field)
 
-    fd.set("file", createReadStream(path))
+    fd.set("file", createReadStream("/usr/share/dict/words"))
 
-    const expectedFile = await readFile(path)
+    const expectedFile = await readFile("/usr/share/dict/words")
 
     const data = await read(fd)
 
     const res = await req(server())
       .post("/")
-      .set("content-type", `multipart/form-data; boundary=${fd.boundary}`)
+      .set("content-type", fd.headers["content-type"])
       .send(data)
 
     t.is(res.body.field, field)

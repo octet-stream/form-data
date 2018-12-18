@@ -231,6 +231,10 @@ class FormData {
 
     append = Boolean(append)
 
+    if (!(isReadable(value) || isBuffer(value))) {
+      value = String(value)
+    }
+
     const field = this.__contents.get(name)
 
     // Set a new field if given name is not exists
@@ -263,6 +267,17 @@ class FormData {
    */
   get boundary() {
     return this.__boundary
+  }
+
+  /**
+   * Returns headers for multipart/form-data
+   */
+  get headers() {
+    return {
+      "content-type": concat([
+        "multipart/form-data; ", "boundary=", this.boundary
+      ])
+    }
   }
 
   /**
@@ -344,9 +359,7 @@ class FormData {
       return undefined
     }
 
-    const [value] = field.values
-
-    return isBuffer(value) || isReadable(value) ? value : String(value)
+    return field.values[0]
   }
 
   /**
@@ -364,7 +377,7 @@ class FormData {
 
     if (field) {
       for (const value of field.values) {
-        res.push(isBuffer(value) || isReadable(value) ? value : String(value))
+        res.push(value)
       }
     }
 
@@ -386,15 +399,19 @@ class FormData {
   pipe = (dest, options) => this.__stream.pipe(dest, options)
 
   toString() {
-    return `[object ${this.constructor.name}]`
+    return "[object FormData]"
   }
 
   toJSON() {
-    return `[object ${this.constructor.name}]`
+    return "[object FormData]"
   }
 
   inspect() {
-    return this.constructor.name
+    return "FormData"
+  }
+
+  get [Symbol.toStringTag]() {
+    return "FormData"
   }
 
   * keys() {
