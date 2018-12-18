@@ -10,9 +10,12 @@ coverage
 
 /src
 /test
+
 yarn.lock
 .travis.yml
 .editorconfig
+.huskyrc.json
+.lintstagedrc
 .babelrc
 .babelrc.*
 .exlintrc
