@@ -27,6 +27,20 @@ const isArray = Array.isArray
  */
 class FormData {
   /**
+   * Check if given value is instance of FormData
+   * Note: This method is not a part of client-side FormData interface.
+   *
+   * @param {any} value
+   *
+   * @return {boolean}
+   *
+   * @public
+   */
+  static isFormData(value) {
+    return value instanceof FormData
+  }
+
+  /**
    * @param {array} fields – an optional FormData initial fields.
    *   Each initial field should be passed as a collection of the objects
    *   with "name", "value" and "filename" props.
@@ -57,20 +71,6 @@ class FormData {
     if (isArray(fields)) {
       this.__appendFromInitialFields(fields)
     }
-  }
-
-  /**
-   * Check if given value is instance of FormData
-   * Note: This method is not a part of client-side FormData interface.
-   *
-   * @param {any} value
-   *
-   * @return {boolean}
-   *
-   * @public
-   */
-  static isFormData(value) {
-    return value instanceof FormData
   }
 
   /**
