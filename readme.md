@@ -46,6 +46,9 @@ const options = {
     // Assign required headers to the request manually.
     // We need to set a content type and boundary.
     "content-type": `multipart/form-data; boundary=${fd.boundary}`
+    // Or you can use FormData#headers to get an object with content-type
+    // header, like this: ...fd.headers
+    // this will be equivalent of code from above
   }
 }
 
@@ -74,6 +77,10 @@ Returns a boundary string of the current FormData instance.
 ##### `get stream() -> {stream.Readable}`
 
 Returns an internal Readable stream.
+
+##### `get headers() -> {object}`
+
+Returns object with `content-type` header
 
 #### Instance methods
 
