@@ -16,8 +16,6 @@ import count from "../__helper__/count"
 import read from "../__helper__/readStreamWithAsyncIterator"
 import server from "../__helper__/server"
 
-const path = join(__dirname, "..", "..", "package.json")
-
 test("The stream accessor should return Readable stream", t => {
   t.plan(1)
 
@@ -75,14 +73,6 @@ test("Should return a correct string on .toString() convertation", t => {
   const fd = new FormData()
 
   t.is(String(fd), "[object FormData]")
-})
-
-test("Should return a correct string on .toJSON() convertation", t => {
-  t.plan(1)
-
-  const fd = new FormData()
-
-  t.is(JSON.stringify({fd}), "{\"fd\":\"[object FormData]\"}")
 })
 
 test("Should return a correct string on .inspect() call", t => {

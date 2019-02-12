@@ -49,7 +49,7 @@ class FormData {
   constructor(fields = null) {
     bind([
       Symbol.iterator, Symbol.asyncIterator,
-      "toString", "toJSON", "inspect",
+      "toString", "inspect",
       "keys", "values", "entries"
     ], this)
 
@@ -399,10 +399,6 @@ class FormData {
   pipe = (dest, options) => this.__stream.pipe(dest, options)
 
   toString() {
-    return "[object FormData]"
-  }
-
-  toJSON() {
     return "[object FormData]"
   }
 
