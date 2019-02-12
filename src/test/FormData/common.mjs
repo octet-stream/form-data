@@ -5,7 +5,7 @@ import test from "ava"
 import pq from "proxyquire"
 import req from "supertest"
 
-import {spy} from "sinon"
+import sinon from "sinon"
 import {createReadStream, readFile} from "promise-fs"
 
 import boundary from "../../lib/util/boundary"
@@ -26,7 +26,7 @@ test("The stream accessor should return Readable stream", t => {
 test("Boundary accessor should return a correct value", t => {
   t.plan(1)
 
-  const spyondary = spy(boundary)
+  const spyondary = sinon.spy(boundary)
 
   const MockedFD = pq("../../lib/FormData", {
     "./util/boundary": {
@@ -44,7 +44,7 @@ test("Boundary accessor should return a correct value", t => {
 test("Should return a correct headers", t => {
   t.plan(1)
 
-  const spyondary = spy(boundary)
+  const spyondary = sinon.spy(boundary)
 
   const MockedFD = pq("../../lib/FormData", {
     "./util/boundary": {
