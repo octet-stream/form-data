@@ -11,14 +11,16 @@
   ],
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
-  "main": "lib/FormData.js",
+  "main": "lib/FormData",
   "engines": {
     "node": ">= 8"
   },
   "scripts": {
     "lint": "eslint src",
     "staged": "lint-staged",
-    "make": "babel src -d .",
+    "make": "npm run make:mjs && npm run make:js",
+    "make:mjs": "BABEL_ESM=1 babel src -d . --keep-file-extension",
+    "make:js": "babel src -d .",
     "watch": "babel src -w -d .",
     "make:ci": "babel src -s -d .",
     "m": "npm run make",

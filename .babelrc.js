@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   plugins: [
     "@babel/transform-runtime",
     ["@babel/proposal-decorators", {
@@ -6,9 +6,10 @@ module.exports = {
     }],
     "@babel/proposal-class-properties",
     "@babel/transform-async-to-generator",
-    "@babel/proposal-async-generator-functions",
-    ["@babel/transform-modules-commonjs", {
-      mjsStrictNamespace: false
-    }]
+    "@babel/proposal-async-generator-functions"
   ]
 }
+
+if (!process.env.BABEL_ESM) config.plugins.push("@babel/transform-modules-commonjs")
+
+module.exports = config
