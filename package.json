@@ -16,18 +16,18 @@
     "node": ">= 8"
   },
   "scripts": {
-    "lint": "node_modules/.bin/eslint src",
-    "staged": "node_modules/.bin/lint-staged",
-    "make": "node_modules/.bin/babel src -d .",
-    "watch": "node_modules/.bin/babel src -w -d .",
-    "make:ci": "node_modules/.bin/babel src -s -d .",
-    "m": "yarn make",
-    "w": "yarn watch",
-    "cleanup": "node_modules/.bin/rimraf lib test",
-    "test": "node_modules/.bin/ava",
-    "coverage": "yarn cleanup && yarn make:ci && node_modules/.bin/nyc yarn test && yarn cleanup && yarn make",
-    "report": "yarn cleanup && yarn make:ci && node_modules/.bin/nyc yarn test && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup && yarn make",
-    "ci": "yarn make:ci && node_modules/.bin/nyc yarn test && node_modules/.bin/nyc report --reporter=lcov yarn test && node_modules/.bin/codecov && yarn cleanup && yarn make"
+    "lint": "eslint src",
+    "staged": "lint-staged",
+    "make": "babel src -d .",
+    "watch": "babel src -w -d .",
+    "make:ci": "babel src -s -d .",
+    "m": "npm run make",
+    "w": "npm run watch",
+    "cleanup": "rimraf lib test",
+    "test": "ava",
+    "coverage": "npm run cleanup && npm run make:ci && nyc npm test && npm run cleanup && npm run make",
+    "report": "npm run cleanup && npm run make:ci && nyc npm test && nyc report --reporter=html npm test && npm run cleanup && npm run make",
+    "ci": "npm run make:ci && nyc npm test && nyc report --reporter=lcov npm test && codecov && npm run cleanup && npm run make"
   },
   "ava": {
     "files": [

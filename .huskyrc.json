@@ -1,6 +1,6 @@
 {
   "hooks": {
-    "pre-commit": "yarn staged",
-    "pre-push": "yarn report"
+    "pre-commit": "npm run staged",
+    "pre-push": "npm run report"
   }
 }
