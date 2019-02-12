@@ -5,7 +5,7 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".mjs"]
+        "extensions": [".mjs", ".js"]
       }
     }
   },
