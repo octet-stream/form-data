@@ -1,5 +1,5 @@
-import {Readable} from "stream"
-import {basename} from "path"
+import stream from "stream"
+import path from "path"
 
 import invariant from "@octetstream/invariant"
 import mimes from "mime-types"
@@ -66,7 +66,7 @@ class FormData {
 
     const read = this.__read
 
-    this.__stream = new Readable({read})
+    this.__stream = new stream.Readable({read})
 
     if (isArray(fields)) {
       this.__appendFromInitialFields(fields)
@@ -218,12 +218,12 @@ class FormData {
 
     // Getting a filename for Buffer and Readable values
     if (isBuffer(value) && filename) {
-      filename = basename(filename)
+      filename = path.basename(filename)
     } else if (isReadable(value) && (value.path || filename)) {
       // Readable stream which created from fs.createReadStream
       // have a "path" property. So, we can get a "filename"
       // from the stream itself.
-      filename = basename(value.path || filename)
+      filename = path.basename(value.path || filename)
     } else {
       // The regular values shouldn't have "filename" property
       filename = undefined

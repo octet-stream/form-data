@@ -1,5 +1,4 @@
-import {Readable} from "stream"
-import {join} from "path"
+import stream from "stream"
 
 import test from "ava"
 
@@ -21,7 +20,7 @@ test("The stream accessor should return Readable stream", t => {
 
   const fd = new FormData()
 
-  t.true(fd.stream instanceof Readable)
+  t.true(fd.stream instanceof stream.Readable)
 })
 
 test("Boundary accessor should return a correct value", t => {

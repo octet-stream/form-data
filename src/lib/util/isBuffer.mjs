@@ -1,3 +1,3 @@
 const isBuffer = val => val instanceof Buffer
 
-module.exports = isBuffer
+export default isBuffer
