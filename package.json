@@ -18,18 +18,18 @@
   "scripts": {
     "lint": "eslint src",
     "staged": "lint-staged",
-    "make": "npm run make:mjs && npm run make:js",
-    "make:mjs": "BABEL_ESM=1 babel src -d . --keep-file-extension",
-    "make:js": "babel src -d .",
+    "prepare": "npm run prepare:mjs && npm run prepare:js",
+    "prepare:mjs": "BABEL_ESM=1 babel src -d . --keep-file-extension",
+    "prepare:js": "babel src -d .",
     "watch": "babel src -w -d .",
     "make:ci": "babel src -s -d .",
-    "m": "npm run make",
+    "p": "npm run prepare",
     "w": "npm run watch",
     "cleanup": "rimraf lib test",
     "test": "ava",
-    "coverage": "npm run cleanup && npm run make:ci && nyc npm test && npm run cleanup && npm run make",
-    "report": "npm run cleanup && npm run make:ci && nyc npm test && nyc report --reporter=html npm test && npm run cleanup && npm run make",
-    "ci": "npm run make:ci && nyc npm test && nyc report --reporter=lcov npm test && codecov && npm run cleanup && npm run make"
+    "coverage": "npm run cleanup && npm run make:ci && nyc npm test && npm run cleanup && npm run prepare",
+    "report": "npm run cleanup && npm run make:ci && nyc npm test && nyc report --reporter=html npm test && npm run cleanup && npm run prepare",
+    "ci": "npm run make:ci && nyc npm test && nyc report --reporter=lcov npm test && codecov && npm run cleanup && npm run prepare"
   },
   "ava": {
     "files": [
