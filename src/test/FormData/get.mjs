@@ -1,15 +1,15 @@
 import {Readable} from "stream"
-import {join} from "path"
+import path from "path"
 
 import test from "ava"
 
-import {createReadStream, readFile} from "promise-fs"
+import promiseFS from "promise-fs"
 
 import FormData from "../../lib/FormData"
 
 import read from "../__helper__/read"
 
-const path = join(__dirname, "..", "..", "package.json")
+const filePath = path.join(__dirname, "..", "..", "package.json")
 
 test("Should return \"undefined\" on getting nonexistent field", t => {
   t.plan(1)
@@ -61,11 +61,11 @@ test("Should return a stringified values", t => {
 test("Should return Readable stream as-is", async t => {
   t.plan(2)
 
-  const expected = await readFile(path)
+  const expected = await promiseFS.readFile(filePath)
 
   const fd = new FormData()
 
-  fd.set("stream", createReadStream(path))
+  fd.set("stream", promiseFS.createReadStream(filePath))
 
   const actual = fd.get("stream")
 
@@ -76,7 +76,7 @@ test("Should return Readable stream as-is", async t => {
 test("Should return Buffer value as-is", async t => {
   t.plan(2)
 
-  const buffer = await readFile(path)
+  const buffer = await promiseFS.readFile(filePath)
 
   const fd = new FormData()
 

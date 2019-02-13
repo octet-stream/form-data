@@ -1,4 +1,4 @@
-import {createServer} from "http"
+import http from "http"
 
 import busboy, {isFile} from "then-busboy"
 import isPlainObject from "lodash.isplainobject"
@@ -21,7 +21,7 @@ async function mapFiles(obj, cb, ctx) {
   return res
 }
 
-const server = () => createServer((req, res) => {
+const server = () => http.createServer((req, res) => {
   const onData = data => mapFiles(
     data, async value => String(isFile(value) ? await value.read() : value)
   )

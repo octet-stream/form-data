@@ -1,6 +1,6 @@
 import test from "ava"
 
-import {spy} from "sinon"
+import sinon from "sinon"
 
 import FormData from "../../lib/FormData"
 
@@ -9,7 +9,7 @@ test(
   t => {
     t.plan(1)
 
-    const fulfill = spy()
+    const fulfill = sinon.spy()
 
     const fd = new FormData()
 
@@ -22,7 +22,7 @@ test(
 test("Callback should be called with the nullish context by default", t => {
   t.plan(1)
 
-  const fulfill = spy()
+  const fulfill = sinon.spy()
 
   const fd = new FormData()
 
@@ -36,7 +36,7 @@ test("Callback should be called with the nullish context by default", t => {
 test("Callback should be called with the specified context", t => {
   t.plan(2)
 
-  const fulfill = spy()
+  const fulfill = sinon.spy()
 
   const ctx = new Map()
 
@@ -53,7 +53,7 @@ test("Callback should be called with the specified context", t => {
 test("Callback should be called with value, name and FormData itself", t => {
   t.plan(1)
 
-  const fulfill = spy()
+  const fulfill = sinon.spy()
 
   const fd = new FormData()
 
@@ -67,7 +67,7 @@ test("Callback should be called with value, name and FormData itself", t => {
 test("Callback should be called once on each filed", t => {
   t.plan(4)
 
-  const fulfill = spy()
+  const fulfill = sinon.spy()
 
   const fd = new FormData()
 

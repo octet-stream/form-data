@@ -1,5 +1,5 @@
-const {Readable} = require("stream")
+import stream from "stream"
 
-const isReadable = val => val instanceof Readable
+const isReadable = val => val instanceof stream.Readable
 
-module.exports = isReadable
+export default isReadable
