@@ -3,7 +3,7 @@ import path from "path"
 
 import test from "ava"
 
-import promiseFS from "promise-fs"
+import fs from "promise-fs"
 
 import read from "../__helper__/readStreamWithAsyncIterator"
 
@@ -14,7 +14,7 @@ const filePath = path.join(__dirname, "..", "..", "package.json")
 test("Should have a \"next\" method", t => {
   t.plan(1)
 
-  const iterator = new StreamIterator(promiseFS.createReadStream(filePath))
+  const iterator = new StreamIterator(fs.createReadStream(filePath))
 
   t.is(typeof iterator.next, "function")
 })
@@ -73,16 +73,16 @@ test("Should return correctly object on readStream ending", async t => {
 })
 
 test("Should correctly read a content from the readStream", async t => {
-  const iterator
-    = new StreamIterator(promiseFS.createReadStream("/usr/share/dict/words"))
+  const iterator = new StreamIterator(
+    fs.createReadStream("/usr/share/dict/words")
+  )
 
   const chunks = []
-
   for await (const chunk of iterator) {
     chunks.push(chunk)
   }
 
-  const expected = await promiseFS.readFile("/usr/share/dict/words")
+  const expected = await fs.readFile("/usr/share/dict/words")
   const actual = Buffer.concat(chunks)
 
   t.true(actual.equals(expected))
@@ -91,7 +91,7 @@ test("Should correctly read a content from the readStream", async t => {
 test("Should throw an error from strem event", async t => {
   t.plan(1)
 
-  const readStream = promiseFS.createReadStream("/usr/share/dict/words")
+  const readStream = fs.createReadStream("/usr/share/dict/words")
 
   const trap = () => {
     const iterator = new StreamIterator(readStream)
