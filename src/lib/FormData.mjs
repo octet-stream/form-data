@@ -111,28 +111,10 @@ class FormData {
    * @private
    */
   async* __getField() {
-    /*
-    while (true) {
-      const curr = this.__entries.next()
-
-      // Send a footer when iterator ends
-      if (curr.done === true) {
-        yield this.__getFooter()
-
-        // In some cases I can't just return footer to stop iterator,
-        // so this might help.
-        // According to tests, it happens only Node 8.x
-        // eslint-disable-next-line max-len
-        // @see: https://travis-ci.org/octet-stream/apollo-link-form-data/jobs/465480482#L485-L490
-        return
-      }
-
-      const [name, {values, filename}] = curr.value
-
+    for (const [name, {values, filename}] of this.__contents) {
       // Set field header
       yield this.__getHeader(name, filename)
 
-      // Set the field body
       for (const value of values) {
         if (isReadable(value)) {
           // Read the stream content
@@ -147,24 +129,8 @@ class FormData {
       // Add trailing carriage
       yield this.__carriage
     }
-    */
 
-    for (const [name, {values, filename}] of this.__contents) {
-      yield this.__getHeader(name, filename)
-
-      for (const value of values) {
-        if (isReadable(value)) {
-          yield* isFunction(value[Symbol.asyncIterator])
-            ? value
-            : new StreamIterator(value)
-        } else {
-          yield value
-        }
-      }
-
-      yield this.__carriage
-    }
-
+    // Add a footer when all fields ended
     yield this.__getFooter()
   }
 
