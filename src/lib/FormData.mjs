@@ -371,17 +371,9 @@ class FormData {
    * @public
    */
   getAll = name => {
-    const res = []
-
     const field = this.__contents.get(name)
 
-    if (field) {
-      for (const value of field.values) {
-        res.push(value)
-      }
-    }
-
-    return res
+    return field ? Array.from(field.values) : []
   }
 
   /**
