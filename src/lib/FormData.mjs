@@ -111,6 +111,7 @@ class FormData {
    * @private
    */
   async* __getField() {
+    /*
     while (true) {
       const curr = this.__entries.next()
 
@@ -146,6 +147,25 @@ class FormData {
       // Add trailing carriage
       yield this.__carriage
     }
+    */
+
+    for (const [name, {values, filename}] of this.__contents) {
+      yield this.__getHeader(name, filename)
+
+      for (const value of values) {
+        if (isReadable(value)) {
+          yield* isFunction(value[Symbol.asyncIterator])
+            ? value
+            : new StreamIterator(value)
+        } else {
+          yield value
+        }
+      }
+
+      yield this.__carriage
+    }
+
+    yield this.__getFooter()
   }
 
   /**
