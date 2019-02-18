@@ -450,6 +450,9 @@ class FormData {
     }
   }
 
+  /**
+   * @return {IterableIterator<[string, any]>}
+   */
   [Symbol.iterator]() {
     return this.entries()
   }
@@ -463,7 +466,11 @@ class FormData {
    * @public
    */
   [Symbol.asyncIterator]() {
-    return new StreamIterator(this.__stream)
+    if (isFunction(this.stream[Symbol.asyncIterator])) {
+      return this.stream[Symbol.asyncIterator]()
+    }
+
+    return new StreamIterator(this.stream)
   }
 }
 
