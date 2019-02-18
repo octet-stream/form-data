@@ -1,6 +1,7 @@
 import http from "http"
 
-import busboy, {isFile} from "then-busboy"
+import {parse, isFile, Body} from "then-busboy"
+
 import isPlainObject from "lodash.isplainobject"
 
 const isArray = Array.isArray
@@ -37,7 +38,8 @@ const server = () => http.createServer((req, res) => {
     res.end(String(err))
   }
 
-  busboy(req).then(onData).then(onFulfilled).catch(onRejected)
+  parse(req).then(Body.json).then(onData).then(onFulfilled)
+    .catch(onRejected)
 })
 
 export default server

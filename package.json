@@ -60,7 +60,7 @@
     "rimraf": "2.6.3",
     "sinon": "7.2.3",
     "supertest": "3.4.2",
-    "then-busboy": "3.0.0"
+    "then-busboy": "4.2.0"
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.54",
