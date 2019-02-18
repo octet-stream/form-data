@@ -59,8 +59,7 @@ class FormData {
     this.__dashes = "--"
     this.__boundary = concat(["NodeJSFormDataStream", boundary()])
 
-    this.__contents = new Map()
-    this.__entries = this.__contents.entries()
+    this.__content = new Map()
 
     this.__curr = this.__getField()
 
@@ -111,7 +110,7 @@ class FormData {
    * @private
    */
   async* __getField() {
-    for (const [name, {values, filename}] of this.__contents) {
+    for (const [name, {values, filename}] of this.__content) {
       // Set field header
       yield this.__getHeader(name, filename)
 
@@ -221,16 +220,16 @@ class FormData {
       value = String(value)
     }
 
-    const field = this.__contents.get(name)
+    const field = this.__content.get(name)
 
     // Set a new field if given name is not exists
     if (!field) {
-      return void this.__contents.set(name, {append, filename, values: [value]})
+      return void this.__content.set(name, {append, filename, values: [value]})
     }
 
     // Replace a value of the existing field if "set" called
     if (!append) {
-      return void this.__contents.set(name, {append, filename, values: [value]})
+      return void this.__content.set(name, {append, filename, values: [value]})
     }
 
     // Do nothing if the field has been created from .set()
@@ -241,7 +240,7 @@ class FormData {
     // Append a new value to the existing field
     field.values.push(value)
 
-    this.__contents.set(name, field)
+    this.__content.set(name, field)
   }
 
   /**
@@ -328,7 +327,7 @@ class FormData {
    *
    * @public
    */
-  has = name => this.__contents.has(name)
+  has = name => this.__content.has(name)
 
   /**
    * Returns the first value associated with the given name.
@@ -339,7 +338,7 @@ class FormData {
    * @public
    */
   get = name => {
-    const field = this.__contents.get(name)
+    const field = this.__content.get(name)
 
     if (!field) {
       return undefined
@@ -357,7 +356,7 @@ class FormData {
    * @public
    */
   getAll = name => {
-    const field = this.__contents.get(name)
+    const field = this.__content.get(name)
 
     return field ? Array.from(field.values) : []
   }
@@ -369,7 +368,7 @@ class FormData {
    *
    * @public
    */
-  delete = name => void this.__contents.delete(name)
+  delete = name => void this.__content.delete(name)
 
   /**
    * An alias of FormData#stream.pipe
@@ -389,7 +388,7 @@ class FormData {
   }
 
   * keys() {
-    for (const key of this.__contents.keys()) {
+    for (const key of this.__content.keys()) {
       yield key
     }
   }
