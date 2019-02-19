@@ -287,7 +287,7 @@ class FormData {
    *
    * @return {number}
    */
-  async getLength() {
+  async getComputedLength() {
     if (this.__content.size === 0) {
       return 0
     }
