@@ -76,7 +76,8 @@ Returns a boundary string of the current FormData instance.
 
 ##### `get stream() -> {stream.Readable}`
 
-Returns an internal Readable stream.
+Returns an internal Readable stream. Use it to send queries, but don't push
+anything into it.
 
 ##### `get headers() -> {object}`
 
@@ -106,14 +107,14 @@ or adds the key if it does not already exist.
     Note that Arrays and Object will be converted to **string** by using **String** function.
   - **{string}** [filename = undefined] – A filename of given field. Can be added only for **Buffer** and **Readable** .
 
-##### `get(name) -> {string | Buffer | stream.Readable}`
+##### `get(name) -> {string | Buffer | stream.Readable | fs.ReadStream}`
 
 Returns the first value associated with the given name.
 **Buffer** and **Readable** values will be returned as-is.
 
   - **{string}** name – A name of the value you want to retrieve.
 
-##### `getAll(name) -> {Array<string | Buffer | stream.Readable>}`
+##### `getAll(name) -> {Array<string | Buffer | stream.Readable | fs.ReadStream>}`
 
 Returns all the values associated with a given key from within a **FormData** object.
 
@@ -141,23 +142,23 @@ Executes a given **callback** for each field of the FormData instance
     + **{FormData}** fd – The FormData instance that **forEach** is being applied to
   - **{any}** [ctx = null] – Value to use as **this** context when executing the given **callback**
 
-##### `keys() -> {iterator}`
+##### `keys() -> {IterableIterator<string>}`
 
 Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)** allowing to go through the **FormData** keys
 
-##### `values() -> {iterator}`
+##### `values() -> {IterableIterator<any>}`
 
 Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)** allowing to go through the **FormData** values
 
-##### `entries() -> {iterator}`
+##### `entries() -> {IterableIterator<[string, any]>}`
 
 Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)** allowing to go through the **FormData** key/value pairs
 
-##### `[Symbol.iterator]() -> {iterator}`
+##### `[Symbol.iterator]() -> {IterableIterator<[string, any]>}`
 
 An alias of [FormData#entries](#entries---iterator)
 
-##### `[Symbol.asyncIterator]() -> {asyncIterator}`
+##### `[Symbol.asyncIterator]() -> {IterableIterator<Promise<Buffer>>}`
 
 Returns an async iterator allowing to read a data from internal Readable stream using **for-await** syntax.
 Read the [async iteration proposal](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.

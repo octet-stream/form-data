@@ -3,6 +3,7 @@ import path from "path"
 
 import invariant from "@octetstream/invariant"
 import mimes from "mime-types"
+import fs from "promise-fs"
 
 import bind from "./util/bind"
 import concat from "./util/concat"
@@ -11,8 +12,9 @@ import getType from "./util/getType"
 import isString from "./util/isString"
 import isObject from "./util/isObject"
 import isBuffer from "./util/isBuffer"
-import isReadable from "./util/isReadable"
+import isStream from "./util/isStream"
 import isFunction from "./util/isFunction"
+import isReadStream from "./util/isReadStream"
 
 import StreamIterator from "./util/StreamIterator"
 
@@ -115,7 +117,7 @@ class FormData {
       yield this.__getHeader(name, filename)
 
       for (const value of values) {
-        if (isReadable(value)) {
+        if (isStream(value)) {
           // Read the stream content
           yield* isFunction(value[Symbol.asyncIterator])
             ? value
@@ -204,7 +206,7 @@ class FormData {
     // Getting a filename for Buffer and Readable values
     if (isBuffer(value) && filename) {
       filename = path.basename(filename)
-    } else if (isReadable(value) && (value.path || filename)) {
+    } else if (isStream(value) && (value.path || filename)) {
       // Readable stream which created from fs.createReadStream
       // have a "path" property. So, we can get a "filename"
       // from the stream itself.
@@ -216,7 +218,7 @@ class FormData {
 
     append = Boolean(append)
 
-    if (!(isReadable(value) || isBuffer(value))) {
+    if (!(isStream(value) || isBuffer(value))) {
       value = String(value)
     }
 
@@ -274,6 +276,48 @@ class FormData {
    */
   get stream() {
     return this.__stream
+  }
+
+  /**
+   * Returns computed length of the FormData content.
+   * If data contains stream.Readable field(s),
+   * the method will always return 0.
+   *
+   * NOTE THAT THE CURRENT IMPLEMENTATION IS EXPERIMENTAL
+   *
+   * @return {number}
+   */
+  async getLength() {
+    if (this.__content.size === 0) {
+      return 0
+    }
+
+    let length = 0
+    const carriageLength = Buffer.from(this.__carriage).length
+
+    for (const [name, {filename, values}] of this.__content) {
+      length += Buffer.from(this.__getHeader(name, filename)).length
+
+      for (const value of values) {
+        if (isStream(value)) {
+          if (!isReadStream(value)) {
+            return 0
+          }
+
+          length += await fs.stat(filename)
+        } else if (isBuffer(value)) {
+          length += value.length
+        } else {
+          length += Buffer.from(value).length
+        }
+      }
+
+      length += carriageLength
+    }
+
+    length += Buffer.from(this.__getFooter()).length
+
+    return length
   }
 
   /**
@@ -371,14 +415,19 @@ class FormData {
   delete = name => void this.__content.delete(name)
 
   /**
-   * An alias of FormData#stream.pipe
+   * Returns a string representation of the FormData
+   *
+   * @return {string}
    */
-  pipe = (dest, options) => this.__stream.pipe(dest, options)
-
   toString() {
     return "[object FormData]"
   }
 
+  /**
+   * Returns a string representation of the FormData
+   *
+   * @return {string}
+   */
   inspect() {
     return "FormData"
   }
@@ -387,20 +436,32 @@ class FormData {
     return "FormData"
   }
 
+  /**
+   * @return {IterableIterator<string>}
+   */
   * keys() {
     for (const key of this.__content.keys()) {
       yield key
     }
   }
 
+  /**
+   * @return {IterableIterator<[string, any]>}
+   */
   * entries() {
     for (const name of this.keys()) {
       const values = this.getAll(name)
 
-      yield [name, values.length === 1 ? values[0] : values]
+      // Yield each value of a field, like browser-side FormData does.
+      for (const value of values) {
+        yield [name, value]
+      }
     }
   }
 
+  /**
+   * @return {IterableIterator<any>}
+   */
   * values() {
     for (const [, values] of this) {
       yield values
@@ -438,7 +499,7 @@ class FormData {
    * This method allows to read a content from internal stream
    * using async generators and for-await-of APIs
    *
-   * @return {StreamIterator}
+   * @return {IterableIterator<Promise<Buffer>>}
    *
    * @public
    */
