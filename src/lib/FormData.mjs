@@ -304,7 +304,7 @@ class FormData {
             return 0
           }
 
-          length += await fs.stat(filename)
+          length += await fs.stat(filename).size
         } else if (isBuffer(value)) {
           length += value.length
         } else {
