@@ -65,9 +65,7 @@ class FormData {
 
     this.__curr = this.__getField()
 
-    const read = this.__read
-
-    this.__stream = new stream.Readable({read})
+    this.__stream = new stream.Readable({read: this.__read})
 
     if (isArray(fields)) {
       this.__appendFromInitialFields(fields)
@@ -282,8 +280,6 @@ class FormData {
    * Returns computed length of the FormData content.
    * If data contains stream.Readable field(s),
    * the method will always return 0.
-   *
-   * NOTE THAT THE CURRENT IMPLEMENTATION IS EXPERIMENTAL
    *
    * @return {number}
    */

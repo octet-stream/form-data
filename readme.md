@@ -132,6 +132,11 @@ Deletes a key and its value(s) from a **FormData** object.
 
   - **{string}** name – The name of the key you want to delete.
 
+#### `getComputedLength() -> {number}`
+
+Returns computed length of the FormData content. If FormData instance contains
+a field with stream.Readable value, this method will always return 0.
+
 #### `forEach(callback[, ctx]) -> {void}`
 
 Executes a given **callback** for each field of the FormData instance
