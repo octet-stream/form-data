@@ -135,7 +135,7 @@ Deletes a key and its value(s) from a **FormData** object.
 ##### `getComputedLength() -> {Promise<number>}`
 
 Returns computed length of the FormData content. If FormData instance contains
-a field with stream.Readable value, this method will always return 0.
+a field with stream.Readable value, this method will always return `undefined`.
 
 ##### `forEach(callback[, ctx]) -> {void}`
 

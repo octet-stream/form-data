@@ -297,7 +297,7 @@ class FormData {
       for (const value of values) {
         if (isStream(value)) {
           if (!isReadStream(value)) {
-            return 0
+            return undefined
           }
 
           length += await fs.stat(value.path).then(({size}) => size)
