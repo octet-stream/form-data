@@ -24,9 +24,8 @@ yarn add formdata-node
 
 ## Usage
 
-FormData instance have `.pipe()` and `.[Symbol.asyncIterator]()` methods
-to get an access to the internal Readable stream. You can also get the stream
-from `FormData#stream` getter.
+Each FormData instance allows you to read its data from `Readable` stream,
+just use `FormData#stream` property for that.
 
 You can send queries via HTTP clients that supports headers setting Readable stream as body.
 
