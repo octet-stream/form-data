@@ -111,6 +111,27 @@ test("Should add initial fields from a collection", t => {
   t.is(fd.get("eyes"), "blue")
 })
 
+test("Should ignore invalid initial fields", t => {
+  const fields = [
+    {
+      name: "nick",
+      value: "Rarara"
+    },
+    null,
+    ["some array field"],
+    {
+      name: "eyes",
+      value: "blue"
+    }
+  ]
+
+  const fd = new FormData(fields)
+
+  t.is(count(fd), 2)
+  t.is(fd.get("nick"), "Rarara")
+  t.is(fd.get("eyes"), "blue")
+})
+
 test("Should correctly add a filed to FormData request body", async t => {
   t.plan(1)
 
