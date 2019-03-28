@@ -41,14 +41,7 @@ fd.set("greeting", "Hello, World!")
 
 const options = {
   body: fd.stream, // Set internal stream as request body
-  headers: {
-    // Assign required headers to the request manually.
-    // We need to set a content type and boundary.
-    "content-type": `multipart/form-data; boundary=${fd.boundary}`
-    // Or you can use FormData#headers to get an object with content-type
-    // header, like this: ...fd.headers
-    // this will be equivalent of code from above
-  }
+  headers: fd.headers // Set headers of the current FormData instance
 }
 
 got.post("http://example.com", options)
