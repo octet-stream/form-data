@@ -57,7 +57,7 @@ test("Should return a correct headers", t => {
   const actual = fd.headers
 
   const expected = {
-    "content-type": (
+    "Content-Type": (
       "multipart/form-data; boundary=" +
       `NodeJSFormDataStream${spyondary.lastCall.returnValue}`
     )
@@ -189,7 +189,7 @@ test(
 
     const res = await req(server())
       .post("/")
-      .set("content-type", fd.headers["content-type"])
+      .set("content-type", fd.headers["Content-Type"])
       .send(data)
 
     t.is(res.body.field, field)
