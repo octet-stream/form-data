@@ -16,16 +16,12 @@ import read from "../__helper__/readStreamWithAsyncIterator"
 import server from "../__helper__/server"
 
 test("The stream accessor should return Readable stream", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   t.true(fd.stream instanceof stream.Readable)
 })
 
 test("Boundary accessor should return a correct value", t => {
-  t.plan(1)
-
   const spyondary = sinon.spy(boundary)
 
   const MockedFD = pq("../../lib/FormData", {
@@ -42,8 +38,6 @@ test("Boundary accessor should return a correct value", t => {
 })
 
 test("Should return a correct headers", t => {
-  t.plan(1)
-
   const spyondary = sinon.spy(boundary)
 
   const MockedFD = pq("../../lib/FormData", {
@@ -67,32 +61,24 @@ test("Should return a correct headers", t => {
 })
 
 test("Should return a correct string on .toString() convertation", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   t.is(String(fd), "[object FormData]")
 })
 
 test("Should return a correct string on .inspect() call", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   t.is(fd.inspect(), "FormData")
 })
 
 test("Should have no fields by default", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   t.is(count(fd), 0)
 })
 
 test("Should add initial fields from a collection", t => {
-  t.plan(3)
-
   const fields = [
     {
       name: "nick",
@@ -133,8 +119,6 @@ test("Should ignore invalid initial fields", t => {
 })
 
 test("Should correctly add a filed to FormData request body", async t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   const field = "Hello, World!"
@@ -173,8 +157,6 @@ test("Should correctly add a file to FormData request body", async t => {
 test(
   "Should correctly add field AND file together to FormData request body",
   async t => {
-    t.plan(2)
-
     const fd = new FormData()
 
     const field = "Hello, World!"

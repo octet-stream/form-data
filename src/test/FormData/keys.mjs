@@ -3,8 +3,6 @@ import test from "ava"
 import FormData from "../../lib/FormData"
 
 test("Should be done on the first call when FormData have no fields", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   const curr = fd.keys().next()
@@ -16,8 +14,6 @@ test("Should be done on the first call when FormData have no fields", t => {
 })
 
 test("Should return the first key on the first call", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   fd.set("first", "value")

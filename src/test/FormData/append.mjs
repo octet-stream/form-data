@@ -3,8 +3,6 @@ import test from "ava"
 import FormData from "../../lib/FormData"
 
 test("Should set a new value", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   fd.append("name", "value")
@@ -16,8 +14,6 @@ test("Should set a new value", t => {
 })
 
 test("Should append a value to the existing filed", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   fd.append("names", "John")
@@ -27,8 +23,6 @@ test("Should append a value to the existing filed", t => {
 })
 
 test("Should append array values", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   fd.append("numbers", [4, 8, 15])

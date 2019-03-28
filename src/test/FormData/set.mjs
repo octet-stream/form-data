@@ -9,8 +9,6 @@ import FormData from "../../lib/FormData"
 const filePath = path.join(__dirname, "..", "..", "package.json")
 
 test("Should set a primitive value", t => {
-  t.plan(4)
-
   const fd = new FormData()
 
   fd.set("null", null)
@@ -26,8 +24,6 @@ test("Should set a primitive value", t => {
 })
 
 test("Should set an array value", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   fd.set("array", ["earth pony", "unicorn", "pegasus"])
@@ -39,8 +35,6 @@ test("Should set an array value", t => {
 })
 
 test("Should add an object", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   fd.set("object", {
@@ -54,8 +48,6 @@ test("Should add an object", t => {
 })
 
 test("Should replace an existing field", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   fd.set("name", "John")
@@ -66,8 +58,6 @@ test("Should replace an existing field", t => {
 })
 
 test("Should not allow to .append() new value to an existing key", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   fd.set("name", "John")
@@ -78,8 +68,6 @@ test("Should not allow to .append() new value to an existing key", t => {
 })
 
 test("Should set a Readable stream", t => {
-  t.plan(1)
-
   const fd = new FormData()
 
   fd.set("stream", fs.createReadStream(filePath))
@@ -88,8 +76,6 @@ test("Should set a Readable stream", t => {
 })
 
 test("Should correctly add a field with Buffer data", t => {
-  t.plan(2)
-
   const phrase = Buffer.from(
     "I've seen things you people wouldn't believe. " +
     "Attack ships on fire off the shoulder of Orion. " +
@@ -111,8 +97,6 @@ test("Should correctly add a field with Buffer data", t => {
 test(
   "Should set a correctly header with given filename for a Buffer value",
   async t => {
-    t.plan(1)
-
     const buffer = Buffer.from(
       "I beat Twilight Sparkle and all I got was this lousy t-shirt"
     )
@@ -138,8 +122,6 @@ test(
 test(
   "Should throw a TypeError on field setting when the name is not a string",
   t => {
-    t.plan(3)
-
     const fd = new FormData()
 
     const trap = () => fd.set({})
@@ -155,8 +137,6 @@ test(
   "Should throw a TypeError on field setting when the filename passed, " +
   "but it's not a string value.",
   t => {
-    t.plan(3)
-
     const fd = new FormData()
 
     const trap = () => fd.set("key", "value", 451)
