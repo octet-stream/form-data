@@ -1,21 +1,15 @@
-import util from "util"
-
 import test from "ava"
 
 import getType from "../../lib/util/getType"
 
 test("Should return a string with type name", t => {
-  t.plan(2)
-
   const res = getType({})
 
-  t.true(util.isString(res))
+  t.is(typeof res, "string")
   t.is(res, "object")
 })
 
-test("Should return lowercased string for all basic types", t => {
-  t.plan(8)
-
+test("Returns lowercased string for all basic types", t => {
   const boolean = getType(false)
   const nullType = getType(null)
   const undefType = getType(undefined)
@@ -35,10 +29,8 @@ test("Should return lowercased string for all basic types", t => {
   t.is(object, "object")
 })
 
-test("Should return as-is name for non-basic types", t => {
-  t.plan(2)
-
-  const genFn = getType(function* () { yield 0 })
+test("returns non-basic types name as-is", t => {
+  const genFn = getType(function* noop() { yield undefined })
   const map = getType(new Map())
 
   t.is(genFn, "GeneratorFunction")

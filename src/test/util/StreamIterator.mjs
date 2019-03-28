@@ -2,7 +2,6 @@ import stream from "stream"
 import path from "path"
 
 import test from "ava"
-
 import fs from "promise-fs"
 
 import read from "../__helper__/readStreamWithAsyncIterator"
@@ -12,16 +11,12 @@ import StreamIterator from "../../lib/util/StreamIterator"
 const filePath = path.join(__dirname, "..", "..", "package.json")
 
 test("Should have a \"next\" method", t => {
-  t.plan(1)
-
   const iterator = new StreamIterator(fs.createReadStream(filePath))
 
   t.is(typeof iterator.next, "function")
 })
 
 test("The next method should return a Promise", async t => {
-  t.plan(1)
-
   const readStream = new stream.Readable({
     read() { this.push(null) }
   })
@@ -36,8 +31,6 @@ test("The next method should return a Promise", async t => {
 })
 
 test("Should return a value in correct format", async t => {
-  t.plan(3)
-
   const readStream = new stream.Readable({
     read() { /* noop */ }
   })
@@ -56,8 +49,6 @@ test("Should return a value in correct format", async t => {
 })
 
 test("Should return correctly object on readStream ending", async t => {
-  t.plan(1)
-
   const readStream = new stream.Readable({
     read() { this.push(null) }
   })
@@ -89,8 +80,6 @@ test("Should correctly read a content from the readStream", async t => {
 })
 
 test("Should throw an error from strem event", async t => {
-  t.plan(1)
-
   const readStream = fs.createReadStream("/usr/share/dict/words")
 
   const trap = () => {
