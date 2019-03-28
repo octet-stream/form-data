@@ -259,7 +259,7 @@ class FormData {
    */
   get headers() {
     return {
-      "content-type": concat([
+      "Content-Type": concat([
         "multipart/form-data; ", "boundary=", this.boundary
       ])
     }
