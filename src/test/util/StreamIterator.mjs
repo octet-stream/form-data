@@ -91,5 +91,5 @@ test("Should throw an error from strem event", async t => {
   }
 
 
-  await t.throws(trap(), "Just an error.")
+  await t.throwsAsync(trap(), "Just an error.")
 })
