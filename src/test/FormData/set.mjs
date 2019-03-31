@@ -72,6 +72,14 @@ test("Should set a Readable stream", t => {
 
   fd.set("stream", fs.createReadStream(filePath))
 
+  t.true(fd.get("stream") instanceof fs.ReadStream)
+})
+
+test("Applies given Readable stream as well as fs.ReadStream", t => {
+  const fd = new FormData()
+
+  fd.set("stream", new stream.Readable({read() { }}))
+
   t.true(fd.get("stream") instanceof stream.Readable)
 })
 
@@ -113,6 +121,37 @@ test(
       String(value).startsWith(
         `--${fd.boundary}\r\n` +
         "Content-Disposition: form-data; name=\"file\"; filename=\"note.txt\"" +
+        "\r\nContent-Type: \"text/plain\"\r\n\r\n"
+      )
+    )
+  }
+)
+
+test(
+  "Applies filename from 3rd argument for stream that have no path prop",
+  async t => {
+    const buffer = Buffer.from(
+      "I beat Twilight Sparkle and all I got was this lousy t-shirt"
+    )
+
+    const field = new stream.Readable({read() {
+      this.push(buffer)
+      this.push(null)
+    }})
+
+
+    const fd = new FormData()
+
+    fd.set("file", field, "file.txt")
+
+    const iterator = fd[Symbol.asyncIterator]()
+
+    const {value} = await iterator.next()
+
+    t.true(
+      String(value).startsWith(
+        `--${fd.boundary}\r\n` +
+        "Content-Disposition: form-data; name=\"file\"; filename=\"file.txt\"" +
         "\r\nContent-Type: \"text/plain\"\r\n\r\n"
       )
     )
