@@ -25,10 +25,8 @@ test("Boundary accessor should return a correct value", t => {
   const spyondary = sinon.spy(boundary)
 
   const MockedFD = pq("../../lib/FormData", {
-    "./util/boundary": {
-      default: spyondary
-    }
-  }).default
+    "./util/boundary": spyondary
+  })
 
   const fd = new MockedFD()
 
@@ -41,10 +39,8 @@ test("Should return a correct headers", t => {
   const spyondary = sinon.spy(boundary)
 
   const MockedFD = pq("../../lib/FormData", {
-    "./util/boundary": {
-      default: spyondary
-    }
-  }).default
+    "./util/boundary": spyondary
+  })
 
   const fd = new MockedFD()
 
