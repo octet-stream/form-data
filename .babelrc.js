@@ -12,7 +12,9 @@ const config = {
 
 if (!process.env.BABEL_ESM) {
   config.plugins.push("@babel/transform-modules-commonjs")
-  config.plugins.push("add-module-exports")
+  config.plugins.push(["add-module-exports", {
+    "addDefaultProperty": true
+  }])
 }
 
 module.exports = config
