@@ -22,14 +22,13 @@
     "prepare:mjs": "BABEL_ESM=1 babel src -d . --keep-file-extension",
     "prepare:js": "babel src -d .",
     "watch": "babel src -w -d .",
-    "make:ci": "babel src -s -d .",
     "p": "npm run prepare",
     "w": "npm run watch",
     "cleanup": "rimraf lib test",
     "test": "ava",
-    "coverage": "npm run cleanup && npm run make:ci && nyc npm test && npm run cleanup && npm run prepare",
-    "report": "npm run cleanup && npm run make:ci && nyc npm test && nyc report --reporter=html npm test && npm run cleanup && npm run prepare",
-    "ci": "npm run make:ci && nyc npm test && nyc report --reporter=lcov npm test && codecov && npm run cleanup && npm run prepare"
+    "coverage": "npm run cleanup && npm run prepare && nyc npm test",
+    "report": "npm run cleanup && npm run prepare && nyc npm test && nyc report -r=html",
+    "ci": "npm run prepare && nyc npm test && nyc report -r=lcov && codecov"
   },
   "ava": {
     "files": [
