@@ -1,6 +1,8 @@
 const config = {
   plugins: [
-    "@babel/transform-runtime",
+    ["@babel/transform-runtime", {
+      corejs: 3
+    }],
     ["@babel/proposal-decorators", {
       legacy: true
     }],
