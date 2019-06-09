@@ -14,7 +14,7 @@ if (!process.env.BABEL_ESM) {
   config.plugins.push(
     "@babel/transform-modules-commonjs",
     ["add-module-exports", {
-      "addDefaultProperty": true
+      addDefaultProperty: true
     }]
   )
 }
