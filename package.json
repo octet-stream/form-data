@@ -50,6 +50,7 @@
     "ava": "2.0.0",
     "babel-plugin-add-module-exports": "^1.0.2",
     "codecov": "3.5.0",
+    "dtslint": "^0.8.0",
     "eslint": "5.16.0",
     "eslint-plugin-ava": "7.0.0",
     "husky": "2.4.0",
@@ -60,7 +61,8 @@
     "rimraf": "2.6.3",
     "sinon": "7.3.2",
     "supertest": "4.0.2",
-    "then-busboy": "4.3.0"
+    "then-busboy": "4.3.0",
+    "tsd": "^0.7.3"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.4.5",

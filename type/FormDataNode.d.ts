@@ -1,12 +1,7 @@
 import {Readable} from "stream"
+import {ReadStream} from "fs"
 
-declare type FormDataNodeEntry = string | Readable | Buffer
-
-declare type FormDataNodeEntryValue = FormDataNodeEntry
-  | number
-  | boolean
-  | any[]
-  | object
+declare type FormDataNodeEntry = string | ReadStream | Readable | Buffer
 
 declare class FormDataNode {
   [Symbol.toStringTag]: string
@@ -28,10 +23,10 @@ declare class FormDataNode {
    */
   stream: Readable
 
-  constructor(entries: Array<{
+  constructor(entries?: Array<{
     name: string,
-    value: FormDataNodeEntryValue,
-    filename: string
+    value: any,
+    filename?: string
   }>)
 
   /**
@@ -56,7 +51,7 @@ declare class FormDataNode {
    * @param filename A filename of given field.
    *   Can be added only for Buffer and Readable
    */
-  append(name: string, value: FormDataNodeEntryValue, filename?: string): void
+  append(name: string, value: any, filename?: string): void
 
   /**
    * Set a new value for an existing key inside FormData,
@@ -73,7 +68,7 @@ declare class FormDataNode {
    * @param filename A filename of given field.
    *   Can be added only for Buffer and Readable
    */
-  set(name: string, value: FormDataNodeEntryValue, filename?: string): void
+  set(name: string, value: any, filename?: string): void
 
   /**
    * Check if a field with the given name exists inside FormData.
@@ -120,7 +115,7 @@ declare class FormDataNode {
    */
   forEach(
     fn: (value: FormDataNodeEntry, name: string, fd: FormDataNode) => void,
-    ctx: any
+    ctx?: any
   ): void
 
   [Symbol.iterator](): IterableIterator<[string, FormDataNodeEntry]>

@@ -10,6 +10,7 @@ coverage
 
 /src
 /test
+/type/**/*.test-d.ts
 
 yarn.lock
 .travis.yml
