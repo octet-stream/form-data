@@ -51,14 +51,14 @@ got.post("http://example.com", options)
 
 ## API
 
-### `constructor FormData([fields])`
+### `constructor FormData([entries])`
 
 Initialize new FormData instance
 
-  - **{array}** [fields = null] – an optional FormData initial fields.
-    Each initial field should be passed as an array with 3 elemtnts
-    as a collection of the objects with "name", "value" and "filename" props.
-    See the FormData#append for more info about the available format.
+  - **{array}** [entries = null] – an optional FormData initial entries.
+    Each initial field should be passed as a collection of the objects
+    with "name", "value" and "filename" props.
+    See the [FormData#append()](#appendname-value-filename---void) for more info about the available format.
 
 #### Instance properties
 
