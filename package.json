@@ -17,7 +17,7 @@
     "node": ">= 8"
   },
   "scripts": {
-    "eslint": "eslint src",
+    "eslint": "eslint src/**/*.mjs",
     "staged": "lint-staged",
     "prepare": "npm run prepare:mjs && npm run prepare:js",
     "prepare:mjs": "BABEL_ESM=1 babel src -d . --keep-file-extension",
