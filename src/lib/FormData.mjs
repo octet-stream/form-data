@@ -279,7 +279,7 @@ class FormData {
   /**
    * Returns computed length of the FormData content.
    * If data contains stream.Readable field(s),
-   * the method will always return 0.
+   * the method will always return undefined.
    *
    * @return {number}
    */
