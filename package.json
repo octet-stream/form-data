@@ -49,9 +49,8 @@
     "@babel/plugin-transform-runtime": "7.4.4",
     "@octetstream/eslint-config": "3.0.0",
     "ava": "2.0.0",
-    "babel-plugin-add-module-exports": "^1.0.2",
+    "babel-plugin-add-module-exports": "1.0.2",
     "codecov": "3.5.0",
-    "dtslint": "^0.8.0",
     "eslint": "5.16.0",
     "eslint-plugin-ava": "7.0.0",
     "husky": "2.4.0",
@@ -63,10 +62,10 @@
     "sinon": "7.3.2",
     "supertest": "4.0.2",
     "then-busboy": "4.3.0",
-    "tsd": "^0.7.3"
+    "tsd": "0.7.3"
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "^7.4.5",
+    "@babel/runtime-corejs3": "7.4.5",
     "@octetstream/invariant": "1.2.0",
     "mime-types": "2.1.24",
     "nanoid": "2.0.3",
