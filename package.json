@@ -17,7 +17,7 @@
     "node": ">= 8"
   },
   "scripts": {
-    "lint": "eslint src",
+    "eslint": "eslint src",
     "staged": "lint-staged",
     "prepare": "npm run prepare:mjs && npm run prepare:js",
     "prepare:mjs": "BABEL_ESM=1 babel src -d . --keep-file-extension",
@@ -27,9 +27,10 @@
     "w": "npm run watch",
     "cleanup": "rimraf lib test",
     "test": "ava",
+    "types:types": "tsd",
     "coverage": "npm run cleanup && npm run prepare && nyc npm test",
     "report": "npm run cleanup && npm run prepare && nyc npm test && nyc report -r=html",
-    "ci": "npm run prepare && nyc npm test && nyc report -r=lcov && codecov"
+    "ci": "npm run prepare && nyc npm test && npm run test:types && nyc report -r=lcov && codecov"
   },
   "ava": {
     "files": [

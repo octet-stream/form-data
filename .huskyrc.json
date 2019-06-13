@@ -1,6 +1,6 @@
 {
   "hooks": {
     "pre-commit": "npm run staged",
-    "pre-push": "npm run report"
+    "pre-push": "npm run report && npm run eslint && npm run test:types"
   }
 }
