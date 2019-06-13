@@ -48,7 +48,7 @@ class FormData {
    *   with "name", "value" and "filename" props.
    *   See the FormData#append for more info about the available format.
    */
-  constructor(fields = null) {
+  constructor(entries = null) {
     bind([
       Symbol.iterator, Symbol.asyncIterator,
       "toString", "inspect",
@@ -67,8 +67,8 @@ class FormData {
 
     this.__stream = new stream.Readable({read: this.__read})
 
-    if (isArray(fields)) {
-      this.__appendFromInitialFields(fields)
+    if (isArray(entries)) {
+      this.__appendFromInitialFields(entries)
     }
   }
 

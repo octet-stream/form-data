@@ -28,7 +28,7 @@ declare class FormDataNode {
    */
   stream: Readable
 
-  constructor(fields: Array<{
+  constructor(entries: Array<{
     name: string,
     value: FormDataNodeEntryValue,
     filename: string
@@ -129,7 +129,7 @@ declare class FormDataNode {
    * Allows to read a content from internal stream
    * using async generators and for-await-of APIs
    */
-  [Symbol.asyncIterator](): IterableIterator<Promise<Buffer>>
+  [Symbol.asyncIterator](): AsyncIterableIterator<Buffer>
 }
 
 export default FormDataNode
