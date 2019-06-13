@@ -28,6 +28,11 @@ declare class FormDataNode {
    */
   stream: Readable
 
+  constructor(fields: Array<{
+    name: string,
+    value: FormDataNodeEntryValue,
+    filename: string
+  }>)
 
   /**
    * Returns computed length of the FormData content.
