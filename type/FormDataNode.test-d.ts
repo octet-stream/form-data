@@ -57,6 +57,12 @@ expect<IterableIterator<[string, string | ReadStream | Readable | Buffer]>>(
 
 expect<void>(fd.forEach(() => {}))
 
+fd.forEach((value, name, fd) => {
+  expect<any>(value)
+  expect<string>(name)
+  expect<FormData>(fd)
+})
+
 expect<IterableIterator<[string, string | ReadStream | Readable | Buffer]>>(
   fd[Symbol.iterator]()
 )
