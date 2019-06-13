@@ -27,7 +27,7 @@
     "w": "npm run watch",
     "cleanup": "rimraf lib test",
     "test": "ava",
-    "types:types": "tsd",
+    "test:types": "tsd",
     "coverage": "npm run cleanup && npm run prepare && nyc npm test",
     "report": "npm run cleanup && npm run prepare && nyc npm test && nyc report -r=html",
     "ci": "npm run prepare && nyc npm test && npm run test:types && nyc report -r=lcov && codecov"
