@@ -19,6 +19,7 @@
   "scripts": {
     "eslint": "eslint src/**/*.mjs",
     "staged": "lint-staged",
+    "make:test": "babel src -s -d .",
     "prepare": "npm run prepare:mjs && npm run prepare:js",
     "prepare:mjs": "BABEL_ESM=1 babel src -d . --keep-file-extension",
     "prepare:js": "babel src -d .",
@@ -28,15 +29,21 @@
     "cleanup": "rimraf lib test",
     "test": "ava",
     "test:types": "tsd",
-    "coverage": "npm run cleanup && npm run prepare && nyc npm test",
-    "report": "npm run cleanup && npm run prepare && nyc npm test && nyc report -r=html",
-    "ci": "npm run prepare && nyc npm test && npm run test:types && nyc report -r=lcov && codecov"
+    "coverage": "npm run cleanup && npm run make:test && nyc npm run test",
+    "report": "npm run cleanup && npm run make:test && nyc npm run test && nyc report -r=html",
+    "ci": "npm run make:test && nyc npm run test && npm run test:types && nyc report -r=lcov && codecov"
   },
   "ava": {
     "files": [
-      "test/**/*.js",
-      "!test/__helper__/*.js"
+      "test/**/*.js"
+    ],
+    "helpers": [
+      "test/__helper__/*.js"
     ]
+  },
+  "nyc": {
+    "extension": [".mjs"],
+    "exclude": ["test/**", ".babelrc.js"]
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",
