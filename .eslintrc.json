@@ -25,10 +25,6 @@
 
     "import/no-unresolved": "error",
 
-    "ava/no-ignored-test-files": ["error", {
-      "files": [
-        "src/test/**/*.{js,mjs}"
-      ]
-    }]
+    "ava/no-ignored-test-files": 0
   }
 }
