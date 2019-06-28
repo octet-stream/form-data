@@ -13,6 +13,7 @@ import isString from "./util/isString"
 import isObject from "./util/isObject"
 import isBuffer from "./util/isBuffer"
 import isStream from "./util/isStream"
+import getLength from "./util/getLength"
 import isFunction from "./util/isFunction"
 import isReadStream from "./util/isReadStream"
 
@@ -295,17 +296,13 @@ class FormData {
       length += Buffer.from(this.__getHeader(name, filename)).length
 
       for (const value of values) {
-        if (isStream(value)) {
-          if (!isReadStream(value)) {
-            return undefined
-          }
+        const valueLength = await getLength(value)
 
-          length += await fs.stat(value.path).then(({size}) => size)
-        } else if (isBuffer(value)) {
-          length += value.length
-        } else {
-          length += Buffer.from(value).length
+        if (valueLength == null) {
+          return undefined
         }
+
+        length += valueLength
       }
 
       length += carriageLength
