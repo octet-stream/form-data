@@ -4,7 +4,9 @@ import isFunction from "./isFunction"
 
 function getStreamIterator(value) {
   if (isWHATWGReadable(value)) {
-    return value.getReader()
+    const reader = value.getReader()
+
+    return reader.read.bind(reader)
   }
 
   if (!isFunction(value[Symbol.asyncIterator])) {

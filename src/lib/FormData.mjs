@@ -15,8 +15,8 @@ import isBuffer from "./util/isBuffer"
 import isStream from "./util/isStream"
 import getLength from "./util/getLength"
 import isFunction from "./util/isFunction"
-
 import StreamIterator from "./util/StreamIterator"
+import getStreamIterator from "./util/getStreamIterator"
 
 const isArray = Array.isArray
 
@@ -117,9 +117,7 @@ class FormData {
       for (const value of values) {
         if (isStream(value)) {
           // Read the stream content
-          yield* isFunction(value[Symbol.asyncIterator])
-            ? value
-            : new StreamIterator(value)
+          yield* getStreamIterator(value)
         } else {
           yield value
         }
