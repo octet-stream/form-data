@@ -1,5 +1,6 @@
-import isReadable from "./isReadable"
+import isWHATWGReadable from "./isWHATWGReadable"
 import isReadStream from "./isReadStream"
+import isReadable from "./isReadable"
 
 /**
  * Checks if given value is ONLY fs.ReadStream OR stream.Readable instance
@@ -8,6 +9,8 @@ import isReadStream from "./isReadStream"
  *
  * @return {boolean}
  */
-const isStream = value => isReadStream(value) || isReadable(value)
+const isStream = value => (
+  isWHATWGReadable(value) || isReadStream(value) || isReadable(value)
+)
 
 export default isStream
