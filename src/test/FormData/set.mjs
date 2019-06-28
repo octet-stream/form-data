@@ -3,6 +3,7 @@ import stream from "stream"
 import path from "path"
 
 import test from "ava"
+import Blob from "fetch-blob"
 
 import FormData from "../../lib/FormData"
 
@@ -100,6 +101,14 @@ test("Should correctly add a field with Buffer data", t => {
 
   t.true(actual instanceof Buffer)
   t.true(actual.equals(phrase))
+})
+
+test("Supports Blob as a filed", t => {
+  const fd = new FormData()
+
+  fd.set("file", new Blob(["Some text"], {type: "text/plain"}), "file.txt")
+
+  t.true(fd.get("file") instanceof Blob)
 })
 
 test(
