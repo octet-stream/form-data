@@ -3,7 +3,6 @@ import path from "path"
 
 import invariant from "@octetstream/invariant"
 import mimes from "mime-types"
-import fs from "promise-fs"
 
 import bind from "./util/bind"
 import concat from "./util/concat"
@@ -15,7 +14,6 @@ import isBuffer from "./util/isBuffer"
 import isStream from "./util/isStream"
 import getLength from "./util/getLength"
 import isFunction from "./util/isFunction"
-import isReadStream from "./util/isReadStream"
 
 import StreamIterator from "./util/StreamIterator"
 
