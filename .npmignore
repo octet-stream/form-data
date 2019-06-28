@@ -5,7 +5,7 @@ node_modules
 .nyc_output
 coverage
 ..map
-.map
+*.map
 .js.map
 
 /src
