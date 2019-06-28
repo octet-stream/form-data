@@ -42,8 +42,13 @@
     ]
   },
   "nyc": {
-    "extension": [".mjs"],
-    "exclude": ["test/**", ".babelrc.js"]
+    "extension": [
+      ".mjs"
+    ],
+    "exclude": [
+      "test/**",
+      ".babelrc.js"
+    ]
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",
@@ -55,6 +60,7 @@
     "@babel/plugin-transform-modules-commonjs": "7.4.4",
     "@babel/plugin-transform-runtime": "7.4.4",
     "@octetstream/eslint-config": "3.0.0",
+    "@types/node": "^12.0.10",
     "ava": "2.1.0",
     "babel-plugin-add-module-exports": "1.0.2",
     "codecov": "3.5.0",

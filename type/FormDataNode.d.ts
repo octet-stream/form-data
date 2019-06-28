@@ -1,9 +1,10 @@
+// <reference types="node" />
 import {Readable} from "stream"
 import {ReadStream} from "fs"
 
-declare type FormDataNodeEntry = string | ReadStream | Readable | Buffer
+declare type FormDataEntry = string | ReadStream | Readable | Buffer
 
-declare class FormDataNode {
+declare class FormData {
   [Symbol.toStringTag]: string
 
   /**
@@ -83,7 +84,7 @@ declare class FormDataNode {
    *
    * @param name A name of the value you want to retrieve.
    */
-  get(name: string): FormDataNodeEntry | void
+  get(name: string): FormDataEntry | void
 
   /**
    * Returns all the values associated with
@@ -91,7 +92,7 @@ declare class FormDataNode {
    *
    * @param name A name of the value you want to retrieve.
    */
-  getAll(name: string): Array<FormDataNodeEntry>
+  getAll(name: string): Array<FormDataEntry>
 
   /**
    * Deletes a key and its value(s) from a FormData object.
@@ -106,19 +107,19 @@ declare class FormDataNode {
 
   keys(): IterableIterator<string>
 
-  values(): IterableIterator<FormDataNodeEntry>
+  values(): IterableIterator<FormDataEntry>
 
-  entries(): IterableIterator<[string, FormDataNodeEntry]>
+  entries(): IterableIterator<[string, FormDataEntry]>
 
   /**
    * Executes a given callback for each field of the FormData instance
    */
   forEach(
-    fn: (value: FormDataNodeEntry, name: string, fd: FormDataNode) => void,
+    fn: (value: FormDataEntry, name: string, fd: FormData) => void,
     ctx?: any
   ): void
 
-  [Symbol.iterator](): IterableIterator<[string, FormDataNodeEntry]>
+  [Symbol.iterator](): IterableIterator<[string, FormDataEntry]>
 
   /**
    * Allows to read a content from internal stream
@@ -127,4 +128,4 @@ declare class FormDataNode {
   [Symbol.asyncIterator](): AsyncIterableIterator<Buffer>
 }
 
-export default FormDataNode
+export default FormData
