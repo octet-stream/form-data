@@ -5,6 +5,7 @@ import path from "path"
 import test from "ava"
 import Blob from "fetch-blob"
 
+import File from "../__helper__/File"
 import FormData from "../../lib/FormData"
 
 const filePath = path.join(__dirname, "..", "..", "package.json")
@@ -109,6 +110,14 @@ test("Supports Blob as a filed", t => {
   fd.set("file", new Blob(["Some text"], {type: "text/plain"}), "file.txt")
 
   t.true(fd.get("file") instanceof Blob)
+})
+
+test("Supports File as a filed", t => {
+  const fd = new FormData()
+
+  fd.set("file", new File(["Some text"], "file.txt", {type: "text/plain"}))
+
+  t.true(fd.get("file") instanceof File)
 })
 
 test(
