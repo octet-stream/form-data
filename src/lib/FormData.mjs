@@ -6,6 +6,7 @@ import mimes from "mime-types"
 
 import bind from "./util/bind"
 import concat from "./util/concat"
+import isBlob from "./util/isBlob"
 import boundary from "./util/boundary"
 import getType from "./util/getType"
 import isString from "./util/isString"
@@ -203,19 +204,22 @@ class FormData {
     // Getting a filename for Buffer and Readable values
     if (isBuffer(value) && filename) {
       filename = path.basename(filename)
+    } else if (isBlob(value)) {
+      filename = path.basename(value.name || filename)
     } else if (isStream(value) && (value.path || filename)) {
       // Readable stream which created from fs.createReadStream
       // have a "path" property. So, we can get a "filename"
       // from the stream itself.
       filename = path.basename(value.path || filename)
     } else {
-      // The regular values shouldn't have "filename" property
+      // TODO: Add an error here if the filename prop is set to fit
+      // browser implementations behaviour
       filename = undefined
     }
 
     append = Boolean(append)
 
-    if (!(isStream(value) || isBuffer(value))) {
+    if (!(isStream(value) || isBuffer(value) || isBlob(value))) {
       value = String(value)
     }
 
@@ -300,7 +304,7 @@ class FormData {
           return undefined
         }
 
-        length += valueLength
+        length += Number(valueLength)
       }
 
       length += carriageLength

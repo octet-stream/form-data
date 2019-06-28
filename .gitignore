@@ -9,3 +9,5 @@ coverage
 
 /lib
 /test
+/polyfill.js
+/polyfill.mjs

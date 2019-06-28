@@ -26,7 +26,7 @@
     "watch": "babel src -w -d .",
     "p": "npm run prepare",
     "w": "npm run watch",
-    "cleanup": "rimraf lib test",
+    "cleanup": "rimraf lib test polyfill.mjs polyfill.js",
     "test": "ava",
     "test:types": "tsd",
     "coverage": "npm run cleanup && npm run make:test && nyc npm run test",
@@ -75,7 +75,8 @@
     "sinon": "7.3.2",
     "supertest": "4.0.2",
     "then-busboy": "4.3.1",
-    "tsd": "0.7.3"
+    "tsd": "0.7.3",
+    "web-streams-polyfill": "^2.0.3"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "7.4.5",
