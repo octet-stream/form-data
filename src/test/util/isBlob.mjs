@@ -1,18 +1,15 @@
+import Blob from "fetch-blob"
 import test from "ava"
 
 import isBlob from "../../lib/util/isBlob"
 
-class Blob {
-  type = ""
-
-  size = null
-
-  arrayBuffer() { }
-
-  stream() { }
+class File extends Blob {
+  constructor() {
+    super([], {
+      type: "application/octet-stream"
+    })
+  }
 }
-
-class File extends Blob {}
 
 test("Returns true for Blob instances", t => {
   t.true(isBlob(new Blob()))

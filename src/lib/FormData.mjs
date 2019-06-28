@@ -165,7 +165,7 @@ class FormData {
    */
   __appendFromInitialFields = fields => {
     for (const field of fields) {
-      if (isObject(field)) {
+      if (isObject(field) && !isArray(field)) {
         this.append(field.name, field.value, field.filename)
       }
     }

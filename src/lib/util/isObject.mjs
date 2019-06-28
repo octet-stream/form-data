@@ -1,5 +1,3 @@
-import getType from "./getType"
-
-const isObject = val => getType(val) === "object"
+const isObject = value => typeof value === "object" && value !== null
 
 export default isObject

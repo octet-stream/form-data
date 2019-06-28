@@ -2431,6 +2431,11 @@ fast-levenshtein@~2.0.4:
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
 
+fetch-blob@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/fetch-blob/-/fetch-blob-1.0.3.tgz#7d75e3886f1bdb28083e30298b169de575f674f2"
+  integrity sha512-5MFud4mZ7GMniHz6q0gifn9EcGzFw1AQgia24L4XH8zabWyKLaPzNksWAzeH80jCuP2NEosLtBsTGZRnKhOn/A==
+
 figures@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-1.7.0.tgz#cbe1e3affcf1cd44b80cadfed28dc793a9701d2e"
