@@ -10,10 +10,11 @@ import sinon from "sinon"
 import boundary from "../../lib/util/boundary"
 import FormData from "../../lib/FormData"
 
+import read from "../__helper__/read"
+import File from "../__helper__/File"
 import count from "../__helper__/count"
 import server from "../__helper__/server"
 import readIterable from "../__helper__/readStreamWithAsyncIterator"
-import read from "../__helper__/read"
 
 test("The stream accessor should return Readable stream", t => {
   const fd = new FormData()
@@ -192,4 +193,21 @@ test("Correctly send Blob fields", async t => {
     .send(data)
 
   t.is(body.blob, expected)
+})
+
+test("Correctly send File fields", async t => {
+  const fd = new FormData()
+
+  const expected = "Some text"
+
+  fd.set("file", new File([expected], "file.txt", {type: "text/plain"}))
+
+  const data = await read(fd.stream)
+
+  const {body} = await req(server())
+    .post("/")
+    .set("content-type", fd.headers["Content-Type"])
+    .send(data)
+
+  t.is(body.file, expected)
 })
