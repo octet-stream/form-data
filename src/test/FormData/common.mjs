@@ -10,10 +10,10 @@ import sinon from "sinon"
 import boundary from "../../lib/util/boundary"
 import FormData from "../../lib/FormData"
 
-import File from "../__helper__/File"
 import count from "../__helper__/count"
 import server from "../__helper__/server"
-import read from "../__helper__/readStreamWithAsyncIterator"
+import readIterable from "../__helper__/readStreamWithAsyncIterator"
+import read from "../__helper__/read"
 
 test("The stream accessor should return Readable stream", t => {
   const fd = new FormData()
@@ -121,7 +121,7 @@ test("Should correctly add a filed to FormData request body", async t => {
 
   fd.set("field", field)
 
-  const data = await read(fd)
+  const data = await readIterable(fd)
 
   const {body} = await req(server())
     .post("/")
@@ -140,7 +140,7 @@ test("Should correctly add a file to FormData request body", async t => {
 
   const file = await fs.readFile("/usr/share/dict/words", "utf-8")
 
-  const data = await read(fd)
+  const data = await readIterable(fd)
 
   const {body} = await req(server())
     .post("/")
@@ -163,7 +163,7 @@ test(
 
     const expectedFile = await fs.readFile("/usr/share/dict/words")
 
-    const data = await read(fd)
+    const data = await readIterable(fd)
 
     const res = await req(server())
       .post("/")
@@ -184,10 +184,12 @@ test("Correctly send Blob fields", async t => {
 
   fd.set("blob", new Blob([expected], {type: "text/plain"}), "file.txt")
 
+  const data = await read(fd.stream)
+
   const {body} = await req(server())
     .post("/")
     .set("content-type", fd.headers["Content-Type"])
-    .send(await read(fd))
+    .send(data)
 
   t.is(body.blob, expected)
 })
