@@ -1,5 +1,9 @@
 /**
  * Reads a content from given ReadableStream
+ *
+ * @yield {any}
+ *
+ * @api private
  */
 async function* readableStreamIterator(reader) {
   while (true) {

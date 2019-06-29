@@ -8,6 +8,8 @@ import isReadable from "./isReadable"
  * @param {any} value
  *
  * @return {boolean}
+ *
+ * @api private
  */
 const isStream = value => (
   isWHATWGReadable(value) || isReadStream(value) || isReadable(value)

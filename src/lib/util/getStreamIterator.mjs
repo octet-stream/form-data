@@ -9,6 +9,8 @@ import isFunction from "./isFunction"
  * @param {Readable | ReadableStream | ReadStream} value
  *
  * @return {AsyncIterableIterator<any>}
+ *
+ * @api private
  */
 function getStreamIterator(value) {
   if (isWHATWGReadable(value)) {

@@ -10,6 +10,8 @@ const names = ["Blob", "File"]
  * @param {any} value
  *
  * @return {boolean}
+ *
+ * @api private
  */
 const isBlob = value => (
   isObject(value)

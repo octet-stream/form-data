@@ -11,6 +11,8 @@ import isBlob from "./isBlob"
  * @param {any} value
  *
  * @return {number | undefined}
+ *
+ * @api private
  */
 async function getLength(value) {
   if (isStream(value)) {

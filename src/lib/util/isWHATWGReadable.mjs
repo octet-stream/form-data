@@ -7,6 +7,8 @@ import isObject from "./isObject"
  * @param {any} value
  *
  * @return {boolean}
+ *
+ * @api private
  */
 const isWHATWGReadable = value => (
   isObject(value)

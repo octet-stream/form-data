@@ -1,5 +1,6 @@
-import getType from "./getType"
-
-const isString = val => getType(val) === "string"
+/**
+ * @api private
+ */
+const isString = value => typeof value === "string"
 
 export default isString
