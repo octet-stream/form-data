@@ -1,3 +1,4 @@
+import readableStreamIterator from "./readableStreamIterator"
 import isWHATWGReadable from "./isWHATWGReadable"
 import StreamIterator from "./StreamIterator"
 import isFunction from "./isFunction"
@@ -11,9 +12,7 @@ import isFunction from "./isFunction"
  */
 function getStreamIterator(value) {
   if (isWHATWGReadable(value)) {
-    const reader = value.getReader()
-
-    return reader.read.bind(reader)
+    return readableStreamIterator(value.getReader())
   }
 
   if (!isFunction(value[Symbol.asyncIterator])) {

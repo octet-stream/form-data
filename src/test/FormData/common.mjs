@@ -1,11 +1,13 @@
 import stream from "stream"
 
 import test from "ava"
+import sinon from "sinon"
 import pq from "proxyquire"
-import Blob from "fetch-blob"
 import req from "supertest"
 import fs from "promise-fs"
-import sinon from "sinon"
+import Blob from "fetch-blob"
+
+import {ReadableStream} from "web-streams-polyfill/ponyfill"
 
 import boundary from "../../lib/util/boundary"
 import FormData from "../../lib/FormData"
@@ -210,4 +212,28 @@ test("Correctly send File fields", async t => {
     .send(data)
 
   t.is(body.file, expected)
+})
+
+test("Allows to use ReadableStream as a field", async t => {
+  const expected = "My hovercraft is full of eels"
+
+  const readable = new ReadableStream({
+    start(controller) {
+      controller.enqueue(expected)
+      controller.close()
+    }
+  })
+
+  const fd = new FormData()
+
+  fd.set("field", readable)
+
+  const data = await read(fd.stream)
+
+  const {body} = await req(server())
+    .post("/")
+    .set("content-type", fd.headers["Content-Type"])
+    .send(data)
+
+  t.is(body.field, expected)
 })
