@@ -1,19 +1,19 @@
 import stream from "stream"
 
 import test from "ava"
-
 import pq from "proxyquire"
+import Blob from "fetch-blob"
 import req from "supertest"
-
+import fs from "promise-fs"
 import sinon from "sinon"
-import {createReadStream, readFile} from "promise-fs"
 
 import boundary from "../../lib/util/boundary"
 import FormData from "../../lib/FormData"
 
+import File from "../__helper__/File"
 import count from "../__helper__/count"
-import read from "../__helper__/readStreamWithAsyncIterator"
 import server from "../__helper__/server"
+import read from "../__helper__/readStreamWithAsyncIterator"
 
 test("The stream accessor should return Readable stream", t => {
   const fd = new FormData()
@@ -136,9 +136,9 @@ test("Should correctly add a file to FormData request body", async t => {
 
   const fd = new FormData()
 
-  fd.set("file", createReadStream("/usr/share/dict/words"))
+  fd.set("file", fs.createReadStream("/usr/share/dict/words"))
 
-  const file = String(await readFile("/usr/share/dict/words"))
+  const file = await fs.readFile("/usr/share/dict/words", "utf-8")
 
   const data = await read(fd)
 
@@ -159,9 +159,9 @@ test(
 
     fd.set("field", field)
 
-    fd.set("file", createReadStream("/usr/share/dict/words"))
+    fd.set("file", fs.createReadStream("/usr/share/dict/words"))
 
-    const expectedFile = await readFile("/usr/share/dict/words")
+    const expectedFile = await fs.readFile("/usr/share/dict/words")
 
     const data = await read(fd)
 
@@ -172,7 +172,22 @@ test(
 
     t.is(res.body.field, field)
 
-    // I don't now why, but sometimes test fails here because file is empty -_-
+    // I don't know why, but sometimes test fails here because file is empty -_-
     t.is(res.body.file, String(expectedFile))
   }
 )
+
+test("Correctly send Blob fields", async t => {
+  const fd = new FormData()
+
+  const expected = "Some text"
+
+  fd.set("blob", new Blob([expected], {type: "text/plain"}), "file.txt")
+
+  const {body} = await req(server())
+    .post("/")
+    .set("content-type", fd.headers["Content-Type"])
+    .send(await read(fd))
+
+  t.is(body.blob, expected)
+})

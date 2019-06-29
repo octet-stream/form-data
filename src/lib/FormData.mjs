@@ -115,7 +115,9 @@ class FormData {
       yield this.__getHeader(name, filename)
 
       for (const value of values) {
-        if (isStream(value)) {
+        if (isBlob(value)) {
+          yield* getStreamIterator(value.stream())
+        } else if (isStream(value)) {
           // Read the stream content
           yield* getStreamIterator(value)
         } else {
