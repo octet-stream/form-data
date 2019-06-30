@@ -9,16 +9,13 @@ const isArray = Array.isArray
 
 const filePath = path.join(__dirname, "..", "..", "package.json")
 
-test(
-  "Should always return an array, even if the FormData have no fileds",
-  t => {
-    const fd = new FormData()
+test("Always returns an array, even if the FormData have no fileds", t => {
+  const fd = new FormData()
 
-    t.true(isArray(fd.getAll("nope")))
-  }
-)
+  t.true(isArray(fd.getAll("nope")))
+})
 
-test("Should return an array with the stringified primitive value", t => {
+test("Returns an array with the stringified primitive value", t => {
   const fd = new FormData()
 
   fd.set("number", 451)
@@ -26,7 +23,7 @@ test("Should return an array with the stringified primitive value", t => {
   t.deepEqual(fd.getAll("number"), ["451"])
 })
 
-test("Should return an array with non-stringified Readable", t => {
+test("Return an array with non-stringified Readable", t => {
   const fd = new FormData()
 
   const stream = fs.createReadStream(filePath)
@@ -39,7 +36,7 @@ test("Should return an array with non-stringified Readable", t => {
   )
 })
 
-test("Should return an array with non-stringified Buffer", async t => {
+test("Return an array with non-stringified Buffer", async t => {
   const fd = new FormData()
 
   const buffer = await fs.readFile(filePath)
