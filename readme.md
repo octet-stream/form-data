@@ -83,9 +83,12 @@ Set a new value for an existing key inside **FormData**,
 or add the new field if it does not already exist.
 
   - **{string}** name – The name of the field whose data is contained in **value**
-  - **{any}** value – The field value. You can pass any JavaScript primitive type (including **null** and **undefined**),
-    **[Buffer](https://nodejs.org/api/buffer.html#buffer_buffer)** or **[Readable](https://nodejs.org/api/stream.html#stream_class_stream_readable)** stream.
+  - **{any}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`),
+    [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable),
+    [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+    or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
+    **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
   - **{string}** [filename = undefined] – A filename of given field. Can be added only for **Buffer** and **Readable** .
 
 ##### `append(name, value[, filename]) -> {void}`
@@ -94,19 +97,22 @@ Appends a new value onto an existing key inside a FormData object,
 or adds the key if it does not already exist.
 
   - **{string}** name – The name of the field whose data is contained in **value**
-  - **{any}** value – The field value. You can pass any JavaScript primitive type (including **null** and **undefined**),
-    **[Buffer](https://nodejs.org/api/buffer.html#buffer_buffer)** or **[Readable](https://nodejs.org/api/stream.html#stream_class_stream_readable)** stream.
+  - **{any}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`),
+    [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable),
+    [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+    or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
+    **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
   - **{string}** [filename = undefined] – A filename of given field. Can be added only for **Buffer** and **Readable** .
 
-##### `get(name) -> {string | Buffer | stream.Readable | fs.ReadStream}`
+##### `get(name) -> {string | Buffer | Readable | ReadStream | ReadableStream | Blob | file}`
 
 Returns the first value associated with the given name.
 **Buffer** and **Readable** values will be returned as-is.
 
   - **{string}** name – A name of the value you want to retrieve.
 
-##### `getAll(name) -> {Array<string | Buffer | stream.Readable | fs.ReadStream>}`
+##### `getAll(name) -> {Array<string | Buffer | Readable | ReadStream | ReadableStream | Blob | file>}`
 
 Returns all the values associated with a given key from within a **FormData** object.
 
