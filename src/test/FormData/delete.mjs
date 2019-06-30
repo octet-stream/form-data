@@ -2,7 +2,7 @@ import test from "ava"
 
 import FormData from "../../lib/FormData"
 
-test("Should delete field by it key", t => {
+test("Removes a field by its key", t => {
   const fd = new FormData()
 
   fd.set("name", "value")

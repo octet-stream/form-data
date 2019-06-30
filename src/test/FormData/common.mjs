@@ -18,13 +18,13 @@ import count from "../__helper__/count"
 import server from "../__helper__/server"
 import readIterable from "../__helper__/readStreamWithAsyncIterator"
 
-test("The stream accessor should return Readable stream", t => {
+test("The stream accessor returns a Readable stream", t => {
   const fd = new FormData()
 
   t.true(fd.stream instanceof stream.Readable)
 })
 
-test("Boundary accessor should return a correct value", t => {
+test("Boundary accessor returns a correct value", t => {
   const spyondary = sinon.spy(boundary)
 
   const MockedFD = pq("../../lib/FormData", {
@@ -38,7 +38,7 @@ test("Boundary accessor should return a correct value", t => {
   t.is(actual, `NodeJSFormDataStream${spyondary.lastCall.returnValue}`)
 })
 
-test("Should return a correct headers", t => {
+test("Returns a correct headers from the .headers accessor", t => {
   const spyondary = sinon.spy(boundary)
 
   const MockedFD = pq("../../lib/FormData", {
@@ -59,25 +59,25 @@ test("Should return a correct headers", t => {
   t.deepEqual(actual, expected)
 })
 
-test("Should return a correct string on .toString() convertation", t => {
+test("Returns a correct string on .toString() call", t => {
   const fd = new FormData()
 
   t.is(String(fd), "[object FormData]")
 })
 
-test("Should return a correct string on .inspect() call", t => {
+test("Returns a correct string on .inspect() call", t => {
   const fd = new FormData()
 
   t.is(fd.inspect(), "FormData")
 })
 
-test("Should have no fields by default", t => {
+test("Have no fields by default", t => {
   const fd = new FormData()
 
   t.is(count(fd), 0)
 })
 
-test("Should add initial fields from a collection", t => {
+test("Applies initial fields from a collection", t => {
   const fields = [
     {
       name: "nick",
@@ -96,7 +96,7 @@ test("Should add initial fields from a collection", t => {
   t.is(fd.get("eyes"), "blue")
 })
 
-test("Should ignore invalid initial fields", t => {
+test("Ignores invalid initial fields", t => {
   const fields = [
     {
       name: "nick",
@@ -117,7 +117,7 @@ test("Should ignore invalid initial fields", t => {
   t.is(fd.get("eyes"), "blue")
 })
 
-test("Should correctly add a filed to FormData request body", async t => {
+test("Correctly sets a filed to FormData request body", async t => {
   const fd = new FormData()
 
   const field = "Hello, World!"
@@ -134,9 +134,7 @@ test("Should correctly add a filed to FormData request body", async t => {
   t.is(body.field, field)
 })
 
-test("Should correctly add a file to FormData request body", async t => {
-  t.plan(1)
-
+test("Correctly sets a file to FormData request body", async t => {
   const fd = new FormData()
 
   fd.set("file", fs.createReadStream("/usr/share/dict/words"))
@@ -154,7 +152,7 @@ test("Should correctly add a file to FormData request body", async t => {
 })
 
 test(
-  "Should correctly add field AND file together to FormData request body",
+  "Correctly sets field AND file together to FormData request body",
   async t => {
     const fd = new FormData()
 
@@ -180,7 +178,7 @@ test(
   }
 )
 
-test("Correctly send Blob fields", async t => {
+test("Correctly sets Blob fields", async t => {
   const fd = new FormData()
 
   const expected = "Some text"
@@ -197,7 +195,7 @@ test("Correctly send Blob fields", async t => {
   t.is(body.blob, expected)
 })
 
-test("Correctly send File fields", async t => {
+test("Correctly sets File fields", async t => {
   const fd = new FormData()
 
   const expected = "Some text"

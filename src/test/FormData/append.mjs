@@ -2,7 +2,7 @@ import test from "ava"
 
 import FormData from "../../lib/FormData"
 
-test("Should set a new value", t => {
+test("Appends a new value", t => {
   const fd = new FormData()
 
   fd.append("name", "value")
@@ -13,7 +13,7 @@ test("Should set a new value", t => {
   )
 })
 
-test("Should append a value to the existing filed", t => {
+test("Appends a value to the existing field", t => {
   const fd = new FormData()
 
   fd.append("names", "John")
@@ -22,7 +22,7 @@ test("Should append a value to the existing filed", t => {
   t.deepEqual(fd.getAll("names"), ["John", "Max"])
 })
 
-test("Should append array values", t => {
+test("Appends array values", t => {
   const fd = new FormData()
 
   fd.append("numbers", [4, 8, 15])
