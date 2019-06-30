@@ -1,22 +1,22 @@
 import stream from "stream"
 import path from "path"
 
-import invariant from "@octetstream/invariant"
 import mimes from "mime-types"
+import invariant from "@octetstream/invariant"
 
-import bind from "./util/bind"
-import concat from "./util/concat"
-import isBlob from "./util/isBlob"
-import boundary from "./util/boundary"
-import getType from "./util/getType"
+import getStreamIterator from "./util/getStreamIterator"
+import StreamIterator from "./util/StreamIterator"
+import isFunction from "./util/isFunction"
+import getLength from "./util/getLength"
 import isString from "./util/isString"
 import isObject from "./util/isObject"
 import isBuffer from "./util/isBuffer"
 import isStream from "./util/isStream"
-import getLength from "./util/getLength"
-import isFunction from "./util/isFunction"
-import StreamIterator from "./util/StreamIterator"
-import getStreamIterator from "./util/getStreamIterator"
+import boundary from "./util/boundary"
+import getType from "./util/getType"
+import isBlob from "./util/isBlob"
+import concat from "./util/concat"
+import bind from "./util/bind"
 
 const isArray = Array.isArray
 
