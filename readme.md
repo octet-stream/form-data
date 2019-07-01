@@ -64,7 +64,7 @@ Initialize new FormData instance
 
 ##### `get boundary() -> {string}`
 
-Returns a boundary string of the current FormData instance.
+Returns a boundary string of the current `FormData` instance.
 
 ##### `get stream() -> {stream.Readable}`
 
@@ -89,7 +89,7 @@ or add the new field if it does not already exist.
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
     **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
-  - **{string}** [filename = undefined] – A filename of given field. Can be added only for **Buffer** and **Readable** .
+  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer` and `Readable` .
 
 ##### `append(name, value[, filename]) -> {void}`
 
@@ -103,7 +103,7 @@ or adds the key if it does not already exist.
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
     **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
-  - **{string}** [filename = undefined] – A filename of given field. Can be added only for **Buffer** and **Readable** .
+  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer` and `Readable` .
 
 ##### `get(name) -> {string | Buffer | Readable | ReadStream | ReadableStream | Blob | file}`
 
@@ -126,7 +126,7 @@ Check if a field with the given **name** exists inside **FormData**.
 
 ##### `delete(name) -> {void}`
 
-Deletes a key and its value(s) from a **FormData** object.
+Deletes a key and its value(s) from a `FormData` object.
 
   - **{string}** name – The name of the key you want to delete.
 
@@ -147,15 +147,15 @@ Executes a given **callback** for each field of the FormData instance
 
 ##### `keys() -> {IterableIterator<string>}`
 
-Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)** allowing to go through the **FormData** keys
+Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** keys
 
 ##### `values() -> {IterableIterator<any>}`
 
-Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)** allowing to go through the **FormData** values
+Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** values
 
 ##### `entries() -> {IterableIterator<[string, any]>}`
 
-Returns an **[iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)** allowing to go through the **FormData** key/value pairs
+Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** key/value pairs
 
 ##### `[Symbol.iterator]() -> {IterableIterator<[string, any]>}`
 
@@ -168,8 +168,8 @@ Read the [async iteration proposal](https://github.com/tc39/proposal-async-itera
 
 ## Related links
 
-  - [then-busboy](https://github.com/octet-stream/then-busboy) is a promise-based wrapper around Busboy.
+  - [`then-busboy`](https://github.com/octet-stream/then-busboy) is a promise-based wrapper around Busboy.
     Process multipart/form-data content and returns it as a single object.
     Will be helpful to handle your data on the server-side applications.
-  - [@octetstream/object-to-form-data](https://github.com/octet-stream/object-to-form-data) converts JavaScript object to FormData.
-  - [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) interface documentation on MDN
+  - [`@octetstream/object-to-form-data`](https://github.com/octet-stream/object-to-form-data) converts JavaScript object to FormData.
+  - [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) interface documentation on MDN
