@@ -168,6 +168,8 @@ Read the [async iteration proposal](https://github.com/tc39/proposal-async-itera
 
 ## Related links
 
+  - [`web-streams-polyfill`](https://github.com/MattiasBuelens/web-streams-polyfill) a Web Streams, based on the WHATWG spec reference implementation.
+  - [`fetch-blob`](https://github.com/bitinn/fetch-blob) a Blob implementation on node.js, originally from node-fetch.
   - [`then-busboy`](https://github.com/octet-stream/then-busboy) is a promise-based wrapper around Busboy.
     Process multipart/form-data content and returns it as a single object.
     Will be helpful to handle your data on the server-side applications.
