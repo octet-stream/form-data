@@ -33,3 +33,40 @@ test("Appends array values", t => {
     "16,23,42"
   ])
 })
+
+test("Throws a TypeError when less than 2 arguments has been set", t => {
+  const fd = new FormData()
+
+  const trap = () => fd.append("name")
+
+  const err = t.throws(trap)
+
+  t.true(err instanceof TypeError)
+  t.is(
+    err.message,
+
+    "Failed to execute 'append' on 'FormData': " +
+    "2 arguments required, but only 1 present."
+  )
+})
+
+test(
+  "Throws a TypeError when a filename parameter" +
+  "has been set for non-binary value type",
+  t => {
+    const fd = new FormData()
+
+    const trap = () => fd.append("name", "Just a string", "file.txt")
+
+    const err = t.throws(trap)
+
+    t.true(err instanceof TypeError)
+    t.is(
+      err.message,
+
+      "Failed to execute 'append' on 'FormData': " +
+      "parameter 2 is not one of the following types: ",
+      "ReadableStream | ReadStream | Readable | Buffer | File | Blob"
+    )
+  }
+)

@@ -176,33 +176,39 @@ test(
   }
 )
 
+test("Throws a TypeError when less than 2 arguments has been set", t => {
+  const fd = new FormData()
+
+  const trap = () => fd.set("name")
+
+  const err = t.throws(trap)
+
+  t.true(err instanceof TypeError)
+  t.is(
+    err.message,
+
+    "Failed to execute 'set' on 'FormData': " +
+    "2 arguments required, but only 1 present."
+  )
+})
+
 test(
-  "Should throw a TypeError on field setting when the name is not a string",
+  "Throws a TypeError when a filename parameter" +
+  "has been set for non-binary value type",
   t => {
     const fd = new FormData()
 
-    const trap = () => fd.set({})
-
-    const err = t.throws(trap)
-
-    t.true(err instanceof TypeError)
-    t.is(err.message, "Field name should be a string. Received object")
-  }
-)
-
-test(
-  "Should throw a TypeError on field setting when the filename passed, " +
-  "but it's not a string value.",
-  t => {
-    const fd = new FormData()
-
-    const trap = () => fd.set("key", "value", 451)
+    const trap = () => fd.set("name", "Just a string", "file.txt")
 
     const err = t.throws(trap)
 
     t.true(err instanceof TypeError)
     t.is(
-      err.message, "Filename should be a string (if passed). Received number"
+      err.message,
+
+      "Failed to execute 'set' on 'FormData': " +
+      "parameter 2 is not one of the following types: ",
+      "ReadableStream | ReadStream | Readable | Buffer | File | Blob"
     )
   }
 )

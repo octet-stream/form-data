@@ -29,20 +29,6 @@ const isArray = Array.isArray
  */
 class FormData {
   /**
-   * Check if given value is instance of FormData
-   * Note: This method is not a part of client-side FormData interface.
-   *
-   * @param {any} value
-   *
-   * @return {boolean}
-   *
-   * @public
-   */
-  static isFormData(value) {
-    return value instanceof FormData
-  }
-
-  /**
    * @param {array} fields – an optional FormData initial fields.
    *   Each initial field should be passed as a collection of the objects
    *   with "name", "value" and "filename" props.
@@ -190,18 +176,26 @@ class FormData {
    *
    * @private
    */
-  __setField(name, value, filename, append = false) {
-    invariant(
-      !isString(name), TypeError,
-      "Field name should be a string. Received %s", getType(name)
-    )
+  __setField(name, value, filename, options, append, argsLength) {
+    // FormData required at least 2 arguments to be set.
+    if (argsLength < 2) {
+      throw new TypeError(
+        `Failed to execute '${append ? "append" : "set"}' on 'FormData': ` +
+        `2 arguments required, but only ${argsLength} present.`
+      )
+    }
 
-    invariant(
-      filename && !isString(filename), TypeError,
-      "Filename should be a string (if passed). Received %s", getType(filename)
-    )
+    // FormData requires the second argument to be some kind of binary data
+    // when a filename has been set.
+    if (filename && !(isBlob(value) || isStream(value) || isBuffer(value))) {
+      throw new TypeError(
+        `Failed to execute '${append ? "append" : "set"}' on 'FormData': ` +
+        "parameter 2 is not one of the following types: ",
+        "ReadableStream | ReadStream | Readable | Buffer | File | Blob"
+      )
+    }
 
-    // Getting a filename for Buffer and Readable values
+    // Get a filename for Buffer, Blob, File, ReadableStream and Readable values
     if (isBuffer(value) && filename) {
       filename = path.basename(filename)
     } else if (isBlob(value)) {
@@ -211,14 +205,10 @@ class FormData {
       // have a "path" property. So, we can get a "filename"
       // from the stream itself.
       filename = path.basename(value.path || filename)
-    } else {
-      // TODO: Add an error here if the filename prop is set to fit
-      // browser implementations behaviour
-      filename = undefined
     }
 
-    append = Boolean(append)
-
+    // TODO: Check if a filename is set for binary data and consider them
+    // as a File if the parameter has been set
     if (!(isStream(value) || isBuffer(value) || isBlob(value))) {
       value = String(value)
     }
@@ -334,7 +324,11 @@ class FormData {
    *
    * @public
    */
-  append = (name, value, filename) => this.__setField(name, value, filename, 1)
+  append(name, value, filename, options) {
+    return this.__setField(
+      name, value, filename, options, true, arguments.length
+    )
+  }
 
   /**
    * Set a new value for an existing key inside FormData,
@@ -355,7 +349,11 @@ class FormData {
    *
    * @public
    */
-  set = (name, value, filename) => this.__setField(name, value, filename)
+  set(name, value, filename, options) {
+    return this.__setField(
+      name, value, filename, options, false, arguments.length
+    )
+  }
 
   /**
    * Check if a field with the given name exists inside FormData.
@@ -366,7 +364,9 @@ class FormData {
    *
    * @public
    */
-  has = name => this.__content.has(name)
+  has(name) {
+    return this.__content.has(name)
+  }
 
   /**
    * Returns the first value associated with the given name.
@@ -376,7 +376,7 @@ class FormData {
    *
    * @public
    */
-  get = name => {
+  get(name) {
     const field = this.__content.get(name)
 
     if (!field) {
@@ -394,7 +394,7 @@ class FormData {
    *
    * @public
    */
-  getAll = name => {
+  getAll(name) {
     const field = this.__content.get(name)
 
     return field ? Array.from(field.values) : []
@@ -407,7 +407,9 @@ class FormData {
    *
    * @public
    */
-  delete = name => void this.__content.delete(name)
+  delete(name) {
+    this.__content.delete(name)
+  }
 
   /**
    * Returns a string representation of the FormData
@@ -477,7 +479,7 @@ class FormData {
    *
    * @public
    */
-  forEach = (fn, ctx = null) => {
+  forEach(fn, ctx = null) {
     for (const [name, value] of this) {
       fn.call(ctx, value, name, this)
     }
