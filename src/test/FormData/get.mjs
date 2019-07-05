@@ -5,6 +5,7 @@ import fs from "promise-fs"
 import Blob from "fetch-blob"
 
 import FormData from "../../lib/FormData"
+import FileLike from "../../lib/util/File"
 
 import read from "../__helper__/read"
 import File from "../__helper__/File"
@@ -72,8 +73,7 @@ test("Returns Buffer value as-is", async t => {
 
   const actual = fd.get("buffer")
 
-  t.true(actual instanceof Buffer)
-  t.true(actual.equals(buffer))
+  t.true(actual instanceof FileLike)
 })
 
 test("Returns Blob value as-is", t => {
@@ -85,7 +85,7 @@ test("Returns Blob value as-is", t => {
 
   const actual = fd.get("blob")
 
-  t.true(actual instanceof Blob)
+  t.true(actual instanceof FileLike)
 })
 
 test("Returns File value as-is", t => {

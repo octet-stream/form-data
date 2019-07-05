@@ -4,6 +4,9 @@ import path from "path"
 import test from "ava"
 
 import FormData from "../../lib/FormData"
+import FileLike from "../../lib/util/File"
+
+import read from "../__helper__/read"
 
 const isArray = Array.isArray
 
@@ -45,6 +48,6 @@ test("Return an array with non-stringified Buffer", async t => {
 
   const [actual] = fd.getAll("buffer")
 
-  t.true(actual instanceof Buffer)
-  t.true(actual.equals(buffer))
+  t.true(actual instanceof FileLike)
+  t.true((await read(actual.stream())).equals(buffer))
 })

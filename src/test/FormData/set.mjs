@@ -5,8 +5,11 @@ import path from "path"
 import test from "ava"
 import Blob from "fetch-blob"
 
-import File from "../__helper__/File"
 import FormData from "../../lib/FormData"
+import FileLike from "../../lib/util/File"
+
+import File from "../__helper__/File"
+import read from "../__helper__/read"
 
 const filePath = path.join(__dirname, "..", "..", "package.json")
 
@@ -85,7 +88,7 @@ test("Applies given Readable stream as well as fs.ReadStream", t => {
   t.true(fd.get("stream") instanceof stream.Readable)
 })
 
-test("Should correctly add a field with Buffer data", t => {
+test("Should correctly add a field with Buffer data", async t => {
   const phrase = Buffer.from(
     "I've seen things you people wouldn't believe. " +
     "Attack ships on fire off the shoulder of Orion. " +
@@ -100,19 +103,23 @@ test("Should correctly add a field with Buffer data", t => {
 
   const actual = fd.get("buffer")
 
-  t.true(actual instanceof Buffer)
-  t.true(actual.equals(phrase))
+  t.true(actual instanceof FileLike)
+  t.true((await read(actual.stream())).equals(phrase))
 })
 
-test("Supports Blob as a filed", t => {
+test("Supports Blob as a field", t => {
   const fd = new FormData()
 
-  fd.set("file", new Blob(["Some text"], {type: "text/plain"}), "file.txt")
+  const blob = new Blob(["Some text"], {type: "text/plain"})
 
-  t.true(fd.get("file") instanceof Blob)
+  fd.set("file", blob, "file.txt")
+
+  const actual = fd.get("file")
+
+  t.true(actual instanceof FileLike)
 })
 
-test("Supports File as a filed", t => {
+test("Supports File as a field", t => {
   const fd = new FormData()
 
   fd.set("file", new File(["Some text"], "file.txt", {type: "text/plain"}))

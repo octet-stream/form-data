@@ -1,12 +1,16 @@
 import stream from "stream"
 
+import getStreamIterator from "./getStreamIterator"
 import isBuffer from "./isBuffer"
 import isBlob from "./isBlob"
 
+/**
+ * @api private
+ */
 class File {
   constructor(content, name, options = {}) {
     this.name = name
-    this.type = options.type
+    this.type = options.type || ""
     this.size = options.size || 0
     this.lastModified = options.lastModified || Date.now()
 
@@ -17,7 +21,7 @@ class File {
     const content = this.__content
 
     if (isBlob(content)) {
-      return stream.stream()
+      return content.stream()
     }
 
     if (isBuffer(content)) {
@@ -30,6 +34,25 @@ class File {
     }
 
     return content
+  }
+
+  async arrayBuffer() {
+    const iterable = getStreamIterator(this.__content)
+
+    const chunks = []
+    for await (const chunk of iterable) {
+      chunks.push(chunk)
+    }
+
+    return Buffer.concat(chunks).buffer
+  }
+
+  toString() {
+    return "[object File]"
+  }
+
+  get [Symbol.toStringTag]() {
+    return "File"
   }
 }
 

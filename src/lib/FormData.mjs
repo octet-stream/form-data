@@ -207,10 +207,17 @@ class FormData {
       filename = path.basename(value.path || filename)
     }
 
-    if (isStream(value) || isBuffer(value) || isBlob(value)) {
-      if (filename && options.size != null) {
-        value = toFile(value, filename, options)
+    // Normalize field content
+    if (isStream(value)) {
+      if (options.size != null) {
+        value = toFile(value, filename || name, options)
       }
+    } else if (isBlob(value)) {
+      if (value.constructor.name !== "File") {
+        value = toFile(value, filename || name, options)
+      }
+    } else if (isBuffer(value)) {
+      value = toFile(value, filename || name, options)
     } else {
       value = String(value)
     }
