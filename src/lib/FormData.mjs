@@ -13,6 +13,7 @@ import isStream from "./util/isStream"
 import boundary from "./util/boundary"
 import isBlob from "./util/isBlob"
 import concat from "./util/concat"
+import toFile from "./util/toFile"
 import bind from "./util/bind"
 
 const isArray = Array.isArray
@@ -169,6 +170,8 @@ class FormData {
    * @param {string} [filename = undefined] A filename of given field.
    *   Can be added only for Buffer and Readable
    *
+   * @param {object} [options = {}] An object with additional paramerets.
+   *
    * @return {void}
    *
    * @private
@@ -194,19 +197,21 @@ class FormData {
 
     // Get a filename for Buffer, Blob, File, ReadableStream and Readable values
     if (isBuffer(value) && filename) {
-      filename = path.basename(filename || options.name)
+      filename = path.basename(filename)
     } else if (isBlob(value)) {
-      filename = path.basename(value.name || filename || options.name)
-    } else if (isStream(value) && (value.path || filename || options.name)) {
+      filename = path.basename(value.name || filename)
+    } else if (isStream(value) && (value.path || filename)) {
       // Readable stream which created from fs.createReadStream
       // have a "path" property. So, we can get a "filename"
       // from the stream itself.
-      filename = path.basename(value.path || filename || options.name)
+      filename = path.basename(value.path || filename)
     }
 
-    // TODO: Check if a filename is set for binary data and consider them
-    // as a File if the parameter has been set
-    if (!(isStream(value) || isBuffer(value) || isBlob(value))) {
+    if (isStream(value) || isBuffer(value) || isBlob(value)) {
+      if (filename && options.size != null) {
+        value = toFile(value, filename, options)
+      }
+    } else {
       value = String(value)
     }
 
