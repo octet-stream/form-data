@@ -194,14 +194,14 @@ class FormData {
 
     // Get a filename for Buffer, Blob, File, ReadableStream and Readable values
     if (isBuffer(value) && filename) {
-      filename = path.basename(filename)
+      filename = path.basename(filename || options.name)
     } else if (isBlob(value)) {
-      filename = path.basename(value.name || filename)
-    } else if (isStream(value) && (value.path || filename)) {
+      filename = path.basename(value.name || filename || options.name)
+    } else if (isStream(value) && (value.path || filename || options.name)) {
       // Readable stream which created from fs.createReadStream
       // have a "path" property. So, we can get a "filename"
       // from the stream itself.
-      filename = path.basename(value.path || filename)
+      filename = path.basename(value.path || filename || options.name)
     }
 
     // TODO: Check if a filename is set for binary data and consider them
@@ -321,7 +321,7 @@ class FormData {
    *
    * @public
    */
-  append(name, value, filename, options) {
+  append(name, value, filename = undefined, options = {}) {
     return this.__setField(
       name, value, filename, options, true, arguments.length
     )
@@ -346,7 +346,7 @@ class FormData {
    *
    * @public
    */
-  set(name, value, filename, options) {
+  set(name, value, filename = undefined, options = {}) {
     return this.__setField(
       name, value, filename, options, false, arguments.length
     )
