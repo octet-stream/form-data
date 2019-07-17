@@ -14,7 +14,7 @@
   "main": "lib/FormData",
   "types": "type/FormDataNode.d.ts",
   "engines": {
-    "node": ">= 8"
+    "node": ">= 8 < 9 || >= 10 < 11 || >= 12"
   },
   "scripts": {
     "eslint": "eslint src/**/*.mjs",
