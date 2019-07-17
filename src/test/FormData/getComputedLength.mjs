@@ -4,7 +4,7 @@ import fs from "fs"
 import test from "ava"
 
 import FormData from "../../lib/FormData"
-import read from "../__helper__/readStreamWithAsyncIterator"
+import read from "../__helper__/read"
 
 test("Returns 0 when FormData have no fields", async t => {
   const fd = new FormData()
@@ -33,7 +33,7 @@ test(
     fd.set("name", "Nyx")
 
     const actual = await fd.getComputedLength()
-    const expected = await read(fd).then(({length}) => length)
+    const expected = await read(fd.stream).then(({length}) => length)
 
     t.is(actual, expected)
   }
@@ -47,7 +47,7 @@ test(
     fd.set("field", Buffer.from("Just another string"))
 
     const actual = await fd.getComputedLength()
-    const expected = await read(fd).then(({length}) => length)
+    const expected = await read(fd.stream).then(({length}) => length)
 
     t.is(actual, expected)
   }
@@ -61,7 +61,7 @@ test(
     fd.set("file", fs.createReadStream("/usr/share/dict/words"))
 
     const actual = await fd.getComputedLength()
-    const expected = await read(fd).then(({length}) => length)
+    const expected = await read(fd.stream).then(({length}) => length)
 
     t.is(actual, expected)
   }
