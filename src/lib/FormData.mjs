@@ -177,10 +177,16 @@ class FormData {
    * @private
    */
   __setField(name, value, filename, options, append, argsLength) {
+    const methodName = append ? "append" : "set"
+
+    if (isObject(filename)) {
+      [options, filename] = [filename, undefined]
+    }
+
     // FormData required at least 2 arguments to be set.
     if (argsLength < 2) {
       throw new TypeError(
-        `Failed to execute '${append ? "append" : "set"}' on 'FormData': ` +
+        `Failed to execute '${methodName}' on 'FormData': ` +
         `2 arguments required, but only ${argsLength} present.`
       )
     }
@@ -189,7 +195,7 @@ class FormData {
     // when a filename has been set.
     if (filename && !(isBlob(value) || isStream(value) || isBuffer(value))) {
       throw new TypeError(
-        `Failed to execute '${append ? "append" : "set"}' on 'FormData': ` +
+        `Failed to execute '${methodName}' on 'FormData': ` +
         "parameter 2 is not one of the following types: ",
         "ReadableStream | ReadStream | Readable | Buffer | File | Blob"
       )

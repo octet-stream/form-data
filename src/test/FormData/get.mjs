@@ -1,3 +1,4 @@
+import stream from "stream"
 import path from "path"
 
 import test from "ava"
@@ -64,7 +65,7 @@ test("Returns fs.ReadStream stream as-is", async t => {
   t.true((await read(actual)).equals(expected))
 })
 
-test("Returns Buffer value as-is", async t => {
+test("Returns Buffer value as File", async t => {
   const buffer = await fs.readFile(filePath)
 
   const fd = new FormData()
@@ -76,7 +77,7 @@ test("Returns Buffer value as-is", async t => {
   t.true(actual instanceof FileLike)
 })
 
-test("Returns Blob value as-is", t => {
+test("Returns Blob value as File", t => {
   const blob = new Blob(["Some text"], {type: "text/plain"})
 
   const fd = new FormData()
@@ -99,3 +100,37 @@ test("Returns File value as-is", t => {
 
   t.true(actual instanceof File)
 })
+
+test(
+  "Returns File when ReadStream passed with options.size argument",
+
+  async t => {
+    const fd = new FormData()
+
+    const file = fs.createReadStream(filePath)
+
+    const {size} = await fs.stat(filePath)
+
+    fd.set("file", file, {size})
+
+    t.true(fd.get("file") instanceof FileLike)
+  }
+)
+
+test(
+  "Returns File when Readable stream passed with options.size argument",
+
+  t => {
+    const fd = new FormData()
+
+    const readalbe = new stream.Readable({
+      read() {
+        stream.push(null)
+      }
+    })
+
+    fd.set("stream", readalbe, {size: 0})
+
+    t.true(fd.get("stream") instanceof FileLike)
+  }
+)
