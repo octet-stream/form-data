@@ -40,7 +40,7 @@ class FormData {
     ], this)
 
     this.__carriage = "\r\n"
-    this.__defaultContentType = "application/octet-steam"
+    this.__defaultContentType = "application/octet-stream"
 
     this.__dashes = "--"
     this.__boundary = concat(["NodeJSFormDataStream", boundary()])
