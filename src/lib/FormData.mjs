@@ -218,11 +218,7 @@ class FormData {
       if (options.size != null) {
         value = toFile(value, filename || name, options)
       }
-    } else if (isBlob(value)) {
-      if (value.constructor.name !== "File") {
-        value = toFile(value, filename || name, options)
-      }
-    } else if (isBuffer(value)) {
+    } else if (isBlob(value) || isBuffer(value)) {
       value = toFile(value, filename || name, options)
     } else {
       value = String(value)

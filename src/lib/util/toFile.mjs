@@ -5,18 +5,22 @@ import File from "./File"
 /**
  * @api private
  */
-function toFile(content, name, options = {}) {
-  if (isBuffer(content)) {
-    options.size = content.length
-  } else if (isBlob(content)) {
-    options.type = content.type || options.type
-    options.size = content.size == null ? options.size : content.size
-    options.lastModified = content.lastModified == null
-      ? options.lastModified
-      : content.lastModified
+function toFile(value, name, options = {}) {
+  if (value.constructor.name === "File") {
+    return value
   }
 
-  return new File(content, name, options)
+  if (isBuffer(value)) {
+    options.size = value.length
+  } else if (isBlob(value)) {
+    options.type = value.type || options.type
+    options.size = value.size == null ? options.size : value.size
+    options.lastModified = value.lastModified == null
+      ? options.lastModified
+      : value.lastModified
+  }
+
+  return new File(value, name, options)
 }
 
 export default toFile
