@@ -56,3 +56,17 @@ test("Return ArrayBuffer for Readable file's content", async t => {
 
   t.true(await file.arrayBuffer() instanceof ArrayBuffer)
 })
+
+test("File#toString() returns a string", t => {
+  const buf = Buffer.from("What time is it?")
+  const file = new File(buf, "file.txt", {size: buf.length, type: "text/plain"})
+
+  t.is(typeof file.toString(), "string")
+})
+
+test("File#[Symbol.toStringTag]() returns a string", t => {
+  const buf = Buffer.from("What time is it?")
+  const file = new File(buf, "file.txt", {size: buf.length, type: "text/plain"})
+
+  t.is(typeof file[Symbol.toStringTag], "string")
+})
