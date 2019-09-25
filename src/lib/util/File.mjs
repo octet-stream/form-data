@@ -37,7 +37,7 @@ class File {
   }
 
   async arrayBuffer() {
-    const iterable = getStreamIterator(this.__content)
+    const iterable = getStreamIterator(this.stream())
 
     const chunks = []
     for await (const chunk of iterable) {
