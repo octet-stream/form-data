@@ -13,7 +13,7 @@ test("Returns Readable stream for Buffer content", t => {
 })
 
 test("Returns Readable stream for Blob content", t => {
-  const blob = new Blob([])
+  const blob = new Blob(["Some content"])
   const file = new File(blob, "file.txt")
 
   t.true(file.stream() instanceof stream.Readable)
@@ -39,7 +39,7 @@ test("Return ArrayBuffer for Buffer file's content", async t => {
 })
 
 test("Return ArrayBuffer for Blob file's content", async t => {
-  const blob = new Blob([])
+  const blob = new Blob(["Some content"])
   const file = new File(blob, "file.txt")
 
   t.true(await file.arrayBuffer() instanceof ArrayBuffer)
