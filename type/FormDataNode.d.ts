@@ -4,6 +4,8 @@ import {ReadStream} from "fs"
 
 declare type FormDataEntry = string | ReadStream | Readable | Buffer
 
+declare type FormDataFieldOptions = {size: number}
+
 declare class FormData {
   [Symbol.toStringTag]: string
 
@@ -53,6 +55,8 @@ declare class FormData {
    *   Can be added only for Buffer and Readable
    */
   append(name: string, value: any, filename?: string): void
+  append(name: string, value: any, options?: FormDataFieldOptions): void
+  append(name: string, value: any, filename?: string, options?: FormDataFieldOptions): void
 
   /**
    * Set a new value for an existing key inside FormData,
@@ -70,6 +74,8 @@ declare class FormData {
    *   Can be added only for Buffer and Readable
    */
   set(name: string, value: any, filename?: string): void
+  set(name: string, value: any, options?: FormDataFieldOptions): void
+  set(name: string, value: any, filename?: string, options?: FormDataFieldOptions): void
 
   /**
    * Check if a field with the given name exists inside FormData.
