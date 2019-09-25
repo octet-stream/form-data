@@ -72,7 +72,7 @@ class FormData {
 
     if (filename) {
       head.push(`; filename="${filename}"${this.__carriage}`)
-      head.push(`Content-Type: "${this.__getMime(filename)}"`)
+      head.push("Content-Type: ", this.__getMime(filename))
     }
 
     head.push(this.__carriage.repeat(2))

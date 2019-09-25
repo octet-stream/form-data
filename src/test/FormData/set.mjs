@@ -146,7 +146,7 @@ test(
       String(value).startsWith(
         `--${fd.boundary}\r\n` +
         "Content-Disposition: form-data; name=\"file\"; filename=\"note.txt\"" +
-        "\r\nContent-Type: \"text/plain\"\r\n\r\n"
+        "\r\nContent-Type: text/plain\r\n\r\n"
       )
     )
   }
@@ -177,7 +177,7 @@ test(
       String(value).startsWith(
         `--${fd.boundary}\r\n` +
         "Content-Disposition: form-data; name=\"file\"; filename=\"file.txt\"" +
-        "\r\nContent-Type: \"text/plain\"\r\n\r\n"
+        "\r\nContent-Type: text/plain\r\n\r\n"
       )
     )
   }
