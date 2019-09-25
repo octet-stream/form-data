@@ -77,7 +77,7 @@ Returns object with `content-type` header
 
 #### Instance methods
 
-##### `set(name, value[, filename]) -> {void}`
+##### `set(name, value[, filename, options]) -> {void}`
 
 Set a new value for an existing key inside **FormData**,
 or add the new field if it does not already exist.
@@ -90,8 +90,11 @@ or add the new field if it does not already exist.
     Note that Arrays and Object will be converted to **string** by using **String** function.
     **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
   - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer` and `Readable` .
+  - **{object}** [object = {}] - Additional field options
+  - **{number}** [object.size = undefined] – A size of field's content. If it set on a stream, then given stream will be treated as File-like object.
+    Can be omited for `Blob`, `File` and `Buffer` values or if you don't know the **actual** length of the stream.
 
-##### `append(name, value[, filename]) -> {void}`
+##### `append(name, value[, filename, options]) -> {void}`
 
 Appends a new value onto an existing key inside a FormData object,
 or adds the key if it does not already exist.
@@ -104,17 +107,20 @@ or adds the key if it does not already exist.
     Note that Arrays and Object will be converted to **string** by using **String** function.
     **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
   - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer` and `Readable` .
+  - **{number}** [object.size = undefined] – A size of field's content. If it set on a stream, then given stream will be treated as File-like object.
+    Can be omited for `Blob`, `File` and `Buffer` values or if you don't know the **actual** length of the stream.
 
-##### `get(name) -> {string | Buffer | Readable | ReadStream | ReadableStream | Blob | file}`
+##### `get(name) -> {string | Readable | ReadStream | ReadableStream | File}`
 
 Returns the first value associated with the given name.
-**Buffer** and **Readable** values will be returned as-is.
+If the field has `Blob`, `Buffer` or any `Readable` and `ReadableStream` (and when options.size is set for this stream) value, the File-like object will be returned.
 
   - **{string}** name – A name of the value you want to retrieve.
 
-##### `getAll(name) -> {Array<string | Buffer | Readable | ReadStream | ReadableStream | Blob | file>}`
+##### `getAll(name) -> {Array<string | Readable | ReadStream | ReadableStream | File>}`
 
 Returns all the values associated with a given key from within a **FormData** object.
+If the field has `Blob`, `Buffer` or any `Readable` and `ReadableStream` (and when options.size is set for this stream) value, the File-like object will be returned.
 
   - **{string}** name – A name of the value you want to retrieve.
 
