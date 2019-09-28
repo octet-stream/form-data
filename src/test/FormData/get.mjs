@@ -5,6 +5,8 @@ import test from "ava"
 import fs from "promise-fs"
 import Blob from "fetch-blob"
 
+import {ReadableStream} from "web-streams-polyfill/ponyfill"
+
 import FormData from "../../lib/FormData"
 import FileLike from "../../lib/util/File"
 
@@ -130,6 +132,24 @@ test(
     })
 
     fd.set("stream", readalbe, {size: 0})
+
+    t.true(fd.get("stream") instanceof FileLike)
+  }
+)
+
+test(
+  "Returns File when ReadableStream passed with options.size argument",
+
+  t => {
+    const readable = new ReadableStream({
+      start(controller) {
+        controller.close()
+      }
+    })
+
+    const fd = new FormData()
+
+    fd.set("stream", readable, {size: 0})
 
     t.true(fd.get("stream") instanceof FileLike)
   }
