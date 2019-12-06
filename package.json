@@ -53,10 +53,8 @@
   "devDependencies": {
     "@babel/cli": "7.7.4",
     "@babel/core": "7.7.4",
-    "@babel/plugin-proposal-async-generator-functions": "7.7.4",
     "@babel/plugin-proposal-class-properties": "7.7.4",
     "@babel/plugin-proposal-decorators": "7.7.4",
-    "@babel/plugin-transform-async-to-generator": "7.7.4",
     "@babel/plugin-transform-modules-commonjs": "7.7.4",
     "@babel/plugin-transform-runtime": "7.7.4",
     "@octetstream/eslint-config": "4.0.0",
@@ -80,7 +78,7 @@
     "web-streams-polyfill": "2.0.6"
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "7.7.4",
+    "@babel/runtime": "^7.7.4",
     "@octetstream/invariant": "1.2.0",
     "mime-types": "2.1.25",
     "nanoid": "2.1.7",
