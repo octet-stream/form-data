@@ -1,4 +1,5 @@
 import stream from "stream"
+import util from "util"
 import path from "path"
 
 import mimes from "mime-types"
@@ -435,7 +436,7 @@ class FormData {
    * @return {string}
    */
   inspect() {
-    return "FormData"
+    return this[util.inspect.custom]
   }
 
   get [Symbol.toStringTag]() {
@@ -511,6 +512,10 @@ class FormData {
    */
   [Symbol.asyncIterator]() {
     return this.stream[Symbol.asyncIterator]()
+  }
+
+  [util.inspect.custom]() {
+    return "FormData"
   }
 }
 
