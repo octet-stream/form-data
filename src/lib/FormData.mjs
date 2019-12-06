@@ -4,7 +4,6 @@ import path from "path"
 import mimes from "mime-types"
 
 import getStreamIterator from "./util/getStreamIterator"
-import isFunction from "./util/isFunction"
 import getLength from "./util/getLength"
 import isObject from "./util/isObject"
 import isBuffer from "./util/isBuffer"
