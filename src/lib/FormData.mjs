@@ -4,7 +4,6 @@ import path from "path"
 import mimes from "mime-types"
 
 import getStreamIterator from "./util/getStreamIterator"
-import StreamIterator from "./util/StreamIterator"
 import isFunction from "./util/isFunction"
 import getLength from "./util/getLength"
 import isObject from "./util/isObject"
@@ -512,11 +511,7 @@ class FormData {
    * @public
    */
   [Symbol.asyncIterator]() {
-    if (isFunction(this.stream[Symbol.asyncIterator])) {
-      return this.stream[Symbol.asyncIterator]()
-    }
-
-    return new StreamIterator(this.stream)
+    return this.stream[Symbol.asyncIterator]()
   }
 }
 

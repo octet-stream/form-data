@@ -1,7 +1,5 @@
 import readableStreamIterator from "./readableStreamIterator"
 import isWHATWGReadable from "./isWHATWGReadable"
-import StreamIterator from "./StreamIterator"
-import isFunction from "./isFunction"
 
 /**
  * Returns stream iterator for given stream-like object
@@ -15,10 +13,6 @@ import isFunction from "./isFunction"
 function getStreamIterator(value) {
   if (isWHATWGReadable(value)) {
     return readableStreamIterator(value.getReader())
-  }
-
-  if (!isFunction(value[Symbol.asyncIterator])) {
-    return new StreamIterator(value)
   }
 
   return value
