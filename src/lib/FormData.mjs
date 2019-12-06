@@ -431,13 +431,11 @@ class FormData {
   }
 
   /**
-   * Returns a string representation of the FormData
+   * Alias of the FormData#[util.inspect.custom]()
    *
    * @return {string}
    */
-  inspect() {
-    return this[util.inspect.custom]
-  }
+  inspect = this[util.inspect.custom]
 
   get [Symbol.toStringTag]() {
     return "FormData"
