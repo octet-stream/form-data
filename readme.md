@@ -1,7 +1,6 @@
 # FormData
 
 FormData implementation for Node.js. Built over Readable stream and async generators.
-Can be used to communicate between servers with multipart/form-data format.
 
 [![Build Status](https://travis-ci.org/octet-stream/form-data.svg?branch=master)](https://travis-ci.org/octet-stream/form-data)
 [![Code Coverage](https://codecov.io/github/octet-stream/form-data/coverage.svg?branch=master)](https://codecov.io/github/octet-stream/form-data?branch=master)
