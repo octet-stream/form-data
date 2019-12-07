@@ -61,16 +61,16 @@ Initialize new FormData instance
 
 #### Instance properties
 
-##### `get boundary() -> {string}`
+##### `boundary -> {string}`
 
 Returns a boundary string of the current `FormData` instance.
 
-##### `get stream() -> {stream.Readable}`
+##### `stream -> {stream.Readable}`
 
 Returns an internal Readable stream. Use it to send queries, but don't push
 anything into it.
 
-##### `get headers() -> {object}`
+##### `headers -> {object}`
 
 Returns object with `content-type` header
 
