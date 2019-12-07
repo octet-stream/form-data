@@ -1,5 +1,7 @@
 import stream from "stream"
 
+import mime from "mime-types"
+
 import getStreamIterator from "./getStreamIterator"
 import isBuffer from "./isBuffer"
 import isBlob from "./isBlob"
@@ -10,7 +12,7 @@ import isBlob from "./isBlob"
 class File {
   constructor(content, name, options = {}) {
     this.name = name
-    this.type = options.type || ""
+    this.type = options.type || mime.lookup(name) || ""
     this.size = options.size || 0
     this.lastModified = options.lastModified || Date.now()
 
