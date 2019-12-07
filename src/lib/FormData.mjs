@@ -269,10 +269,10 @@ class FormData {
     // Normalize field content
     if (isStream(value)) {
       if (options.size != null) {
-        value = toFile(value, filename || name, options)
+        value = toFile(value, filename || name || options.filename, options)
       }
     } else if (isBlob(value) || isBuffer(value)) {
-      value = toFile(value, filename || name, options)
+      value = toFile(value, filename || name || options.filename, options)
     } else {
       value = String(value)
     }
