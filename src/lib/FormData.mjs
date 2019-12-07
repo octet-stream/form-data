@@ -39,6 +39,8 @@ class FormData {
    * Returns headers for multipart/form-data
    *
    * @type object
+   *
+   * @public
    */
   @readOnly headers = freeze({
     "Content-Type": concat([
@@ -50,6 +52,8 @@ class FormData {
    * Refers to the internal Readable stream
    *
    * @type stream.Readable
+   *
+   * @public
    */
   @readOnly stream = new stream.Readable({read: () => this.__read()})
 
