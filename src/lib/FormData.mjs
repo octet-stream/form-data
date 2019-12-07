@@ -10,12 +10,13 @@ import isObject from "./util/isObject"
 import isBuffer from "./util/isBuffer"
 import isStream from "./util/isStream"
 import boundary from "./util/boundary"
+import readOnly from "./util/readOnly"
 import isBlob from "./util/isBlob"
 import concat from "./util/concat"
 import toFile from "./util/toFile"
-import bind from "./util/bind"
 
-const isArray = Array.isArray
+const {isArray} = Array
+const {freeze} = Object
 
 /**
  * FormData implementation for Node.js environments.
@@ -26,30 +27,74 @@ const isArray = Array.isArray
  */
 class FormData {
   /**
+   * Generates a new boundary string once FormData instance constructed
+   *
+   * @type string
+   *
+   * @public
+   */
+  @readOnly boundary = concat(["NodeJSFormDataStreamBoundary", boundary()])
+
+  /**
+   * Returns headers for multipart/form-data
+   *
+   * @type object
+   */
+  @readOnly headers = freeze({
+    "Content-Type": concat([
+      "multipart/form-data; ", "boundary=", this.boundary
+    ])
+  })
+
+  /**
+   * Refers to the internal Readable stream
+   *
+   * @type stream.Readable
+   */
+  @readOnly stream = new stream.Readable({read: () => this.__read()})
+
+  /**
+   * @type string
+   *
+   * @private
+   */
+  @readOnly __carriage = "\r\n"
+
+  /**
+   * @type string
+   *
+   * @private
+   */
+  @readOnly __dashes = "--"
+
+  /**
+   * @type string
+   *
+   * @private
+   */
+  @readOnly __defaultContentType = "application/octet-stream"
+
+  /**
+   * @type Map
+   *
+   * @private
+   */
+  @readOnly __content = new Map()
+
+  /**
+   * @type IterableIterator<Promise<Buffer>>
+   *
+   * @private
+   */
+  @readOnly __curr = this.__getField()
+
+  /**
    * @param {array} fields – an optional FormData initial fields.
-   *   Each initial field should be passed as a collection of the objects
+   *   Each field must be passed as a collection of the objects
    *   with "name", "value" and "filename" props.
-   *   See the FormData#append for more info about the available format.
+   *   See the FormData#append() method for more information.
    */
   constructor(entries = null) {
-    bind([
-      Symbol.iterator, Symbol.asyncIterator,
-      "toString", "inspect",
-      "keys", "values", "entries"
-    ], this)
-
-    this.__carriage = "\r\n"
-    this.__defaultContentType = "application/octet-stream"
-
-    this.__dashes = "--"
-    this.__boundary = concat(["NodeJSFormDataStream", boundary()])
-
-    this.__content = new Map()
-
-    this.__curr = this.__getField()
-
-    this.__stream = new stream.Readable({read: this.__read})
-
     if (isArray(entries)) {
       this.__appendFromInitialFields(entries)
     }
@@ -58,14 +103,16 @@ class FormData {
   /**
    * @private
    */
-  __getMime = filename => mimes.lookup(filename) || this.__defaultContentType
+  __getMime(filename) {
+    return mimes.lookup(filename) || this.__defaultContentType
+  }
 
   /**
    * @private
    */
   __getHeader(name, filename) {
     const head = [
-      this.__dashes, this.__boundary, this.__carriage,
+      this.__dashes, this.boundary, this.__carriage,
       "Content-Disposition: form-data; ", `name="${name}"`,
     ]
 
@@ -82,10 +129,12 @@ class FormData {
   /**
    * @private
    */
-  __getFooter = () => concat([
-    this.__dashes, this.__boundary,
-    this.__dashes, this.__carriage.repeat(2)
-  ])
+  __getFooter() {
+    return concat([
+      this.__dashes, this.boundary,
+      this.__dashes, this.__carriage.repeat(2)
+    ])
+  }
 
   /**
    * Get each field from internal Map
@@ -126,14 +175,19 @@ class FormData {
   __read = () => {
     const onFulfilled = ({done, value}) => {
       if (done) {
-        return this.__stream.push(null)
+        return this.stream.push(null)
       }
 
-      this.__stream.push(isBuffer(value) ? value : Buffer.from(String(value)))
+      this.stream.push(isBuffer(value) ? value : Buffer.from(String(value)))
     }
 
-    const onRejected = err => this.__stream.emit("error", err)
+    const onRejected = err => this.stream.emit("error", err)
 
+    this.__curr.next().then(onFulfilled).catch(onRejected)
+  }
+
+  /**
+   * Read values from internal storage and push it to the internal strea
     this.__curr.next().then(onFulfilled).catch(onRejected)
   }
 
@@ -146,7 +200,7 @@ class FormData {
    *
    * @private
    */
-  __appendFromInitialFields = fields => {
+  __appendFromInitialFields(fields) {
     for (const field of fields) {
       if (isObject(field) && !isArray(field)) {
         this.append(field.name, field.value, field.filename)
@@ -244,39 +298,6 @@ class FormData {
     field.values.push(value)
 
     this.__content.set(name, field)
-  }
-
-  /**
-   * Returns boundary string
-   *
-   * @return {string}
-   *
-   * @public
-   */
-  get boundary() {
-    return this.__boundary
-  }
-
-  /**
-   * Returns headers for multipart/form-data
-   */
-  get headers() {
-    return {
-      "Content-Type": concat([
-        "multipart/form-data; ", "boundary=", this.boundary
-      ])
-    }
-  }
-
-  /**
-   * Returns the internal stream
-   *
-   * @return {stream.Readable}
-   *
-   * @public
-   */
-  get stream() {
-    return this.__stream
   }
 
   /**
@@ -421,22 +442,6 @@ class FormData {
     this.__content.delete(name)
   }
 
-  /**
-   * Returns a string representation of the FormData
-   *
-   * @return {string}
-   */
-  toString() {
-    return "[object FormData]"
-  }
-
-  /**
-   * Alias of the FormData#[util.inspect.custom]()
-   *
-   * @return {string}
-   */
-  inspect = this[util.inspect.custom]
-
   get [Symbol.toStringTag]() {
     return "FormData"
   }
@@ -474,6 +479,13 @@ class FormData {
   }
 
   /**
+   * @return {IterableIterator<[string, any]>}
+   */
+  [Symbol.iterator]() {
+    return this.entries()
+  }
+
+  /**
    * Executes a given callback for each field of the FormData instance
    *
    * @param {function} fn – Function to execute for each element,
@@ -494,13 +506,6 @@ class FormData {
   }
 
   /**
-   * @return {IterableIterator<[string, any]>}
-   */
-  [Symbol.iterator]() {
-    return this.entries()
-  }
-
-  /**
    * This method allows to read a content from internal stream
    * using async generators and for-await-of APIs
    *
@@ -510,6 +515,22 @@ class FormData {
    */
   [Symbol.asyncIterator]() {
     return this.stream[Symbol.asyncIterator]()
+  }
+
+  /**
+   * Alias of the FormData#[util.inspect.custom]()
+   *
+   * @return {string}
+   */
+  inspect = this[util.inspect.custom]
+
+  /**
+   * Returns a string representation of the FormData
+   *
+   * @return {string}
+   */
+  toString() {
+    return "[object FormData]"
   }
 
   [util.inspect.custom]() {

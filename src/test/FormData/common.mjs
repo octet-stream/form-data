@@ -35,7 +35,7 @@ test("Boundary accessor returns a correct value", t => {
 
   const actual = fd.boundary
 
-  t.is(actual, `NodeJSFormDataStream${spyondary.lastCall.returnValue}`)
+  t.is(actual, `NodeJSFormDataStreamBoundary${spyondary.lastCall.returnValue}`)
 })
 
 test("Returns a correct headers from the .headers accessor", t => {
@@ -52,7 +52,7 @@ test("Returns a correct headers from the .headers accessor", t => {
   const expected = {
     "Content-Type": (
       "multipart/form-data; boundary=" +
-      `NodeJSFormDataStream${spyondary.lastCall.returnValue}`
+      `NodeJSFormDataStreamBoundary${spyondary.lastCall.returnValue}`
     )
   }
 
