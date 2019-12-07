@@ -3,7 +3,9 @@ import {Readable} from "stream"
 import {ReadStream} from "fs"
 import {inspect} from "util"
 
-declare type FormDataEntry = string | ReadStream | Readable | Buffer
+import File from "./File"
+
+declare type FormDataEntry = string | ReadStream | Readable | Buffer | File
 
 declare type FormDataFieldOptions = {
   size?: number,
@@ -16,7 +18,7 @@ declare type FormDataFields = Array<{
   name: string,
   value: any,
   filename?: string,
-  options: object
+  options?: object
 }>
 
 declare class FormData {

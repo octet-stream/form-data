@@ -3,7 +3,7 @@ import {Readable} from "stream"
 
 import {expectType as expect} from "tsd"
 
-import FormData from "./FormDataNode"
+import FormData from "./FormData"
 
 new FormData([
   {
