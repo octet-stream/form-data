@@ -12,7 +12,7 @@
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
   "main": "lib/FormData",
-  "types": "type/index.d.ts",
+  "types": "type/FormData.d.ts",
   "engines": {
     "node": ">= 10"
   },
