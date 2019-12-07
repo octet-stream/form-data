@@ -65,7 +65,17 @@ class FormData {
    *
    * @private
    */
-  @readOnly __dashes = "--"
+  @readOnly __dashes = "-".repeat(2)
+
+  /**
+   * @type string
+   *
+   * @private
+   */
+  @readOnly __footer = concat([
+    this.__dashes, this.boundary,
+    this.__dashes, this.__carriage.repeat(2)
+  ])
 
   /**
    * @type string
@@ -127,16 +137,6 @@ class FormData {
   }
 
   /**
-   * @private
-   */
-  __getFooter() {
-    return concat([
-      this.__dashes, this.boundary,
-      this.__dashes, this.__carriage.repeat(2)
-    ])
-  }
-
-  /**
    * Get each field from internal Map
    *
    * @private
@@ -162,7 +162,7 @@ class FormData {
     }
 
     // Add a footer when all fields ended
-    yield this.__getFooter()
+    yield this.__footer
   }
 
   /**
@@ -331,7 +331,7 @@ class FormData {
       length += carriageLength
     }
 
-    length += Buffer.from(this.__getFooter()).length
+    length += Buffer.from(this.__footer).length
 
     return length
   }
