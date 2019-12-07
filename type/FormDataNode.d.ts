@@ -1,43 +1,52 @@
 // <reference types="node" />
 import {Readable} from "stream"
 import {ReadStream} from "fs"
+import {inspect} from "util"
 
 declare type FormDataEntry = string | ReadStream | Readable | Buffer
 
-declare type FormDataFieldOptions = {size: number}
+declare type FormDataFieldOptions = {
+  size?: number,
+  type?: string,
+  lastModified?: number,
+  filename?: string
+}
+
+declare type FormDataFields = Array<{
+  name: string,
+  value: any,
+  filename?: string,
+  options: object
+}>
 
 declare class FormData {
-  [Symbol.toStringTag]: string
+  public [Symbol.toStringTag]: string
 
   /**
    * Returns boundary string
    */
-  boundary: string
-
-  /**
-   * Returns headers for multipart/form-data
-   */
-  headers: {
-    "Content-Type": string
-  }
+  public boundary: string
 
   /**
    * Returns the internal stream
    */
-  stream: Readable
+  public stream: Readable
 
-  constructor(entries?: Array<{
-    name: string,
-    value: any,
-    filename?: string
-  }>)
+  /**
+   * Returns headers for multipart/form-data
+   */
+  public headers: {
+    "Content-Type": string
+  }
+
+  constructor(fields?: FormDataFields)
 
   /**
    * Returns computed length of the FormData content.
    * If data contains stream.Readable field(s),
    * the method will always return undefined.
    */
-  getComputedLength(): Promise<number | void>
+  public getComputedLength(): Promise<number | void>
 
   /**
    * Appends a new value onto an existing key inside a FormData object,
@@ -54,9 +63,9 @@ declare class FormData {
    * @param filename A filename of given field.
    *   Can be added only for Buffer and Readable
    */
-  append(name: string, value: any, filename?: string): void
-  append(name: string, value: any, options?: FormDataFieldOptions): void
-  append(name: string, value: any, filename?: string, options?: FormDataFieldOptions): void
+  public append(name: string, value: any, filename?: string): void
+  public append(name: string, value: any, options?: FormDataFieldOptions): void
+  public append(name: string, value: any, filename?: string, options?: FormDataFieldOptions): void
 
   /**
    * Set a new value for an existing key inside FormData,
@@ -73,16 +82,16 @@ declare class FormData {
    * @param filename A filename of given field.
    *   Can be added only for Buffer and Readable
    */
-  set(name: string, value: any, filename?: string): void
-  set(name: string, value: any, options?: FormDataFieldOptions): void
-  set(name: string, value: any, filename?: string, options?: FormDataFieldOptions): void
+  public set(name: string, value: any, filename?: string): void
+  public set(name: string, value: any, options?: FormDataFieldOptions): void
+  public set(name: string, value: any, filename?: string, options?: FormDataFieldOptions): void
 
   /**
    * Check if a field with the given name exists inside FormData.
    *
    * @param name A name of the field you want to test for.
    */
-  has(name: string): boolean
+  public has(name: string): boolean
 
   /**
    * Returns the first value associated with the given name.
@@ -90,7 +99,7 @@ declare class FormData {
    *
    * @param name A name of the value you want to retrieve.
    */
-  get(name: string): FormDataEntry | void
+  public get(name: string): FormDataEntry | void
 
   /**
    * Returns all the values associated with
@@ -98,40 +107,43 @@ declare class FormData {
    *
    * @param name A name of the value you want to retrieve.
    */
-  getAll(name: string): Array<FormDataEntry>
+  public getAll(name: string): Array<FormDataEntry>
 
   /**
    * Deletes a key and its value(s) from a FormData object.
    *
    * @param name The name of the key you want to delete.
    */
-  delete(name: string): void
+  public delete(name: string): void
 
-  toString(): string
+  public keys(): IterableIterator<string>
 
-  inspect(): string
+  public values(): IterableIterator<FormDataEntry>
 
-  keys(): IterableIterator<string>
+  public entries(): IterableIterator<[string, FormDataEntry]>
 
-  values(): IterableIterator<FormDataEntry>
+  public toString(): string
 
-  entries(): IterableIterator<[string, FormDataEntry]>
+  public inspect(): string
+
+  public [inspect.custom](): string
 
   /**
    * Executes a given callback for each field of the FormData instance
    */
-  forEach(
+  public forEach(
     fn: (value: FormDataEntry, name: string, fd: FormData) => void,
+
     ctx?: any
   ): void
 
-  [Symbol.iterator](): IterableIterator<[string, FormDataEntry]>
+  public [Symbol.iterator](): IterableIterator<[string, FormDataEntry]>
 
   /**
    * Allows to read a content from internal stream
    * using async generators and for-await-of APIs
    */
-  [Symbol.asyncIterator](): AsyncIterableIterator<Buffer>
+  public [Symbol.asyncIterator](): AsyncIterableIterator<Buffer>
 }
 
 export default FormData

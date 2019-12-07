@@ -104,9 +104,9 @@ class FormData {
    *   with "name", "value" and "filename" props.
    *   See the FormData#append() method for more information.
    */
-  constructor(entries = null) {
-    if (isArray(entries)) {
-      this.__appendFromInitialFields(entries)
+  constructor(fields = null) {
+    if (isArray(fields)) {
+      this.__appendFromInitialFields(fields)
     }
   }
 
