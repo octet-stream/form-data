@@ -3,10 +3,7 @@ import {Readable} from "stream"
 import {ReadStream} from "fs"
 import {inspect} from "util"
 
-import Blob from "./Blob"
-import File from "./File"
-
-declare type FormDataEntry = string | ReadStream | Readable | Buffer | File
+declare type FormDataEntry = string | ReadStream | Readable | Buffer
 
 declare type FormDataFieldOptions = {
   size?: number,
@@ -149,4 +146,4 @@ declare class FormData {
   public [Symbol.asyncIterator](): AsyncIterableIterator<Buffer>
 }
 
-export {FormData as default, Blob, File}
+export default FormData
