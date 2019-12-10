@@ -81,7 +81,6 @@
     "@babel/runtime": "7.7.4",
     "@octetstream/invariant": "1.2.0",
     "mime-types": "2.1.25",
-    "nanoid": "2.1.7",
-    "promise-fs": "2.1.1"
+    "nanoid": "2.1.7"
   }
 }
