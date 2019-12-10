@@ -1,6 +1,6 @@
-import stream from "stream"
-import util from "util"
-import path from "path"
+import {Readable} from "stream"
+import {inspect} from "util"
+import {basename} from "path"
 
 import mimes from "mime-types"
 
@@ -55,7 +55,7 @@ class FormData {
    *
    * @public
    */
-  @readOnly stream = new stream.Readable({read: () => this.__read()})
+  @readOnly stream = new Readable({read: () => this.__read()})
 
   /**
    * @type string
@@ -260,14 +260,14 @@ class FormData {
 
     // Get a filename for Buffer, Blob, File, ReadableStream and Readable values
     if (isBuffer(value) && filename) {
-      filename = path.basename(filename)
+      filename = basename(filename)
     } else if (isBlob(value)) {
-      filename = path.basename(value.name || filename)
+      filename = basename(value.name || filename)
     } else if (isStream(value) && (value.path || filename)) {
       // Readable stream which created from fs.createReadStream
       // have a "path" property. So, we can get a "filename"
       // from the stream itself.
-      filename = path.basename(value.path || filename)
+      filename = basename(value.path || filename)
     }
 
     // Normalize field content
@@ -526,7 +526,7 @@ class FormData {
    *
    * @return {string}
    */
-  inspect = this[util.inspect.custom]
+  inspect = this[inspect.custom]
 
   /**
    * Returns a string representation of the FormData
@@ -537,7 +537,7 @@ class FormData {
     return "[object FormData]"
   }
 
-  [util.inspect.custom]() {
+  [inspect.custom]() {
     return "FormData"
   }
 }

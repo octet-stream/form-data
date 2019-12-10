@@ -1,5 +1,6 @@
-import stream from "stream"
-import fs from "fs"
+import {Readable} from "stream"
+
+import {createReadStream} from "fs"
 
 import test from "ava"
 
@@ -14,11 +15,11 @@ test("Returns 0 when FormData have no fields", async t => {
   t.is(actual, 0)
 })
 
-test("Returns undefined when FormData have stream.Readable fields", async t => {
+test("Returns undefined when FormData have Readable fields", async t => {
   const fd = new FormData()
 
   fd.set("field", "On Soviet Moon, landscape see binoculars through YOU.")
-  fd.set("another", new stream.Readable({read() { }}))
+  fd.set("another", new Readable({read() { }}))
 
   const actual = await fd.getComputedLength()
 
@@ -58,7 +59,7 @@ test(
   async t => {
     const fd = new FormData()
 
-    fd.set("file", fs.createReadStream("/usr/share/dict/words"))
+    fd.set("file", createReadStream("/usr/share/dict/words"))
 
     const actual = await fd.getComputedLength()
     const expected = await read(fd.stream).then(({length}) => length)

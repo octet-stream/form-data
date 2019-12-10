@@ -1,4 +1,4 @@
-import stream from "stream"
+import {Readable} from "stream"
 
 import mime from "mime-types"
 
@@ -27,7 +27,7 @@ class File {
     }
 
     if (isBuffer(content)) {
-      const readable = new stream.Readable({read() { }})
+      const readable = new Readable({read() { }})
 
       readable.push(content)
       readable.push(null)

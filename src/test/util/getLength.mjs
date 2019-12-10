@@ -1,11 +1,13 @@
 import {Readable} from "stream"
 
-import {createReadStream, stat} from "promise-fs"
+import {promises as fs, createReadStream} from "fs"
 import {ReadableStream} from "web-streams-polyfill/ponyfill"
 
 import test from "ava"
 
 import getLength from "../../lib/util/getLength"
+
+const {stat} = fs
 
 test("Returns undefined for ReadableStream value", async t => {
   t.is(await getLength(new ReadableStream()), undefined)

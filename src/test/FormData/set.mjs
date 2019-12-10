@@ -1,6 +1,7 @@
-import fs from "fs"
-import stream from "stream"
-import path from "path"
+import {Readable} from "stream"
+import {join} from "path"
+
+import {ReadStream, createReadStream} from "fs"
 
 import test from "ava"
 import Blob from "fetch-blob"
@@ -11,7 +12,7 @@ import FileLike from "../../lib/util/File"
 import File from "../__helper__/File"
 import read from "../__helper__/read"
 
-const filePath = path.join(__dirname, "..", "..", "package.json")
+const filePath = join(__dirname, "..", "..", "package.json")
 
 test("Should set a primitive value", t => {
   const fd = new FormData()
@@ -75,17 +76,17 @@ test("Should not allow to .append() new value to an existing key", t => {
 test("Should set a Readable stream", t => {
   const fd = new FormData()
 
-  fd.set("stream", fs.createReadStream(filePath))
+  fd.set("stream", createReadStream(filePath))
 
-  t.true(fd.get("stream") instanceof fs.ReadStream)
+  t.true(fd.get("stream") instanceof ReadStream)
 })
 
-test("Applies given Readable stream as well as fs.ReadStream", t => {
+test("Applies given Readable stream as well as ReadStream", t => {
   const fd = new FormData()
 
-  fd.set("stream", new stream.Readable({read() { }}))
+  fd.set("stream", new Readable({read() { }}))
 
-  t.true(fd.get("stream") instanceof stream.Readable)
+  t.true(fd.get("stream") instanceof Readable)
 })
 
 test("Should correctly add a field with Buffer data", async t => {
@@ -159,11 +160,12 @@ test(
       "I beat Twilight Sparkle and all I got was this lousy t-shirt"
     )
 
-    const field = new stream.Readable({read() {
-      this.push(buffer)
-      this.push(null)
-    }})
-
+    const field = new Readable({
+      read() {
+        this.push(buffer)
+        this.push(null)
+      }
+    })
 
     const fd = new FormData()
 

@@ -17,6 +17,7 @@
     "plugin:ava/recommended"
   ],
   "rules": {
+    "max-classes-per-file": 0,
     "operator-linebreak": ["error", "before", {
       "overrides": {
         "+": "ignore"

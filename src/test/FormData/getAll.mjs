@@ -1,5 +1,5 @@
-import fs from "promise-fs"
-import path from "path"
+import {promises as fs, createReadStream} from "fs"
+import {join} from "path"
 
 import test from "ava"
 
@@ -8,9 +8,10 @@ import FileLike from "../../lib/util/File"
 
 import read from "../__helper__/read"
 
-const isArray = Array.isArray
+const {readFile} = fs
+const {isArray} = Array
 
-const filePath = path.join(__dirname, "..", "..", "package.json")
+const filePath = join(__dirname, "..", "..", "package.json")
 
 test("Always returns an array, even if the FormData have no fileds", t => {
   const fd = new FormData()
@@ -29,7 +30,7 @@ test("Returns an array with the stringified primitive value", t => {
 test("Return an array with non-stringified Readable", t => {
   const fd = new FormData()
 
-  const stream = fs.createReadStream(filePath)
+  const stream = createReadStream(filePath)
 
   fd.set("stream", stream)
 
@@ -42,7 +43,7 @@ test("Return an array with non-stringified Readable", t => {
 test("Return an array with non-stringified Buffer", async t => {
   const fd = new FormData()
 
-  const buffer = await fs.readFile(filePath)
+  const buffer = await readFile(filePath)
 
   fd.set("buffer", buffer)
 

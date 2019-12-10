@@ -1,13 +1,13 @@
 import test from "ava"
 
-import sinon from "sinon"
+import {spy} from "sinon"
 
 import FormData from "../../lib/FormData"
 
 test(
   "Callback should not be called when FormData doesn't have any fields",
   t => {
-    const fulfill = sinon.spy()
+    const fulfill = spy()
 
     const fd = new FormData()
 
@@ -18,7 +18,7 @@ test(
 )
 
 test("Callback should be called with the nullish context by default", t => {
-  const fulfill = sinon.spy()
+  const fulfill = spy()
 
   const fd = new FormData()
 
@@ -30,7 +30,7 @@ test("Callback should be called with the nullish context by default", t => {
 })
 
 test("Callback should be called with the specified context", t => {
-  const fulfill = sinon.spy()
+  const fulfill = spy()
 
   const ctx = new Map()
 
@@ -45,7 +45,7 @@ test("Callback should be called with the specified context", t => {
 })
 
 test("Callback should be called with value, name and FormData itself", t => {
-  const fulfill = sinon.spy()
+  const fulfill = spy()
 
   const fd = new FormData()
 
@@ -57,7 +57,7 @@ test("Callback should be called with value, name and FormData itself", t => {
 })
 
 test("Callback should be called once on each filed", t => {
-  const fulfill = sinon.spy()
+  const fulfill = spy()
 
   const fd = new FormData()
 

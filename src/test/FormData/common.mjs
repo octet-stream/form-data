@@ -1,12 +1,12 @@
-import stream from "stream"
+import {Readable} from "stream"
 
-import test from "ava"
-import sinon from "sinon"
-import pq from "proxyquire"
-import req from "supertest"
-import fs from "promise-fs"
 import Blob from "fetch-blob"
+import req from "supertest"
+import pq from "proxyquire"
+import test from "ava"
 
+import {spy} from "sinon"
+import {readFile, createReadStream} from "promise-fs"
 import {ReadableStream} from "web-streams-polyfill/ponyfill"
 
 import boundary from "../../lib/util/boundary"
@@ -21,11 +21,11 @@ import readIterable from "../__helper__/readStreamWithAsyncIterator"
 test("The stream accessor returns a Readable stream", t => {
   const fd = new FormData()
 
-  t.true(fd.stream instanceof stream.Readable)
+  t.true(fd.stream instanceof Readable)
 })
 
 test("Boundary accessor returns a correct value", t => {
-  const spyondary = sinon.spy(boundary)
+  const spyondary = spy(boundary)
 
   const MockedFD = pq("../../lib/FormData", {
     "./util/boundary": spyondary
@@ -39,7 +39,7 @@ test("Boundary accessor returns a correct value", t => {
 })
 
 test("Returns a correct headers from the .headers accessor", t => {
-  const spyondary = sinon.spy(boundary)
+  const spyondary = spy(boundary)
 
   const MockedFD = pq("../../lib/FormData", {
     "./util/boundary": spyondary
@@ -137,9 +137,9 @@ test("Correctly sets a filed to FormData request body", async t => {
 test("Correctly sets a file to FormData request body", async t => {
   const fd = new FormData()
 
-  fd.set("file", fs.createReadStream("/usr/share/dict/words"))
+  fd.set("file", createReadStream("/usr/share/dict/words"))
 
-  const file = await fs.readFile("/usr/share/dict/words", "utf-8")
+  const file = await readFile("/usr/share/dict/words", "utf-8")
 
   const data = await readIterable(fd)
 
@@ -160,9 +160,9 @@ test(
 
     fd.set("field", field)
 
-    fd.set("file", fs.createReadStream("/usr/share/dict/words"))
+    fd.set("file", createReadStream("/usr/share/dict/words"))
 
-    const expectedFile = await fs.readFile("/usr/share/dict/words")
+    const expectedFile = await readFile("/usr/share/dict/words")
 
     const data = await readIterable(fd)
 

@@ -1,9 +1,11 @@
-import fs from "promise-fs"
+import {promises as fs} from "fs"
 
 import isReadStream from "./isReadStream"
 import isStream from "./isStream"
 import isBuffer from "./isBuffer"
 import isBlob from "./isBlob"
+
+const {stat} = fs
 
 /**
  * Get lenght of given value (in bytes)
@@ -20,7 +22,7 @@ async function getLength(value) {
       return undefined
     }
 
-    return fs.stat(value.path).then(({size}) => size)
+    return stat(value.path).then(({size}) => size)
   }
 
   if (isBuffer(value)) {
