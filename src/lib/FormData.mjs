@@ -191,11 +191,6 @@ class FormData {
   }
 
   /**
-   * Read values from internal storage and push it to the internal strea
-    this.__curr.next().then(onFulfilled).catch(onRejected)
-  }
-
-  /**
    * Append initial fields
    *
    * @param {array} fields
