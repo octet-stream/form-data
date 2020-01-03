@@ -12,7 +12,6 @@ import isStream from "./util/isStream"
 import boundary from "./util/boundary"
 import readOnly from "./util/readOnly"
 import isBlob from "./util/isBlob"
-import concat from "./util/concat"
 import toFile from "./util/toFile"
 
 const {isArray} = Array
@@ -33,7 +32,7 @@ class FormData {
    *
    * @public
    */
-  @readOnly boundary = concat(["NodeJSFormDataStreamBoundary", boundary()])
+  @readOnly boundary = `NodeJSFormDataStreamBoundary${boundary()}`
 
   /**
    * Returns headers for multipart/form-data
@@ -43,9 +42,7 @@ class FormData {
    * @public
    */
   @readOnly headers = freeze({
-    "Content-Type": concat([
-      "multipart/form-data; ", "boundary=", this.boundary
-    ])
+    "Content-Type": `multipart/form-data; boundary=${this.boundary}`
   })
 
   /**
@@ -76,10 +73,8 @@ class FormData {
    *
    * @private
    */
-  @readOnly __footer = concat([
-    this.__dashes, this.boundary,
-    this.__dashes, this.__carriage.repeat(2)
-  ])
+  @readOnly __footer = `${this.__dashes}${this.boundary}${this.__dashes}`
+    + `${this.__carriage.repeat(2)}`
 
   /**
    * @type string
@@ -125,6 +120,16 @@ class FormData {
    * @private
    */
   __getHeader(name, filename) {
+    let header = ""
+
+    header += `${this.__dashes}${this.boundary}${this.__carriage}`
+    header += `Content-Disposition: form-data; name="${name}"`
+
+    if (filename) {
+      header += `; filename="${filename}"${this.__carriage}`
+      header += `Content-Type: ${this.__getMime(filename)}`
+    }
+
     const head = [
       this.__dashes, this.boundary, this.__carriage,
       "Content-Disposition: form-data; ", `name="${name}"`,
@@ -135,9 +140,7 @@ class FormData {
       head.push("Content-Type: ", this.__getMime(filename))
     }
 
-    head.push(this.__carriage.repeat(2))
-
-    return concat(head)
+    return `${header}${this.__carriage.repeat(2)}`
   }
 
   /**
