@@ -98,6 +98,15 @@ class FormData {
   @readOnly __curr = this.__getField()
 
   /**
+   * Returns a string representation of the FormData
+   *
+   * @return {string}
+   */
+  get [Symbol.toStringTag]() {
+    return "FormData"
+  }
+
+  /**
    * @param {array} fields – an optional FormData initial fields.
    *   Each field must be passed as a collection of the objects
    *   with "name", "value" and "filename" props.
@@ -307,7 +316,7 @@ class FormData {
    * If data contains stream.Readable field(s),
    * the method will always return undefined.
    *
-   * @return {number}
+   * @return {Promise<number | undefined>}
    */
   async getComputedLength() {
     if (this.__content.size === 0) {
@@ -442,10 +451,6 @@ class FormData {
    */
   delete(name) {
     this.__content.delete(name)
-  }
-
-  get [Symbol.toStringTag]() {
-    return "FormData"
   }
 
   /**
