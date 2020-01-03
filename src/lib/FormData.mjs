@@ -139,16 +139,6 @@ class FormData {
       header += `Content-Type: ${this.__getMime(filename)}`
     }
 
-    const head = [
-      this.__dashes, this.boundary, this.__carriage,
-      "Content-Disposition: form-data; ", `name="${name}"`,
-    ]
-
-    if (filename) {
-      head.push(`; filename="${filename}"${this.__carriage}`)
-      head.push("Content-Type: ", this.__getMime(filename))
-    }
-
     return `${header}${this.__carriage.repeat(2)}`
   }
 
