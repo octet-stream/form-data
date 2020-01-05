@@ -2,9 +2,9 @@ import {promises as fs} from "fs"
 
 import isReadStream from "./isReadStream"
 import isStream from "./isStream"
-import isBuffer from "./isBuffer"
 import isBlob from "./isBlob"
 
+const {isBuffer} = Buffer
 const {stat} = fs
 
 /**

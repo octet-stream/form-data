@@ -7,13 +7,13 @@ import mimes from "mime-types"
 import getStreamIterator from "./util/getStreamIterator"
 import getLength from "./util/getLength"
 import isObject from "./util/isObject"
-import isBuffer from "./util/isBuffer"
 import isStream from "./util/isStream"
 import boundary from "./util/boundary"
 import readOnly from "./util/readOnly"
 import isBlob from "./util/isBlob"
 import toFile from "./util/toFile"
 
+const {isBuffer} = Buffer
 const {isArray} = Array
 const {freeze} = Object
 

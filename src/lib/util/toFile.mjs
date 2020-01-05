@@ -1,6 +1,7 @@
-import isBuffer from "./isBuffer"
 import isBlob from "./isBlob"
 import File from "./File"
+
+const {isBuffer} = Buffer
 
 /**
  * @api private
