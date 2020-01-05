@@ -18,9 +18,7 @@ const {isArray} = Array
 const {freeze} = Object
 
 /**
- * FormData implementation for Node.js environments.
- * Bult over Readable stream and async generators.
- * Can be used to communicate between servers with multipart/form-data format.
+ * FormData implementation for Node.js.
  *
  * @api public
  */
@@ -91,7 +89,7 @@ class FormData {
   @readOnly __content = new Map()
 
   /**
-   * @type IterableIterator<Promise<Buffer>>
+   * @type AsyncIterableIterator<Buffer>
    *
    * @private
    */
@@ -119,6 +117,8 @@ class FormData {
   }
 
   /**
+   * Returns a mime type by field's filename
+   *
    * @private
    */
   __getMime(filename) {
@@ -126,6 +126,8 @@ class FormData {
   }
 
   /**
+   * Returns a headers for given field's data
+   *
    * @private
    */
   __getHeader(name, filename) {
@@ -307,13 +309,16 @@ class FormData {
    * the method will always return undefined.
    *
    * @return {Promise<number | undefined>}
+   *
+   * @public
    */
   async getComputedLength() {
+    let length = 0
+
     if (this.__content.size === 0) {
-      return 0
+      return length
     }
 
-    let length = 0
     const carriageLength = Buffer.from(this.__carriage).length
 
     for (const [name, {filename, values}] of this.__content) {
@@ -504,9 +509,10 @@ class FormData {
 
   /**
    * This method allows to read a content from internal stream
-   * using async generators and for-await-of APIs
+   * using async generators and for-await-of APIs.
+   * An alias of FormData#stream[Symbol.asyncIterator]()
    *
-   * @return {IterableIterator<Promise<Buffer>>}
+   * @return {AsyncIterableIterator<Buffer>}
    *
    * @public
    */

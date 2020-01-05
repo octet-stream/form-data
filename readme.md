@@ -135,10 +135,10 @@ Deletes a key and its value(s) from a `FormData` object.
 
   - **{string}** name – The name of the key you want to delete.
 
-##### `getComputedLength() -> {Promise<number>}`
+##### `getComputedLength() -> {Promise<number | undefined>}`
 
 Returns computed length of the FormData content. If FormData instance contains
-a field with stream.Readable value, this method will always return `undefined`.
+a stream value with unknown length, the method will always return `undefined`.
 
 ##### `forEach(callback[, ctx]) -> {void}`
 
@@ -166,7 +166,7 @@ Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/
 
 An alias of [FormData#entries](#entries---iterator)
 
-##### `[Symbol.asyncIterator]() -> {IterableIterator<Promise<Buffer>>}`
+##### `[Symbol.asyncIterator]() -> {AsyncIterableIterator<Buffer>}`
 
 Returns an async iterator allowing to read a data from internal Readable stream using **for-await** syntax.
 Read the [async iteration proposal](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.

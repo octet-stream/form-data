@@ -7,7 +7,10 @@
     "form-data",
     "node",
     "async-iterator",
-    "stream"
+    "stream",
+    "form",
+    "upload",
+    "files-upload"
   ],
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
@@ -58,7 +61,7 @@
     "@babel/plugin-transform-modules-commonjs": "7.7.5",
     "@babel/plugin-transform-runtime": "7.7.6",
     "@octetstream/eslint-config": "4.0.0",
-    "@types/node": "13.1.2",
+    "@types/node": "13.1.4",
     "ava": "2.4.0",
     "babel-plugin-add-module-exports": "1.0.2",
     "codecov": "3.6.1",
