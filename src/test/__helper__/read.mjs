@@ -9,7 +9,7 @@ const read = stream => new Promise((resolve, reject) => {
     }
   }
 
-  const onEnd = () => void resolve(Buffer.concat(contents))
+  const onEnd = () => resolve(Buffer.concat(contents))
 
   stream
     .on("error", reject)

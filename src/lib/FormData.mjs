@@ -150,11 +150,11 @@ class FormData {
    * @private
    */
   async* __getField() {
-    for (const [name, {values, filename}] of this.__content) {
-      // Set field header
-      yield this.__getHeader(name, filename)
+    for (const [name, {values}] of this.__content) {
+      for (const {value, filename} of values) {
+        // Set field's header
+        yield this.__getHeader(name, filename)
 
-      for (const value of values) {
         if (isBlob(value)) {
           yield* getStreamIterator(value.stream())
         } else if (isStream(value)) {
@@ -163,10 +163,10 @@ class FormData {
         } else {
           yield value
         }
-      }
 
-      // Add trailing carriage
-      yield this.__carriage
+        // Add trailing carriage
+        yield this.__carriage
+      }
     }
 
     // Add a footer when all fields ended
@@ -284,12 +284,16 @@ class FormData {
 
     // Set a new field if given name is not exists
     if (!field) {
-      return void this.__content.set(name, {append, filename, values: [value]})
+      return void this.__content.set(name, {
+        append, values: [{value, filename}]
+      })
     }
 
     // Replace a value of the existing field if "set" called
     if (!append) {
-      return void this.__content.set(name, {append, filename, values: [value]})
+      return void this.__content.set(name, {
+        append, values: [{value, filename}]
+      })
     }
 
     // Do nothing if the field has been created from .set()
@@ -298,7 +302,7 @@ class FormData {
     }
 
     // Append a new value to the existing field
-    field.values.push(value)
+    field.values.push({value, filename})
 
     this.__content.set(name, field)
   }
@@ -321,25 +325,23 @@ class FormData {
 
     const carriageLength = Buffer.from(this.__carriage).length
 
-    for (const [name, {filename, values}] of this.__content) {
-      length += Buffer.from(this.__getHeader(name, filename)).length
+    for (const [name, {values}] of this.__content) {
+      for (const {value, filename} of values) {
+        length += Buffer.from(this.__getHeader(name, filename)).length
 
-      for (const value of values) {
         const valueLength = await getLength(value)
 
+        // Return `undefined` if can't tell field's length
+        // (it's probably a stream with unknown length)
         if (valueLength == null) {
           return undefined
         }
 
-        length += Number(valueLength)
+        length += Number(valueLength) + carriageLength
       }
-
-      length += carriageLength
     }
 
-    length += Buffer.from(this.__footer).length
-
-    return length
+    return length + Buffer.from(this.__footer).length
   }
 
   /**
@@ -420,7 +422,7 @@ class FormData {
       return undefined
     }
 
-    return field.values[0]
+    return field.values[0].value
   }
 
   /**
@@ -434,7 +436,7 @@ class FormData {
   getAll(name) {
     const field = this.__content.get(name)
 
-    return field ? Array.from(field.values) : []
+    return field ? Array.from(field.values, ({value}) => value) : []
   }
 
   /**

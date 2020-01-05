@@ -1,7 +1,7 @@
-async function readStreamWithAsyncIterator(fd) {
+async function readStreamWithAsyncIterator(form) {
   const contents = []
 
-  for await (const chunk of fd) {
+  for await (const chunk of form) {
     contents.push(chunk)
   }
 
