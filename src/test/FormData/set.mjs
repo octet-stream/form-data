@@ -120,6 +120,18 @@ test("Supports Blob as a field", t => {
   t.true(actual instanceof FileLike)
 })
 
+test("Sets default name for a Blob field as \"blob\"", t => {
+  const fd = new FormData()
+
+  const blob = new Blob(["Some text"], {type: "text/plain"})
+
+  fd.set("file", blob)
+
+  const actual = fd.get("file")
+
+  t.is(actual.name, "blob")
+})
+
 test("Supports File as a field", t => {
   const fd = new FormData()
 
