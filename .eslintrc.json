@@ -17,6 +17,10 @@
     "plugin:ava/recommended"
   ],
   "rules": {
+    "max-len": ["error", {
+      "ignoreComments": true,
+      "code": 80
+    }],
     "max-classes-per-file": 0,
     "operator-linebreak": ["error", "before", {
       "overrides": {

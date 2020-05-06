@@ -18,6 +18,12 @@ const {isArray} = Array
 const {freeze} = Object
 
 /**
+ * @typedef {Object} FieldOptions
+ *
+ * @property {number} size
+ */
+
+/**
  * FormData implementation for Node.js.
  *
  * @api public
@@ -26,18 +32,22 @@ class FormData {
   /**
    * Generates a new boundary string once FormData instance constructed
    *
-   * @type string
+   * @type {string}
    *
    * @public
+   * @property
+   * @readonly
    */
   @readOnly boundary = `NodeJSFormDataStreamBoundary${boundary()}`
 
   /**
    * Returns headers for multipart/form-data
    *
-   * @type object
+   * @type {{"Content-Type": string}}
    *
    * @public
+   * @property
+   * @readonly
    */
   @readOnly headers = freeze({
     "Content-Type": `multipart/form-data; boundary=${this.boundary}`
@@ -46,43 +56,50 @@ class FormData {
   /**
    * Refers to the internal Readable stream
    *
-   * @type stream.Readable
+   * @type {Readable}
    *
    * @public
+   * @property
+   * @readonly
    */
   @readOnly stream = new Readable({read: () => this.__read()})
 
   /**
-   * @type string
+   * @type {string}
    *
    * @private
+   * @property
+   * @readonly
    */
   @readOnly __carriage = "\r\n"
 
   /**
-   * @type string
+   * @type {string}
    *
    * @private
+   * @readonly
    */
   @readOnly __dashes = "-".repeat(2)
 
   /**
-   * @type string
+   * @type {string}
    *
    * @private
+   * @readonly
    */
   @readOnly __footer = `${this.__dashes}${this.boundary}${this.__dashes}`
     + `${this.__carriage.repeat(2)}`
 
   /**
-   * @type string
+   * @type {string}
    *
    * @private
+   * @readonly
    */
   @readOnly __defaultContentType = "application/octet-stream"
 
   /**
-   * @type Map
+   * @type {Map<string, {append: boolean, values: Array<{value: any, filename: string}>}>}
    *
    * @private
    */
@@ -98,14 +115,14 @@ class FormData {
   /**
    * Returns a string representation of the FormData
    *
-   * @return {string}
+   * @type {string}
    */
   get [Symbol.toStringTag]() {
     return "FormData"
   }
 
   /**
-   * @param {array} fields – an optional FormData initial fields.
+   * @param {Array<{name: string, value: any, filename?: string, options?: FieldOptions}>} [fields] – an optional FormData initial fields.
    *   Each field must be passed as a collection of the objects
    *   with "name", "value" and "filename" props.
    *   See the FormData#append() method for more information.
@@ -119,7 +136,12 @@ class FormData {
   /**
    * Returns a mime type by field's filename
    *
+   * @param {string} filename
+   *
+   * @return {string}
+   *
    * @private
+   * @method
    */
   __getMime(filename) {
     return mimes.lookup(filename) || this.__defaultContentType
@@ -128,7 +150,13 @@ class FormData {
   /**
    * Returns a headers for given field's data
    *
+   * @param {string} name
+   * @param {string} filename
+   *
+   * @return {string}
+   *
    * @private
+   * @method
    */
   __getHeader(name, filename) {
     let header = ""
@@ -147,7 +175,12 @@ class FormData {
   /**
    * Get each field from internal Map
    *
+   * @yields {Buffer | string}
+   *
    * @private
+   * @method
+   * @async
+   * @generator
    */
   async* __getField() {
     for (const [name, {values}] of this.__content) {
@@ -179,6 +212,7 @@ class FormData {
    * @return {void}
    *
    * @private
+   * @method
    */
   __read = () => {
     const onFulfilled = ({done, value}) => {
@@ -197,11 +231,12 @@ class FormData {
   /**
    * Append initial fields
    *
-   * @param {array} fields
+   * @param {Array<{name: string, value: any, filename?: string, options?: FieldOptions}>} fields
    *
    * @return {void}
    *
    * @private
+   * @method
    */
   __appendFromInitialFields(fields) {
     for (const field of fields) {
@@ -215,10 +250,10 @@ class FormData {
    * Appends a new value onto an existing key inside a FormData object,
    * or adds the key if it does not already exist.
    *
-   * @param {string} name – The name of the field whose data
+   * @param {string} name The name of the field whose data
    *   is contained in value
    *
-   * @param {any} value – The field value. You can pass any primitive type
+   * @param {any} value The field value. You can pass any primitive type
    *   (including null and undefined), Buffer or Readable stream.
    *   Note that Arrays and Object will be converted to string
    *   by using String function.
@@ -226,7 +261,9 @@ class FormData {
    * @param {string} [filename = undefined] A filename of given field.
    *   Can be added only for Buffer and Readable
    *
-   * @param {object} [options = {}] An object with additional paramerets.
+   * @param {FieldOptions} [options = {}] An object with additional paramerets.
+   * @param {boolean} append
+   * @param {number} argsLength
    *
    * @return {void}
    *
@@ -319,6 +356,7 @@ class FormData {
    * @return {Promise<number | undefined>}
    *
    * @public
+   * @method
    */
   async getComputedLength() {
     let length = 0
@@ -352,10 +390,10 @@ class FormData {
    * Appends a new value onto an existing key inside a FormData object,
    * or adds the key if it does not already exist.
    *
-   * @param {string} name – The name of the field whose data
+   * @param {string} name The name of the field whose data
    *   is contained in value
    *
-   * @param {any} value – The field value. You can pass any primitive type
+   * @param {any} value The field value. You can pass any primitive type
    *   (including null and undefined), Buffer or Readable stream.
    *   Note that Arrays and Object will be converted to string
    *   by using String function.
@@ -363,9 +401,12 @@ class FormData {
    * @param {string} [filename = undefined] A filename of given field.
    *   Can be added only for Buffer and Readable
    *
+   * @param {FieldOptions} [options = {}]
+   *
    * @return {void}
    *
    * @public
+   * @method
    */
   append(name, value, filename = undefined, options = {}) {
     return this.__setField(
@@ -377,10 +418,10 @@ class FormData {
    * Set a new value for an existing key inside FormData,
    * or add the new field if it does not already exist.
    *
-   * @param {string} name – The name of the field whose data
+   * @param {string} name The name of the field whose data
    *   is contained in value
    *
-   * @param {any} value – The field value. You can pass any primitive type
+   * @param {any} value The field value. You can pass any primitive type
    *   (including null and undefined), Buffer or Readable stream.
    *   Note that Arrays and Object will be converted to string
    *   by using String function.
@@ -388,9 +429,12 @@ class FormData {
    * @param {string} [filename = undefined] A filename of given field.
    *   Can be added only for Buffer and Readable
    *
+   * @param {FieldOptions} [options = {}]
+   *
    * @return {void}
    *
    * @public
+   * @method
    */
   set(name, value, filename = undefined, options = {}) {
     return this.__setField(
@@ -401,11 +445,12 @@ class FormData {
   /**
    * Check if a field with the given name exists inside FormData.
    *
-   * @param {string} name – A name of the field you want to test for.
+   * @param {string} name A name of the field you want to test for.
    *
    * @return {boolean}
    *
    * @public
+   * @method
    */
   has(name) {
     return this.__content.has(name)
@@ -415,7 +460,7 @@ class FormData {
    * Returns the first value associated with the given name.
    * Buffer and Readable values will be returned as-is.
    *
-   * @param {string} name – A name of the value you want to retrieve.
+   * @param {string} name A name of the value you want to retrieve.
    *
    * @public
    */
@@ -496,7 +541,7 @@ class FormData {
   /**
    * Executes a given callback for each field of the FormData instance
    *
-   * @param {function} fn – Function to execute for each element,
+   * @param {(value: any, name: string, fd: FormData) => void} fn Function to execute for each element,
    *   taking three arguments:
    *     + {any} value – A value(s) of the current field.
    *     + {string} – Name of the current field.
@@ -521,6 +566,7 @@ class FormData {
    * @return {AsyncIterableIterator<Buffer>}
    *
    * @public
+   * @method
    */
   [Symbol.asyncIterator]() {
     return this.stream[Symbol.asyncIterator]()
@@ -530,6 +576,9 @@ class FormData {
    * Alias of the FormData#[util.inspect.custom]()
    *
    * @return {string}
+   *
+   * @public
+   * @method
    */
   inspect = this[inspect.custom]
 
@@ -537,11 +586,20 @@ class FormData {
    * Returns a string representation of the FormData
    *
    * @return {string}
+   *
+   * @public
+   * @method
    */
   toString() {
     return "[object FormData]"
   }
 
+  /**
+   * @type {string}
+   *
+   * @public
+   * @property
+   */
   [inspect.custom]() {
     return "FormData"
   }
