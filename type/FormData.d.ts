@@ -3,7 +3,18 @@ import {Readable} from "stream"
 import {ReadStream} from "fs"
 import {inspect} from "util"
 
-declare type FormDataEntry = string | ReadStream | Readable | Buffer
+declare interface File {
+  name: string
+  type: string
+  size: number
+  lastModified: number
+
+  stream(): Readable
+
+  arrayBuffer(): ArrayBuffer
+}
+
+declare type FormDataEntry = string | ReadStream | Readable | Buffer | File
 
 declare type FormDataFieldOptions = {
   size?: number,
@@ -146,4 +157,4 @@ declare class FormData {
   public [Symbol.asyncIterator](): AsyncIterableIterator<Buffer>
 }
 
-export default FormData
+export {FormData as default, FormDataFieldOptions, FormDataFields, FormDataEntry, File}

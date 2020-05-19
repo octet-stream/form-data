@@ -3,7 +3,7 @@ import {Readable} from "stream"
 
 import {expectType as expect} from "tsd"
 
-import FormData from "./FormData"
+import FormData, {FormDataEntry} from "./FormData"
 
 new FormData([
   {
@@ -38,8 +38,8 @@ fd.set("file", createReadStream(__filename))
 fd.set("file", new Readable({read() { }}))
 
 expect<boolean>(fd.has("field"))
-expect<string | ReadStream | Readable | Buffer | void>(fd.get("field"))
-expect<Array<string | ReadStream | Readable | Buffer>>(fd.getAll("field"))
+expect<FormDataEntry | void>(fd.get("field"))
+expect<Array<FormDataEntry | void>>(fd.getAll("field"))
 
 expect<void>(fd.delete("field"))
 
@@ -49,11 +49,9 @@ expect<string>(fd.inspect())
 
 expect<IterableIterator<string>>(fd.keys())
 
-expect<IterableIterator<string | ReadStream | Readable | Buffer>>(fd.values())
+expect<IterableIterator<FormDataEntry>>(fd.values())
 
-expect<IterableIterator<[string, string | ReadStream | Readable | Buffer]>>(
-  fd.entries()
-)
+expect<IterableIterator<[string, FormDataEntry]>>(fd.entries())
 
 expect<void>(fd.forEach(() => {}))
 
@@ -63,8 +61,6 @@ fd.forEach((value, name, fd) => {
   expect<FormData>(fd)
 })
 
-expect<IterableIterator<[string, string | ReadStream | Readable | Buffer]>>(
-  fd[Symbol.iterator]()
-)
+expect<IterableIterator<[string, FormDataEntry]>>(fd[Symbol.iterator]())
 
 expect<AsyncIterableIterator<Buffer>>(fd[Symbol.asyncIterator]())
