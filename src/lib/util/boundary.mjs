@@ -1,4 +1,4 @@
-import {customAlphabet} from "nanoid"
+import * as nanoid from "nanoid"
 
 const alpha = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -7,6 +7,6 @@ const alpha = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
  *
  * @return {string}
  */
-const boundary = customAlphabet(alpha, 22)
+const boundary = (nanoid.default || nanoid).customAlphabet(alpha, 22)
 
 export default boundary
