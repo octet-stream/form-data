@@ -1,6 +1,6 @@
-import {Readable} from "stream"
-import {inspect} from "util"
-import {basename} from "path"
+import stream from "stream"
+import util from "util"
+import path from "path"
 
 import mimes from "mime-types"
 
@@ -16,6 +16,9 @@ import toFile from "./util/toFile"
 const {isBuffer} = Buffer
 const {isArray} = Array
 const {freeze} = Object
+const {Readable} = stream
+const {inspect} = util
+const {basename} = path
 
 /**
  * @typedef {Object} FieldOptions

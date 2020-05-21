@@ -1,4 +1,4 @@
-import {Readable} from "stream"
+import stream from "stream"
 
 import mime from "mime-types"
 
@@ -6,6 +6,7 @@ import getStreamIterator from "./getStreamIterator"
 import isBlob from "./isBlob"
 
 const {isBuffer} = Buffer
+const {Readable} = stream
 
 /**
  * @api private

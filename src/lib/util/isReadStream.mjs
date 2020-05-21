@@ -1,8 +1,8 @@
-import {ReadStream} from "fs"
+import fs from "fs"
 
 /**
  * @api private
  */
-const isReadStream = value => value instanceof ReadStream
+const isReadStream = value => value instanceof fs.ReadStream
 
 export default isReadStream

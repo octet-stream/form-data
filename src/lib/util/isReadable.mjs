@@ -1,8 +1,8 @@
-import {Readable} from "stream"
+import stream from "stream"
 
 /**
  * @api private
  */
-const isReadable = val => val instanceof Readable
+const isReadable = val => val instanceof stream.Readable
 
 export default isReadable

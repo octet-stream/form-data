@@ -1,11 +1,11 @@
-import {promises as fs} from "fs"
+import fs from "fs"
 
 import isReadStream from "./isReadStream"
 import isStream from "./isStream"
 import isBlob from "./isBlob"
 
 const {isBuffer} = Buffer
-const {stat} = fs
+const {stat} = fs.promises
 
 /**
  * Get lenght of given value (in bytes)
