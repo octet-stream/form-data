@@ -1,12 +1,8 @@
-import * as nanoid from "nanoid"
-
-const alpha = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
 /**
  * @api private
  *
  * @return {string}
  */
-const boundary = (nanoid.default || nanoid).customAlphabet(alpha, 22)
+const boundary = () => Math.random().toString(32).slice(2)
 
 export default boundary

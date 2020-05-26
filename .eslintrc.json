@@ -9,9 +9,7 @@
       }
     }
   },
-  "plugins": [
-    "ava"
-  ],
+  "plugins": ["ava"],
   "extends": [
     "@octetstream",
     "plugin:ava/recommended"
