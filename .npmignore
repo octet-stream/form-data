@@ -13,6 +13,7 @@ coverage
 /type/**/*.test-d.ts
 
 yarn.lock
+ava.config.cjs
 .travis.yml
 .editorconfig
 .huskyrc.json
