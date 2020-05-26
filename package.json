@@ -17,7 +17,7 @@
   "main": "lib/FormData",
   "types": "type/FormData.d.ts",
   "engines": {
-    "node": ">= 10.2.x"
+    "node": ">= 10.17"
   },
   "scripts": {
     "eslint": "eslint src/**/*.mjs",

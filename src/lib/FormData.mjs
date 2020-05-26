@@ -57,17 +57,6 @@ class FormData {
   })
 
   /**
-   * Refers to the internal Readable stream
-   *
-   * @type {Readable}
-   *
-   * @public
-   * @property
-   * @readonly
-   */
-  @readOnly stream = new Readable({read: () => this.__read()})
-
-  /**
    * @type {string}
    *
    * @private
@@ -109,11 +98,17 @@ class FormData {
   @readOnly __content = new Map()
 
   /**
-   * @type AsyncIterableIterator<Buffer>
+   * Refers to the internal Readable stream
    *
-   * @private
+   * @type {Readable}
+   *
+   * @public
+   * @property
+   * @readonly
    */
-  @readOnly __curr = this.__getField()
+  get stream() {
+    return Readable.from(this.__read())
+  }
 
   /**
    * Returns a string representation of the FormData
@@ -217,18 +212,10 @@ class FormData {
    * @private
    * @method
    */
-  __read = () => {
-    const onFulfilled = ({done, value}) => {
-      if (done) {
-        return this.stream.push(null)
-      }
-
-      this.stream.push(isBuffer(value) ? value : Buffer.from(String(value)))
+  async* __read() {
+    for await (const ch of this.__getField()) {
+      yield isBuffer(ch) ? ch : Buffer.from(String(ch))
     }
-
-    const onRejected = err => this.stream.emit("error", err)
-
-    this.__curr.next().then(onFulfilled).catch(onRejected)
   }
 
   /**
