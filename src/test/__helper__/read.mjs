@@ -1,20 +1,11 @@
-const read = stream => new Promise((resolve, reject) => {
+async function readStreamWithAsyncIterator(form) {
   const contents = []
 
-  const onData = () => {
-    const chunk = stream.read()
-
-    if (chunk != null) {
-      contents.push(chunk)
-    }
+  for await (const chunk of form) {
+    contents.push(chunk)
   }
 
-  const onEnd = () => resolve(Buffer.concat(contents))
+  return Buffer.concat(contents)
+}
 
-  stream
-    .on("error", reject)
-    .on("readable", onData)
-    .on("end", onEnd)
-})
-
-export default read
+export default readStreamWithAsyncIterator
