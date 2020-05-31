@@ -16,7 +16,6 @@ import read from "../__helper__/read"
 import File from "../__helper__/File"
 import count from "../__helper__/count"
 import server from "../__helper__/server"
-import readIterable from "../__helper__/readStreamWithAsyncIterator"
 
 test("The stream accessor returns a Readable stream", t => {
   const fd = new FormData()
@@ -124,7 +123,7 @@ test("Correctly sets a filed to FormData request body", async t => {
 
   fd.set("field", field)
 
-  const data = await readIterable(fd)
+  const data = await read(fd)
 
   const {body} = await req(server())
     .post("/")
@@ -141,7 +140,7 @@ test("Correctly sets a file to FormData request body", async t => {
 
   const file = await readFile("/usr/share/dict/words", "utf-8")
 
-  const data = await readIterable(fd)
+  const data = await read(fd)
 
   const {body} = await req(server())
     .post("/")
@@ -164,7 +163,7 @@ test(
 
     const expectedFile = await readFile("/usr/share/dict/words")
 
-    const data = await readIterable(fd)
+    const data = await read(fd)
 
     const res = await req(server())
       .post("/")
