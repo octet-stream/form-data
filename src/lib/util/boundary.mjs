@@ -1,8 +1,10 @@
+import crypto from "crypto"
+
 /**
  * @api private
  *
  * @return {string}
  */
-const boundary = () => Math.random().toString(32).slice(2)
+const boundary = () => crypto.randomBytes(16).toString("hex")
 
 export default boundary
