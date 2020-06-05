@@ -260,6 +260,10 @@ class FormData {
    * @private
    */
   __setField(name, value, filename, options, append, argsLength) {
+    // TODO: Seems like a filename param is incorrect for Blobs
+    // TODO: that are has a third arguments.
+    // TODO: I need to fix that.
+
     const methodName = append ? "append" : "set"
 
     if (isObject(filename)) {
