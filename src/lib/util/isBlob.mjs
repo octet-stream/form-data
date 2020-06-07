@@ -19,7 +19,7 @@ const isBlob = value => (
     && isFunction(value.arrayBuffer)
     && isFunction(value.stream)
     && isFunction(value.constructor)
-    && names.includes(value.constructor.name)
+    && names.includes(value[Symbol.toStringTag] || value.constructor.name)
     && "size" in value
 )
 
