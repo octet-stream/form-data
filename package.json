@@ -34,7 +34,7 @@
     "test:types": "tsd",
     "coverage": "npm run cleanup && npm run make:test && nyc npm run test",
     "report": "npm run cleanup && npm run make:test && nyc npm run test && nyc report -r=html",
-    "ci": "npm run make:test && nyc npm run test && npm run test:types && nyc report -r=lcov && codecov"
+    "ci": "npm run make:test && nyc npm run test && npm run test:types && nyc report -r=json"
   },
   "nyc": {
     "extension": [
