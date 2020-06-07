@@ -215,7 +215,7 @@ test("Throws a TypeError when less than 2 arguments has been set", t => {
 
 test(
   "Throws a TypeError when a filename parameter" +
-  "has been set for non-binary value type",
+  "has been set for incorrect value type",
   t => {
     const fd = new FormData()
 

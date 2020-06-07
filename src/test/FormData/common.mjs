@@ -136,9 +136,9 @@ test("Correctly sets a filed to FormData request body", async t => {
 test("Correctly sets a file to FormData request body", async t => {
   const fd = new FormData()
 
-  fd.set("file", createReadStream("/usr/share/dict/words"))
+  fd.set("file", createReadStream(__filename))
 
-  const file = await readFile("/usr/share/dict/words", "utf-8")
+  const file = await readFile(__filename, "utf-8")
 
   const data = await read(fd)
 
@@ -159,9 +159,9 @@ test(
 
     fd.set("field", field)
 
-    fd.set("file", createReadStream("/usr/share/dict/words"))
+    fd.set("file", createReadStream(__filename))
 
-    const expectedFile = await readFile("/usr/share/dict/words")
+    const expectedFile = await readFile(__filename)
 
     const data = await read(fd)
 

@@ -355,10 +355,6 @@ class FormData {
   async getComputedLength() {
     let length = 0
 
-    if (this.__content.size === 0) {
-      return length
-    }
-
     const carriageLength = Buffer.from(this.__carriage).length
 
     for (const [name, {values}] of this.__content) {

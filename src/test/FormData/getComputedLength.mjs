@@ -12,7 +12,7 @@ test("Returns 0 when FormData have no fields", async t => {
 
   const actual = await fd.getComputedLength()
 
-  t.is(actual, 0)
+  t.is(actual, Buffer.byteLength(`--${fd.boundary}--\r\n\r\n`))
 })
 
 test("Returns undefined when FormData have Readable fields", async t => {
@@ -59,7 +59,7 @@ test(
   async t => {
     const fd = new FormData()
 
-    fd.set("file", createReadStream("/usr/share/dict/words"))
+    fd.set("file", createReadStream(__filename))
 
     const actual = await fd.getComputedLength()
     const expected = await read(fd.stream).then(({length}) => length)
