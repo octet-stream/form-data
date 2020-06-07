@@ -7,7 +7,7 @@ import test from "ava"
 import FormData from "../../lib/FormData"
 import read from "../__helper__/read"
 
-test("Returns 0 when FormData have no fields", async t => {
+test("Returns a length of the empty FormData", async t => {
   const fd = new FormData()
 
   const actual = await fd.getComputedLength()
