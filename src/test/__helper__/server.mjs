@@ -1,32 +1,24 @@
 import http from "http"
+import fs from "fs"
 
-import {parse, isFile, Body} from "then-busboy"
+import toObject from "object-deep-from-entries"
 
-import isPlainObject from "lodash.isplainobject"
-
-const isArray = Array.isArray
-
-const entries = Object.entries
-
-async function mapFiles(obj, cb, ctx) {
-  const res = isArray(obj) ? [] : {}
-
-  for (const [key, value] of entries(obj)) {
-    if (isPlainObject(value) || isArray(value)) {
-      res[key] = await mapFiles(value, cb, ctx)
-    } else {
-      res[key] = await cb.call(ctx, value, key, obj)
-    }
-  }
-
-  return res
-}
+import {parse} from "then-busboy"
 
 const server = () => http.createServer((req, res) => {
   // TODO: Rewrite this function due to upcoming then-busboy changes
-  const onData = data => mapFiles(
-    data, async value => String(isFile(value) ? await value.read() : value)
-  )
+  async function transform(body) {
+    const files = await Promise.all(body.files.entries().map(
+      ([path, file]) => fs.promises.readFile(file.path).then(content => [
+        path, String(content)
+      ])
+    ))
+
+    return toObject([
+      ...body.fields.entries().map(([path, {value}]) => [path, value]),
+      ...files
+    ])
+  }
 
   function onFulfilled(data) {
     res.statusCode = 200
@@ -35,11 +27,12 @@ const server = () => http.createServer((req, res) => {
   }
 
   function onRejected(err) {
+    console.log(err)
     res.statusCode = err.status || 500
     res.end(String(err))
   }
 
-  parse(req).then(Body.json).then(onData).then(onFulfilled)
+  parse(req).then(transform).then(onFulfilled)
     .catch(onRejected)
 })
 
