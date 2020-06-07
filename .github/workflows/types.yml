@@ -7,6 +7,7 @@ on:
     paths:
       - "types/**/*.d.ts"
       - "package.json"
+      - ".github/workflows/types.yml"
 
 jobs:
   types:
