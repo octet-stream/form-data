@@ -32,7 +32,7 @@ jobs:
       - run: npm run ci
       - name: Codecov
         uses: codecov/codecov-action@v1
-        if: matrix.node == "14.x" && matrix.os == "ubuntu-latest"
+        if: matrix.node == '14.x' && matrix.os == 'ubuntu-latest'
         with:
           file: ./coverage/coverage-final.json
           flags: unittests
