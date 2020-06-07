@@ -18,7 +18,7 @@ test("Returns undefined for stream.Readable value", async t => {
 })
 
 test("Returns a length of given ReadStream value", async t => {
-  const stream = createReadStream("/usr/share/dict/words")
+  const stream = createReadStream(__filename)
 
   const expected = await stat(stream.path).then(({size}) => size)
   const actual = await getLength(stream)
