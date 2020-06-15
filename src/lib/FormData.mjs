@@ -260,9 +260,6 @@ class FormData {
    * @private
    */
   __setField(name, value, filename, options, append, argsLength) {
-    // TODO: Seems like a filename param is incorrect for Blobs
-    // TODO: that are has a third arguments.
-    // TODO: I need to fix that.
 
     const methodName = append ? "append" : "set"
 
@@ -295,7 +292,7 @@ class FormData {
       filename = basename(
         value.name
           || filename
-          || value.constructor.name === "Blob" ? "blob" : String(value.name)
+          || (value.constructor.name === "Blob" ? "blob" : String(value.name))
       )
     } else if (isStream(value) && (value.path || filename)) {
       // Readable stream which created from fs.createReadStream
