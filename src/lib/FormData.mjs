@@ -260,7 +260,6 @@ class FormData {
    * @private
    */
   __setField(name, value, filename, options, append, argsLength) {
-
     const methodName = append ? "append" : "set"
 
     if (isObject(filename)) {
