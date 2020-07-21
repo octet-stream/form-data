@@ -13,10 +13,29 @@ const {isArray} = Array
 
 const filePath = join(__dirname, "..", "..", "package.json")
 
-test("Always returns an array, even if the FormData have no fileds", t => {
+test("Always returns an array, even if the FormData has no fields", t => {
   const fd = new FormData()
 
   t.true(isArray(fd.getAll("nope")))
+})
+
+test("Gets all values, coercing names to strings", t => {
+  const fd = new FormData()
+
+  fd.set("a", "a")
+  t.deepEqual(fd.getAll("a"), ["a"])
+
+  fd.set("1", "b")
+  t.deepEqual(fd.getAll(1), ["b"])
+
+  fd.set("false", "c")
+  t.deepEqual(fd.getAll(false), ["c"])
+
+  fd.set("null", "d")
+  t.deepEqual(fd.getAll(null), ["d"])
+
+  fd.set("undefined", "e")
+  t.deepEqual(fd.getAll(undefined), ["e"])
 })
 
 test("Returns an array with the stringified primitive value", t => {
@@ -27,7 +46,7 @@ test("Returns an array with the stringified primitive value", t => {
   t.deepEqual(fd.getAll("number"), ["451"])
 })
 
-test("Return an array with non-stringified Readable", t => {
+test("Returns an array with non-stringified Readable", t => {
   const fd = new FormData()
 
   const stream = createReadStream(filePath)
@@ -40,7 +59,7 @@ test("Return an array with non-stringified Readable", t => {
   )
 })
 
-test("Return an array with non-stringified Buffer", async t => {
+test("Returns an array with non-stringified Buffer", async t => {
   const fd = new FormData()
 
   const buffer = await readFile(filePath)

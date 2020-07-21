@@ -2,14 +2,24 @@ import test from "ava"
 
 import FormData from "../../lib/FormData"
 
-test("Appends a new value", t => {
+test("Appends new values, coercing field names to strings", t => {
   const fd = new FormData()
 
-  fd.append("name", "value")
+  fd.append("a", "a")
+  fd.append(1, "b")
+  fd.append(false, "c")
+  fd.append(null, "d")
+  fd.append(undefined, "e")
 
   t.deepEqual(
-    fd.getAll("name"), ["value"],
-    "Value should be returned as an array"
+    Array.from(fd.entries()),
+    [
+      ["a", "a"],
+      ["1", "b"],
+      ["false", "c"],
+      ["null", "d"],
+      ["undefined", "e"],
+    ]
   )
 })
 
