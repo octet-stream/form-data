@@ -260,6 +260,7 @@ class FormData {
    * @private
    */
   __setField(name, value, filename, options, append, argsLength) {
+    const fieldName = String(name)
     const methodName = append ? "append" : "set"
 
     if (isObject(filename)) {
@@ -311,18 +312,18 @@ class FormData {
       value = String(value)
     }
 
-    const field = this.__content.get(name)
+    const field = this.__content.get(fieldName)
 
     // Set a new field if given name is not exists
     if (!field) {
-      return void this.__content.set(name, {
+      return void this.__content.set(fieldName, {
         append, values: [{value, filename}]
       })
     }
 
     // Replace a value of the existing field if "set" called
     if (!append) {
-      return void this.__content.set(name, {
+      return void this.__content.set(fieldName, {
         append, values: [{value, filename}]
       })
     }
@@ -335,7 +336,7 @@ class FormData {
     // Append a new value to the existing field
     field.values.push({value, filename})
 
-    this.__content.set(name, field)
+    this.__content.set(fieldName, field)
   }
 
   /**
@@ -451,7 +452,7 @@ class FormData {
    * @public
    */
   get(name) {
-    const field = this.__content.get(name)
+    const field = this.__content.get(String(name))
 
     if (!field) {
       return undefined
@@ -469,7 +470,7 @@ class FormData {
    * @public
    */
   getAll(name) {
-    const field = this.__content.get(name)
+    const field = this.__content.get(String(name))
 
     return field ? Array.from(field.values, ({value}) => value) : []
   }
@@ -482,7 +483,7 @@ class FormData {
    * @public
    */
   delete(name) {
-    this.__content.delete(name)
+    this.__content.delete(String(name))
   }
 
   /**

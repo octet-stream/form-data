@@ -17,21 +17,32 @@ const {stat, readFile} = fs
 
 const filePath = join(__dirname, "..", "..", "package.json")
 
-test("Returns \"undefined\" on getting nonexistent field", t => {
+test("Gets \"undefined\" on getting nonexistent field", t => {
   const fd = new FormData()
 
   t.is(fd.get("nope"), undefined)
 })
 
-test("Returns a value of the existing field by given name", t => {
+test("Gets values, coercing field names to strings", t => {
   const fd = new FormData()
 
-  fd.set("name", "John Doe")
+  fd.set("a", "a")
+  t.is(fd.get("a"), "a")
 
-  t.is(fd.get("name"), "John Doe")
+  fd.set("1", "b")
+  t.is(fd.get(1), "b")
+
+  fd.set("false", "c")
+  t.is(fd.get(false), "c")
+
+  fd.set("null", "d")
+  t.is(fd.get(null), "d")
+
+  fd.set("undefined", "e")
+  t.is(fd.get(undefined), "e")
 })
 
-test("Returns only the first value of the field", t => {
+test("Gets only the first value of the field", t => {
   const fd = new FormData()
 
   fd.append("name", "John Doe")
@@ -40,7 +51,7 @@ test("Returns only the first value of the field", t => {
   t.is(fd.get("name"), "John Doe")
 })
 
-test("Returns a stringified values", t => {
+test("Gets a stringified values", t => {
   const fd = new FormData()
 
   fd.set("null", null)
@@ -56,7 +67,7 @@ test("Returns a stringified values", t => {
   t.is(fd.get("object"), "[object Object]")
 })
 
-test("Returns Buffer value as File", async t => {
+test("Gets Buffer value as File", async t => {
   const buffer = await readFile(filePath)
 
   const fd = new FormData()
@@ -68,7 +79,7 @@ test("Returns Buffer value as File", async t => {
   t.true(actual instanceof FileLike)
 })
 
-test("Returns Blob value as File", t => {
+test("Gets Blob value as File", t => {
   const blob = new Blob(["Some text"], {type: "text/plain"})
 
   const fd = new FormData()
@@ -80,7 +91,7 @@ test("Returns Blob value as File", t => {
   t.true(actual instanceof FileLike)
 })
 
-test("Returns File value as-is", t => {
+test("Gets File value as-is", t => {
   const file = new File(["Some text"], "file.txt", {type: "text/plain"})
 
   const fd = new FormData()
@@ -92,7 +103,7 @@ test("Returns File value as-is", t => {
   t.true(actual instanceof File)
 })
 
-test("Returns ReadStream stream as-is", async t => {
+test("Gets ReadStream stream as-is", async t => {
   const expected = await readFile(filePath)
 
   const fd = new FormData()
@@ -106,7 +117,7 @@ test("Returns ReadStream stream as-is", async t => {
 })
 
 test(
-  "Returns File when ReadStream passed with options.size argument",
+  "Gets File when ReadStream passed with options.size argument",
 
   async t => {
     const fd = new FormData()
@@ -121,7 +132,7 @@ test(
   }
 )
 
-test("Returns Readable stream as-is", t => {
+test("Gets Readable stream as-is", t => {
   const fd = new FormData()
 
   const readable = new Readable({
@@ -136,7 +147,7 @@ test("Returns Readable stream as-is", t => {
 })
 
 test(
-  "Returns File when Readable stream passed with options.size argument",
+  "Gets File when Readable stream passed with options.size argument",
 
   t => {
     const fd = new FormData()
@@ -153,7 +164,7 @@ test(
   }
 )
 
-test("Returns File when ReadableStream as-is", t => {
+test("Gets File when ReadableStream as-is", t => {
   const readable = new ReadableStream({
     start(controller) {
       controller.close()
@@ -168,7 +179,7 @@ test("Returns File when ReadableStream as-is", t => {
 })
 
 test(
-  "Returns File when ReadableStream passed with options.size argument",
+  "Gets File when ReadableStream passed with options.size argument",
 
   t => {
     const readable = new ReadableStream({

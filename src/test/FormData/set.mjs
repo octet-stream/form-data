@@ -14,6 +14,27 @@ import read from "../__helper__/read"
 
 const filePath = join(__dirname, "..", "..", "package.json")
 
+test("Sets new values, coercing field names to strings", t => {
+  const fd = new FormData()
+
+  fd.set("a", "a")
+  fd.set(1, "b")
+  fd.set(false, "c")
+  fd.set(null, "d")
+  fd.set(undefined, "e")
+
+  t.deepEqual(
+    Array.from(fd.entries()),
+    [
+      ["a", "a"],
+      ["1", "b"],
+      ["false", "c"],
+      ["null", "d"],
+      ["undefined", "e"],
+    ]
+  )
+})
+
 test("Should set a primitive value", t => {
   const fd = new FormData()
 

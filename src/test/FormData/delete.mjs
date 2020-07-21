@@ -2,14 +2,23 @@ import test from "ava"
 
 import FormData from "../../lib/FormData"
 
-test("Removes a field by its key", t => {
+test("Deletes fields by field name, coercing the field names to strings", t => {
   const fd = new FormData()
 
-  fd.set("name", "value")
+  fd.set("a", "a")
+  fd.delete("a")
 
-  t.true(fd.has("name"))
+  fd.set(1, "b")
+  fd.delete("1")
 
-  fd.delete("name")
+  fd.set(false, "c")
+  fd.delete("false")
 
-  t.false(fd.has("name"))
+  fd.set(null, "d")
+  fd.delete("null")
+
+  fd.set(undefined, "e")
+  fd.delete("undefined")
+
+  t.is(Array.from(fd.entries()).length, 0)
 })
