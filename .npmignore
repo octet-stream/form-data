@@ -5,21 +5,13 @@ node_modules
 .github
 .nyc_output
 coverage
-..map
-*.map
-.js.map
 
-/src
 /test
 /type/**/*.test-d.ts
 
 yarn.lock
 ava.config.cjs
-.travis.yml
 .editorconfig
 .huskyrc.json
 .lintstagedrc
-.babelrc
-.babelrc.*
-.exlintrc
-.eslintrc.*
+.eslintrc.json
