@@ -20,7 +20,7 @@
     "node": ">= 10.17"
   },
   "scripts": {
-    "eslint": "eslint src/**/*.mjs",
+    "eslint": "eslint lib/**/*.js test/**/*.js ava.config.js polyfill.js",
     "staged": "lint-staged",
     "test": "ava",
     "test:types": "tsd",
