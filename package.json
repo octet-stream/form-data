@@ -22,13 +22,6 @@
   "scripts": {
     "eslint": "eslint src/**/*.mjs",
     "staged": "lint-staged",
-    "make:test": "babel src -s -d .",
-    "prepare": "npm run prepare:mjs && npm run prepare:js",
-    "prepare:mjs": "BABEL_ESM=1 babel src -d . --keep-file-extension",
-    "prepare:js": "babel src -d .",
-    "watch": "babel src -w -d .",
-    "p": "npm run prepare",
-    "w": "npm run watch",
     "cleanup": "rimraf lib test polyfill.mjs polyfill.js *.map",
     "test": "ava",
     "test:types": "tsd",
