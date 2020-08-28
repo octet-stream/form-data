@@ -1,4 +1,4 @@
-async function readStreamWithAsyncIterator(form) {
+async function readFromStream(form) {
   const contents = []
 
   for await (const chunk of form) {
@@ -8,4 +8,4 @@ async function readStreamWithAsyncIterator(form) {
   return Buffer.concat(contents)
 }
 
-export default readStreamWithAsyncIterator
+module.exports = readFromStream

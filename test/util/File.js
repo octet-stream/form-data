@@ -1,9 +1,9 @@
-import {Readable} from "stream"
+const {Readable} = require("stream")
 
-import test from "ava"
-import Blob from "fetch-blob"
+const test = require("ava")
+const Blob = require("fetch-blob")
 
-import File from "../../lib/util/File"
+const File = require("../../lib/util/File")
 
 test("Returns Readable stream for Buffer content", t => {
   const buf = Buffer.from("What time is it?")

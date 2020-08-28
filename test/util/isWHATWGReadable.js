@@ -1,8 +1,8 @@
-import {ReadableStream} from "web-streams-polyfill/ponyfill"
+const test = require("ava")
 
-import test from "ava"
+const {ReadableStream} = require("web-streams-polyfill/ponyfill")
 
-import isWHATWGReadable from "../../lib/util/isWHATWGReadable"
+const isWHATWGReadable = require("../../lib/util/isWHATWGReadable")
 
 test("Returns true for ReadableStream instance", t => {
   t.true(isWHATWGReadable(new ReadableStream()))

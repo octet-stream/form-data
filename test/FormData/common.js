@@ -1,21 +1,21 @@
-import {Readable} from "stream"
+const {Readable} = require("stream")
 
-import Blob from "fetch-blob"
-import req from "supertest"
-import pq from "proxyquire"
-import test from "ava"
+const Blob = require("fetch-blob")
+const req = require("supertest")
+const pq = require("proxyquire")
+const test = require("ava")
 
-import {spy} from "sinon"
-import {readFile, createReadStream} from "promise-fs"
-import {ReadableStream} from "web-streams-polyfill/ponyfill"
+const {spy} = require("sinon")
+const {readFile, createReadStream} = require("promise-fs")
+const {ReadableStream} = require("web-streams-polyfill/ponyfill")
 
-import boundary from "../../lib/util/boundary"
-import FormData from "../../lib/FormData"
+const boundary = require("../../lib/util/boundary")
+const FormData = require("../../lib/FormData")
 
-import read from "../__helper__/read"
-import File from "../__helper__/File"
-import count from "../__helper__/count"
-import server from "../__helper__/server"
+const read = require("../__helper__/read")
+const File = require("../__helper__/File")
+const count = require("../__helper__/count")
+const server = require("../__helper__/server")
 
 test("The stream accessor returns a Readable stream", t => {
   const fd = new FormData()

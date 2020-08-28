@@ -1,6 +1,6 @@
-import test from "ava"
+const test = require("ava")
 
-import getType from "../../lib/util/getType"
+const getType = require("../../lib/util/getType")
 
 test("Should return a string with type name", t => {
   const res = getType({})

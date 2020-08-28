@@ -1,9 +1,9 @@
-import http from "http"
-import fs from "fs"
+const http = require("http")
+const fs = require("fs")
 
-import toObject from "object-deep-from-entries"
+const toObject = require("object-deep-from-entries")
 
-import {parse} from "then-busboy"
+const {parse} = require("then-busboy")
 
 const server = () => http.createServer((req, res) => {
   async function transform(body) {
@@ -35,4 +35,4 @@ const server = () => http.createServer((req, res) => {
     .catch(onRejected)
 })
 
-export default server
+module.exports = server

@@ -10,4 +10,4 @@ function count(fd) {
   return counter
 }
 
-export default count
+module.exports = count

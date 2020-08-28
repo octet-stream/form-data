@@ -1,6 +1,6 @@
-import test from "ava"
+const test = require("ava")
 
-import FormData from "../../lib/FormData"
+const FormData = require("../../lib/FormData")
 
 test("Deletes fields by field name, coercing the field names to strings", t => {
   const fd = new FormData()

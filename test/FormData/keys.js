@@ -1,6 +1,6 @@
-import test from "ava"
+const test = require("ava")
 
-import FormData from "../../lib/FormData"
+const FormData = require("../../lib/FormData")
 
 test("Should be done on the first call when FormData have no fields", t => {
   const fd = new FormData()

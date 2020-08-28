@@ -1,4 +1,4 @@
-import Blob from "fetch-blob"
+const Blob = require("fetch-blob")
 
 class File extends Blob {
   constructor(blobParts, name, options) {
@@ -8,4 +8,4 @@ class File extends Blob {
   }
 }
 
-export default File
+module.exports = File

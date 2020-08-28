@@ -1,11 +1,11 @@
-import {Readable} from "stream"
+const {Readable} = require("stream")
 
-import {createReadStream} from "fs"
+const {createReadStream} = require("fs")
 
-import test from "ava"
+const test = require("ava")
 
-import FormData from "../../lib/FormData"
-import read from "../__helper__/read"
+const FormData = require("../../lib/FormData")
+const read = require("../__helper__/read")
 
 test("Returns a length of the empty FormData", async t => {
   const fd = new FormData()

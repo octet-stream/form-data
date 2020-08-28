@@ -1,16 +1,16 @@
-import {Readable} from "stream"
-import {join} from "path"
+const {Readable} = require("stream")
+const {join} = require("path")
 
-import {ReadStream, createReadStream} from "fs"
+const {ReadStream, createReadStream} = require("fs")
 
-import test from "ava"
-import Blob from "fetch-blob"
+const test = require("ava")
+const Blob = require("fetch-blob")
 
-import FormData from "../../lib/FormData"
-import FileLike from "../../lib/util/File"
+const FormData = require("../../lib/FormData")
+const FileLike = require("../../lib/util/File")
 
-import File from "../__helper__/File"
-import read from "../__helper__/read"
+const File = require("../__helper__/File")
+const read = require("../__helper__/read")
 
 const filePath = join(__dirname, "..", "..", "package.json")
 

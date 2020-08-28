@@ -1,17 +1,17 @@
-import {Readable} from "stream"
-import {join} from "path"
+const {Readable} = require("stream")
+const {join} = require("path")
 
-import test from "ava"
-import Blob from "fetch-blob"
+const test = require("ava")
+const Blob = require("fetch-blob")
 
-import {promises as fs, ReadStream, createReadStream} from "fs"
-import {ReadableStream} from "web-streams-polyfill/ponyfill"
+const {promises: fs, ReadStream, createReadStream} = require("fs")
+const {ReadableStream} = require("web-streams-polyfill/ponyfill")
 
-import FormData from "../../lib/FormData"
-import FileLike from "../../lib/util/File"
+const FormData = require("../../lib/FormData")
+const FileLike = require("../../lib/util/File")
 
-import read from "../__helper__/read"
-import File from "../__helper__/File"
+const read = require("../__helper__/read")
+const File = require("../__helper__/File")
 
 const {stat, readFile} = fs
 

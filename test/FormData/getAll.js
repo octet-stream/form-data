@@ -1,12 +1,12 @@
-import {promises as fs, createReadStream} from "fs"
-import {join} from "path"
+const {promises: fs, createReadStream} = require("fs")
+const {join} = require("path")
 
-import test from "ava"
+const test = require("ava")
 
-import FormData from "../../lib/FormData"
-import FileLike from "../../lib/util/File"
+const FormData = require("../../lib/FormData")
+const FileLike = require("../../lib/util/File")
 
-import read from "../__helper__/read"
+const read = require("../__helper__/read")
 
 const {readFile} = fs
 const {isArray} = Array

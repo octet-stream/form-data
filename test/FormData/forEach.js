@@ -1,8 +1,8 @@
-import test from "ava"
+const test = require("ava")
 
-import {spy} from "sinon"
+const {spy} = require("sinon")
 
-import FormData from "../../lib/FormData"
+const FormData = require("../../lib/FormData")
 
 test(
   "Callback should not be called when FormData doesn't have any fields",

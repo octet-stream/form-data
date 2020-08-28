@@ -1,8 +1,8 @@
-import Blob from "fetch-blob"
-import test from "ava"
+const Blob = require("fetch-blob")
+const test = require("ava")
 
-import toFile from "../../lib/util/toFile"
-import File from "../../lib/util/File"
+const toFile = require("../../lib/util/toFile")
+const File = require("../../lib/util/File")
 
 test("Sets a File type from its name", t => {
   const buffer = Buffer.from("Some text")

@@ -1,11 +1,11 @@
-import {Readable} from "stream"
+const {Readable} = require("stream")
 
-import {promises as fs, createReadStream} from "fs"
-import {ReadableStream} from "web-streams-polyfill/ponyfill"
+const {promises: fs, createReadStream} = require("fs")
+const {ReadableStream} = require("web-streams-polyfill/ponyfill")
 
-import test from "ava"
+const test = require("ava")
 
-import getLength from "../../lib/util/getLength"
+const getLength = require("../../lib/util/getLength")
 
 const {stat} = fs
 

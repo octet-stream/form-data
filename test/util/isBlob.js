@@ -1,7 +1,7 @@
-import Blob from "fetch-blob"
-import test from "ava"
+const Blob = require("fetch-blob")
+const test = require("ava")
 
-import isBlob from "../../lib/util/isBlob"
+const isBlob = require("../../lib/util/isBlob")
 
 class File extends Blob {
   constructor() {
