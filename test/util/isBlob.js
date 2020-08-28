@@ -28,9 +28,11 @@ test(
   "but with valid methods/props",
   t => {
     class NotBlob {
-      type = ""
+      constructor() {
+        this.type = ""
 
-      size = null
+        this.size = null
+      }
 
       arrayBuffer() { }
 

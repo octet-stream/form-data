@@ -40,9 +40,11 @@ test("Returns a length of given string value", async t => {
 
 test("Returns a length of given Blob value", async t => {
   class Blob {
-    type = ""
+    constructor() {
+      this.type = ""
 
-    size = 451
+      this.size = null
+    }
 
     arrayBuffer() { }
 
