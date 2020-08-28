@@ -6,8 +6,3 @@ node_modules
 coverage
 *.map
 ..map
-
-/lib
-/test
-/polyfill.js
-/polyfill.mjs

@@ -2,13 +2,6 @@
   "env": {
     "browser": true
   },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".mjs", ".js"]
-      }
-    }
-  },
   "plugins": ["ava"],
   "extends": [
     "@octetstream",
