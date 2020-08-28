@@ -22,11 +22,10 @@
   "scripts": {
     "eslint": "eslint src/**/*.mjs",
     "staged": "lint-staged",
-    "cleanup": "rimraf lib test polyfill.mjs polyfill.js *.map",
     "test": "ava",
     "test:types": "tsd",
-    "coverage": "npm run cleanup && nyc npm run test",
-    "report": "npm run cleanup && nyc npm run test && nyc report -r=html",
+    "coverage": "nyc npm run test",
+    "report": "nyc npm run test && nyc report -r=html",
     "ci": "nyc npm run test && nyc report -r=json"
   },
   "devDependencies": {
@@ -42,7 +41,6 @@
     "nyc": "15.1.0",
     "object-deep-from-entries": "0.3.0",
     "proxyquire": "2.1.3",
-    "rimraf": "3.0.2",
     "sinon": "9.0.3",
     "supertest": "4.0.2",
     "then-busboy": "4.4.0",
