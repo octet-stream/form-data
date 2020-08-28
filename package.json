@@ -25,9 +25,9 @@
     "cleanup": "rimraf lib test polyfill.mjs polyfill.js *.map",
     "test": "ava",
     "test:types": "tsd",
-    "coverage": "npm run cleanup && npm run make:test && nyc npm run test",
-    "report": "npm run cleanup && npm run make:test && nyc npm run test && nyc report -r=html",
-    "ci": "npm run make:test && nyc npm run test && nyc report -r=json"
+    "coverage": "npm run cleanup && nyc npm run test",
+    "report": "npm run cleanup && nyc npm run test && nyc report -r=html",
+    "ci": "nyc npm run test && nyc report -r=json"
   },
   "nyc": {
     "extension": [

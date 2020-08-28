@@ -5,14 +5,12 @@ on:
     branches: [master]
     paths:
       - "**.js"
-      - "**.mjs"
       - "package.json"
       - ".github/workflows/ci.yml"
   pull_request:
     branches: [master]
     paths:
       - "**.js"
-      - "**.mjs"
       - "package.json"
       - ".github/workflows/ci.yml"
 

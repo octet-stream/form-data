@@ -1,3 +1,6 @@
 {
-  "src/**/*.mjs": "eslint --fix"
+  "lib/**/.js": "eslint --fix",
+  "test/**/**js": "eslint --fix",
+  "ava.config.js": "eslint --fix",
+  "polyfill.js": "eslint --fix"
 }
