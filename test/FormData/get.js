@@ -17,10 +17,10 @@ const {stat, readFile} = fs
 
 const filePath = join(__dirname, "..", "..", "package.json")
 
-test("Gets \"undefined\" on getting nonexistent field", t => {
+test("Gets \"null\" on getting nonexistent field", t => {
   const fd = new FormData()
 
-  t.is(fd.get("nope"), undefined)
+  t.is(fd.get("nope"), null)
 })
 
 test("Gets values, coercing field names to strings", t => {
