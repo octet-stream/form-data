@@ -19,8 +19,6 @@
       }
     }],
 
-    "import/no-unresolved": "error",
-
-    "ava/no-ignored-test-files": 0
+    "import/no-unresolved": "error"
   }
 }
