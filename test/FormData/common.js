@@ -6,7 +6,7 @@ const pq = require("proxyquire")
 const test = require("ava")
 
 const {spy} = require("sinon")
-const {readFile, createReadStream} = require("promise-fs")
+const {readFile, createReadStream, statSync} = require("promise-fs")
 const {ReadableStream} = require("web-streams-polyfill/ponyfill")
 
 const boundary = require("../../lib/util/boundary")
@@ -234,3 +234,18 @@ test("Allows to use ReadableStream as a field", async t => {
 
   t.is(body.field, expected)
 })
+
+test(
+  "The filename parameter has priority over the ReadStream#path value",
+  t => {
+    const expected = "some-file.js"
+
+    const fd = new FormData()
+
+    const stream = createReadStream(__filename)
+
+    fd.set("stream", stream, expected, {size: statSync(__filename).size})
+
+    t.is(fd.get("stream").name, expected)
+  }
+)
