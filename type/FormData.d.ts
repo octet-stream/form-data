@@ -16,7 +16,7 @@ declare interface File {
 
 declare type FormDataEntry = string | ReadStream | Readable | Buffer | File
 
-declare type FormDataFieldOptions = {
+declare interface FormDataFieldOptions {
   size?: number,
   type?: string,
   lastModified?: number,
@@ -157,4 +157,6 @@ declare class FormData {
   public [Symbol.asyncIterator](): AsyncIterableIterator<Buffer>
 }
 
-export {FormData as default, FormDataFieldOptions, FormDataFields, FormDataEntry, File}
+export type {FormDataFieldOptions, FormDataFields, FormDataEntry, File}
+
+export default FormData
