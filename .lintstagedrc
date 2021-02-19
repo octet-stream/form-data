@@ -1,6 +1,0 @@
-{
-  "lib/**/.js": "eslint --fix",
-  "test/**/**.js": "eslint --fix",
-  "ava.config.cjs": "eslint --fix",
-  "polyfill.js": "eslint --fix"
-}
