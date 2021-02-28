@@ -1,4 +1,4 @@
-import {createReadStream, ReadStream} from "fs"
+import {createReadStream} from "fs"
 import {Readable} from "stream"
 
 import {expectType as expect} from "tsd"
