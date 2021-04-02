@@ -24,14 +24,14 @@ test("Takes the lastModified value from options", t => {
 
 test("File#toString() returns a string", t => {
   const buf = Buffer.from("What time is it?")
-  const file = new File(buf, "file.txt", {size: buf.length, type: "text/plain"})
+  const file = new File([buf], "file.txt")
 
   t.is(typeof file.toString(), "string")
 })
 
 test("File#[Symbol.toStringTag]() returns a string", t => {
   const buf = Buffer.from("What time is it?")
-  const file = new File(buf, "file.txt", {size: buf.length, type: "text/plain"})
+  const file = new File([buf], "file.txt")
 
   t.is(typeof file[Symbol.toStringTag], "string")
 })
