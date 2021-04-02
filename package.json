@@ -29,14 +29,13 @@
   },
   "devDependencies": {
     "@octetstream/eslint-config": "5.0.0",
-    "@types/node": "14.14.31",
+    "@types/node": "14.14.37",
     "ava": "3.15.0",
-    "c8": "7.6.0",
+    "c8": "7.7.0",
     "codecov": "3.8.1",
     "domexception": "2.0.1",
-    "eslint": "7.21.0",
+    "eslint": "7.23.0",
     "eslint-plugin-ava": "11.0.0",
-    "fetch-blob": "2.1.1",
     "husky": "4.3.0",
     "lint-staged": "10.5.4",
     "lodash.isplainobject": "4.0.6",
@@ -49,6 +48,7 @@
     "web-streams-polyfill": "3.0.2"
   },
   "dependencies": {
-    "mime-types": "2.1.29"
+    "mime-types": "2.1.30",
+    "fetch-blob": "2.1.1"
   }
 }

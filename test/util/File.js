@@ -1,60 +1,25 @@
-const {Readable} = require("stream")
-
 const test = require("ava")
-const Blob = require("fetch-blob")
 
 const File = require("../../lib/util/File")
 
-test("Returns Readable stream for Buffer content", t => {
-  const buf = Buffer.from("What time is it?")
-  const file = new File(buf, "file.txt", {size: buf.length, type: "text/plain"})
+test("Has the name field taken from the second argument", t => {
+  const expected = "file.txt"
+  const file = new File(["Some content"], expected)
 
-  t.true(file.stream() instanceof Readable)
+  t.is(file.name, expected)
 })
 
-test("Returns Readable stream for Blob content", t => {
-  const blob = new Blob(["Some content"])
-  const file = new File(blob, "file.txt")
+test("Has the lastModified field", t => {
+  const file = new File(["Some content"], "file.txt")
 
-  t.true(file.stream() instanceof Readable)
+  t.is(typeof file.lastModified, "number")
 })
 
-test("Returns Readable stream for Readable content", t => {
-  const readable = new Readable({
-    read() {
-      readable.push(null)
-    }
-  })
+test("Takes the lastModified value from options", t => {
+  const expected = Date.now()
+  const file = new File(["Some content"], "file.txt", {lastModified: expected})
 
-  const file = new File(readable, "file.txt")
-
-  t.true(file.stream() instanceof Readable)
-})
-
-test("Return ArrayBuffer for Buffer file's content", async t => {
-  const buf = Buffer.from("What time is it?")
-  const file = new File(buf, "file.txt", {size: buf.length, type: "text/plain"})
-
-  t.true(await file.arrayBuffer() instanceof ArrayBuffer)
-})
-
-test("Return ArrayBuffer for Blob file's content", async t => {
-  const blob = new Blob(["Some content"])
-  const file = new File(blob, "file.txt")
-
-  t.true(await file.arrayBuffer() instanceof ArrayBuffer)
-})
-
-test("Return ArrayBuffer for Readable file's content", async t => {
-  const readable = new Readable({
-    read() {
-      readable.push(null)
-    }
-  })
-
-  const file = new File(readable, "file.txt")
-
-  t.true(await file.arrayBuffer() instanceof ArrayBuffer)
+  t.is(file.lastModified, expected)
 })
 
 test("File#toString() returns a string", t => {
