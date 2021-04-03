@@ -51,7 +51,7 @@ interface SetFieldOptions {
 
 export class FormData {
   /**
-   * Returns internal readable stream, allowing to read the FormData content, produced by encoder
+   * Returns internal readable stream, allowing to read the FormData content
    */
   readonly stream: Readable
 
