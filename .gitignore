@@ -6,5 +6,7 @@ node_modules
 coverage
 *.map
 ..map
-
 *.old
+@type
+
+/lib/**/*.js

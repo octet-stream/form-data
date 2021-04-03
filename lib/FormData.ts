@@ -50,16 +50,31 @@ interface SetFieldOptions {
 }
 
 export class FormData {
+  /**
+   * Returns internal readable stream, allowing to read the FormData content, produced by encoder
+   */
   readonly stream: Readable
 
+  /**
+   * Returns a boundary string
+   */
   readonly boundary = `NodeJSFormDataStreamBoundary${createBoundary()}`
 
+  /**
+   * Returns headers for multipart/form-data
+   */
   readonly headers = {
     "Content-Type": `multipart/form-data; boundary=${this.boundary}`
   }
 
+  /**
+   * Stores internal data for every field
+   */
   private readonly _content = new Map<string, FormDataField>()
 
+  /**
+   * Returns field's footer
+   */
   private readonly _footer =
     `${DASHES}${this.boundary}${DASHES}${CARRIAGE.repeat(2)}`
 
@@ -217,6 +232,18 @@ export class FormData {
     return length + Buffer.from(this._footer).length
   }
 
+  /**
+   * Appends a new value onto an existing key inside a FormData object,
+   * or adds the key if it does not already exist.
+   *
+   * @param name The name of the field whose data is contained in value
+   * @param value The field value. You can pass any primitive type
+   *   (including null and undefined), Buffer or Readable stream.
+   *   Note that Arrays and Object will be converted to string
+   *   by using String function.
+   * @param filename A filename of given field.
+   * @param options Additional field options.
+   */
   append(name: string, value: unknown): void
   append(name: string, value: unknown, filename?: string): void
   append(
@@ -245,6 +272,19 @@ export class FormData {
     )
   }
 
+  /**
+   * Set a new value for an existing key inside FormData,
+   * or add the new field if it does not already exist.
+   *
+   * @param name The name of the field whose data is contained in value
+   * @param value The field value. You can pass any primitive type
+   *   (including null and undefined), Buffer or Readable stream.
+   *   Note that Arrays and Object will be converted to string
+   *   by using String function.
+   * @param filename A filename of given field.
+   * @param options Additional field options.
+   *
+   */
   set(name: string, value: unknown): void
   set(name: string, value: unknown, filename?: string): void
   set(
@@ -274,6 +314,12 @@ export class FormData {
     )
   }
 
+  /**
+   * Returns the first value associated with the given name.
+   * Buffer and Readable values will be returned as-is.
+   *
+   * @param {string} name A name of the value you want to retrieve.
+   */
   get(name: string): FormDataFieldValue {
     name = String(name)
 
@@ -284,6 +330,12 @@ export class FormData {
     return this._content.get(name).values[0].value
   }
 
+  /**
+   * Returns all the values associated with
+   * a given key from within a FormData object.
+   *
+   * @param {string} name A name of the value you want to retrieve.
+   */
   getAll(name: string): FormDataFieldValue[] {
     name = String(name)
 
@@ -294,10 +346,22 @@ export class FormData {
     return this._content.get(name).values.map(({value}) => value)
   }
 
+  /**
+   * Check if a field with the given name exists inside FormData.
+   *
+   * @param name A name of the field you want to test for.
+   *
+   * @return
+   */
   has(name: string) {
     return this._content.has(String(name))
   }
 
+  /**
+   * Deletes a key and its value(s) from a FormData object.
+   *
+   * @param name The name of the key you want to delete.
+   */
   delete(name: string) {
     return this._content.delete(String(name))
   }

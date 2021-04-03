@@ -4,6 +4,6 @@
     "module": "es2020",
     "outDir": "lib/esm",
     "declaration": true,
-    "declarationDir": "./type",
+    "declarationDir": "./@type",
   }
 }
