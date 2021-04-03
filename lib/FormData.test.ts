@@ -51,6 +51,18 @@ test("User-defined filename has higher precedence for File", t => {
   t.is((fd.get("file") as File).name, expected)
 })
 
+test("Allows filename argument to be set from options", t => {
+  const expected = "some-file.txt"
+
+  const blob = new Blob(["Some content"])
+
+  const fd = new FormData()
+
+  fd.set("file", blob, {filename: expected})
+
+  t.is((fd.get("file") as File).name, expected)
+})
+
 test(".set() appends a string field", t => {
   const fd = new FormData()
 
