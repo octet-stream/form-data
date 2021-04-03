@@ -29,6 +29,28 @@ test("Creates a new File instance for given File", t => {
   t.not(fd.get("file"), file)
 })
 
+test("Assigns a filename argument to Blob field", t => {
+  const expected = "some-file.txt"
+
+  const blob = new Blob(["Some content"])
+  const fd = new FormData()
+
+  fd.set("file", blob, expected)
+
+  t.is((fd.get("file") as File).name, expected)
+})
+
+test("User-defined filename has higher precedence for File", t => {
+  const expected = "some-file.txt"
+
+  const file = new File(["Some content"], "file.txt")
+  const fd = new FormData()
+
+  fd.set("file", file, expected)
+
+  t.is((fd.get("file") as File).name, expected)
+})
+
 test(".set() appends a string field", t => {
   const fd = new FormData()
 
