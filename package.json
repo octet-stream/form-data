@@ -14,8 +14,13 @@
   ],
   "author": "Nick K. <io@octetstream.me>",
   "license": "MIT",
-  "main": "lib/FormData",
-  "types": "type/FormData.d.ts",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./type/index.d.ts",
+  "exports": {
+    "import": "./lib/esm/index.js",
+    "require": "./lib/cjs/index.js"
+  },
   "engines": {
     "node": ">= 10.17"
   },
