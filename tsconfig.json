@@ -1,0 +1,30 @@
+{
+  "include": [
+    "lib/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib/__helper__/**",
+    "lib/**/*.test.ts"
+  ],
+  "compilerOptions": {
+    "target": "es2018",
+    "noImplicitAny": false,
+    "baseUrl": "lib",
+    "checkJs": false,
+    "allowJs": false,
+    "skipLibCheck": false,
+    "strict": false,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "plugins": [
+      {
+        "transform": "@zoltu/typescript-transformer-append-js-extension/output/index.js",
+        "after": true
+      }
+    ]
+  }
+}

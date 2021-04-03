@@ -1,3 +1,5 @@
+import {ReadableStreamDefaultReader} from "web-streams-polyfill"
+
 /**
  * Reads a content from given ReadableStream
  *
@@ -5,7 +7,7 @@
  *
  * @api private
  */
-async function* readableStreamIterator(reader) {
+async function* readableStreamIterator(reader: ReadableStreamDefaultReader) {
   while (true) {
     const {done, value} = await reader.read()
 
@@ -17,4 +19,4 @@ async function* readableStreamIterator(reader) {
   }
 }
 
-module.exports = readableStreamIterator
+export default readableStreamIterator

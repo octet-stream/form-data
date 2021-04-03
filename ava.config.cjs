@@ -1,6 +1,11 @@
 module.exports = {
+  extensions: [
+    "ts"
+  ],
+  require: [
+    "ts-node/register/transpile-only",
+  ],
   files: [
-    "test/**/*.js",
-    "!test/__helper__/*.js"
+    "lib/**/*.test.ts"
   ]
 }
