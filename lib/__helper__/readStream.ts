@@ -1,7 +1,7 @@
 import {Readable} from "stream"
 
-async function readStream(
-  readable: Readable,
+async function readStream<T = any>(
+  readable: Readable | {[Symbol.asyncIterator](): AsyncIterableIterator<T>},
 
   // eslint-disable-next-line no-undef
   encoding?: BufferEncoding

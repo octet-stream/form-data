@@ -244,7 +244,7 @@ test(
     fd.set("name", "Nyx")
 
     const actual = await fd.getComputedLength()
-    const expected = await readStream(fd.stream).then(({length}) => length)
+    const expected = await readStream(fd).then(({length}) => length)
 
     t.is(actual, expected)
   }
@@ -258,7 +258,7 @@ test(
     fd.set("field", Buffer.from("Just another string"))
 
     const actual = await fd.getComputedLength()
-    const expected = await readStream(fd.stream).then(({length}) => length)
+    const expected = await readStream(fd).then(({length}) => length)
 
     t.is(actual, expected)
   }
@@ -273,7 +273,7 @@ test(
     fd.set("file", createReadStream("readme.md"))
 
     const actual = await fd.getComputedLength()
-    const expected = await readStream(fd.stream).then(({length}) => length)
+    const expected = await readStream(fd).then(({length}) => length)
 
     t.is(actual, expected)
   }

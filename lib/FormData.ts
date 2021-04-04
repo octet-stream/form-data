@@ -418,4 +418,8 @@ export class FormData {
   [inspect.custom](): string {
     return this[Symbol.toStringTag]
   }
+
+  [Symbol.asyncIterator]() {
+    return this.stream[Symbol.asyncIterator]()
+  }
 }
