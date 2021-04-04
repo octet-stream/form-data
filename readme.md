@@ -33,7 +33,8 @@ You can send queries via HTTP clients that supports headers setting Readable str
 Let's take a look at minimal example with [got](https://github.com/sindresorhus/got):
 
 ```js
-import FormData from "formdata-node"
+import {FormData} from "formdata-node"
+
 import got from "got"
 
 const fd = new FormData()
