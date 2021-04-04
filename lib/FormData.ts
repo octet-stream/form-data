@@ -176,7 +176,7 @@ export class FormData {
       value = new File([fromPath(String(value.path))], filename, options)
     } else if (isBlob(value) || isBuffer(value)) {
       value = new File([value], filename, options)
-    } else {
+    } else if (!isStream(value)) { // ? Should I deprecate streams as field's value?
       // A non-file fields must be converted to string
       value = String(value)
     }

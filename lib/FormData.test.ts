@@ -1,6 +1,7 @@
 import test from "ava"
 
 import {createReadStream} from "fs"
+import {Readable} from "stream"
 import {resolve} from "path"
 
 import Blob from "fetch-blob"
@@ -163,6 +164,76 @@ test(".get() returns File as-is", t => {
 
   t.true(fd.get("file") instanceof File)
 })
+
+test(
+  ".getComputedLength() Returns a length of the empty FormData",
+  async t => {
+    const fd = new FormData()
+
+    const actual = await fd.getComputedLength()
+
+    t.is(actual, Buffer.byteLength(`--${fd.boundary}--\r\n\r\n`))
+  }
+)
+
+test(
+  ".getComputedLength() Returns undefined when FormData have Readable fields",
+  async t => {
+    const fd = new FormData()
+
+    fd.set("field", "On Soviet Moon, landscape see binoculars through YOU.")
+    fd.set("another", new Readable({ read() { } }))
+
+    console.log(fd.get("another"))
+
+    const actual = await fd.getComputedLength()
+
+    t.is(actual, undefined)
+  }
+)
+
+test(
+  ".getComputedLength() returns the length of the FormData with regular field",
+  async t => {
+    const fd = new FormData()
+
+    fd.set("name", "Nyx")
+
+    const actual = await fd.getComputedLength()
+    const expected = await readStream(fd.stream).then(({length}) => length)
+
+    t.is(actual, expected)
+  }
+)
+
+test(
+  ".getComputedLength() returns the length of the FormData with Buffer",
+  async t => {
+    const fd = new FormData()
+
+    fd.set("field", Buffer.from("Just another string"))
+
+    const actual = await fd.getComputedLength()
+    const expected = await readStream(fd.stream).then(({length}) => length)
+
+    t.is(actual, expected)
+  }
+)
+
+test(
+  ".getComputedLength() returns the length of the FormData with File",
+
+  async t => {
+    const fd = new FormData()
+
+    fd.set("file", createReadStream("readme.md"))
+
+    const actual = await fd.getComputedLength()
+    const expected = await readStream(fd.stream).then(({length}) => length)
+
+    t.is(actual, expected)
+  }
+)
 
 test(".getAll() returns an empty array for non-existent field", t => {
   const fd = new FormData()
