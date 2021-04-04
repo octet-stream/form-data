@@ -4,13 +4,21 @@ on:
   push:
     branches: [master]
     paths:
-      - "**.js"
+      - "**.ts"
+      - "tsconfig.json"
+      - "tsconfig.cjs.json"
+      - "tsconfig.esm.json"
+      - "ava.config.cjs"
       - "package.json"
       - ".github/workflows/ci.yml"
   pull_request:
     branches: [master]
     paths:
-      - "**.js"
+      - "**.ts"
+      - "tsconfig.json"
+      - "tsconfig.cjs.json"
+      - "tsconfig.esm.json"
+      - "ava.config.cjs"
       - "package.json"
       - ".github/workflows/ci.yml"
 
