@@ -3,11 +3,12 @@ import {basename} from "path"
 import {inspect} from "util"
 
 import mimes from "mime-types"
-import fromPath from "fetch-blob/from.js"
 
 import {ReadableStream} from "web-streams-polyfill"
 
 import {File} from "./File"
+
+import {fileFromPathSync} from "./fileFromPath"
 
 import isBlob from "./util/isBlob"
 import isStream from "./util/isStream"
@@ -170,7 +171,8 @@ export class FormData {
 
     // Normalize field's value
     if (isReadStream(value)) {
-      value = new File([fromPath(String(value.path))], filename, options)
+      // value = new File([fromPath(String(value.path))], filename, options)
+      value = fileFromPathSync(String(value.path), filename, options)
     } else if (isBlob(value) || isBuffer(value)) {
       value = new File([value], filename, options)
     } else if (!isStream(value)) { // ? Should I deprecate streams as field's value?
