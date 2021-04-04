@@ -32,7 +32,8 @@
     "make:esm": "ttsc --project tsconfig.esm.json",
     "make:cjs": "ttsc --project tsconfig.cjs.json",
     "make": "npm run make:esm && npm run make:cjs",
-    "test": "TS_NODE_COMPILER=ttypescript TS_NODE_PROJECT=tsconfig.cjs.json ava --fail-fast"
+    "test": "TS_NODE_COMPILER=ttypescript TS_NODE_PROJECT=tsconfig.cjs.json ava --fail-fast",
+    "cleanup": "rm -rf @type && find lib -name \"*.js\" -type f -delete"
   },
   "devDependencies": {
     "@octetstream/eslint-config": "5.0.0",
