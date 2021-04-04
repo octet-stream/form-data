@@ -98,6 +98,18 @@ test(".set() appends a string field", t => {
   t.is(fd.get("field"), "string")
 })
 
+test(".set() replaces field if the new one has the same name", t => {
+  const fd = new FormData()
+
+  fd.set("field", "one")
+
+  t.is(fd.get("field"), "one")
+
+  fd.set("field", "two")
+
+  t.is(fd.get("field"), "two")
+})
+
 test(".append() append a new field", t => {
   const fd = new FormData()
 
