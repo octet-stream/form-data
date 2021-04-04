@@ -3,8 +3,14 @@ name: ESLint
 on:
   push:
     branches: [master]
+    paths:
+      - "*.ts"
+      - ".github/workflows/eslint.yml"
   pull_request:
     branches: [master]
+    paths:
+      - "*.ts"
+      - ".github/workflows/eslint.yml"
 
 jobs:
   eslint:
