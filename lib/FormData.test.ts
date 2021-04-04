@@ -15,9 +15,9 @@ import readStream from "./__helper__/readStream"
 import skip from "./__helper__/skipIterations"
 import readLine from "./__helper__/readLine"
 
-import File from "./File"
+import {File} from "./File"
 
-import FormData from "./FormData"
+import {FormData} from "./FormData"
 
 const {spy} = sinon
 
@@ -216,7 +216,7 @@ test(
     const fd = new FormData()
 
     fd.set("field", "On Soviet Moon, landscape see binoculars through YOU.")
-    fd.set("another", new Readable({ read() { } }))
+    fd.set("another", new Readable({read() { }}))
 
     const actual = await fd.getComputedLength()
 
@@ -440,7 +440,7 @@ test("Sends field's content", async t => {
 
   fd.set("field", expected)
 
-  const { body } = await req
+  const {body} = await req
     .post("/")
     .set("content-type", fd.headers["Content-Type"])
     .send(await readStream(fd.stream, "utf-8"))
