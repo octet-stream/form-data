@@ -177,6 +177,7 @@ export class FormData {
     } else if (isBlob(value) || isBuffer(value)) {
       value = new File([value], filename, options)
     } else {
+      // A non-file fields must be converted to string
       value = String(value)
     }
 

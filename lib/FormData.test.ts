@@ -1,7 +1,12 @@
 import test from "ava"
 
+import {createReadStream} from "fs"
+import {resolve} from "path"
+
 import Blob from "fetch-blob"
 
+import createServer from "./__helper__/mockServer"
+import readStream from "./__helper__/readStream"
 import skip from "./__helper__/skipIterations"
 import readLine from "./__helper__/readLine"
 
@@ -193,6 +198,85 @@ test("Takes content-type from the filename", async t => {
   const {value} = await iterable.next()
 
   t.is(value, "Content-Type: text/plain")
+})
+
+test("Sends a file content", async t => {
+  const expected = "Some content"
+
+  const req = createServer()
+  const fd = new FormData()
+
+  fd.set("file", new File([expected], "file.txt"))
+
+  const {body} = await req
+    .post("/")
+    .set("content-type", fd.headers["Content-Type"])
+    .send(await readStream(fd.stream, "utf-8"))
+
+  t.is<string>(body.file as string, expected)
+})
+
+test("Sends field's content", async t => {
+  const expected = "Some content"
+
+  const req = createServer()
+  const fd = new FormData()
+
+  fd.set("field", expected)
+
+  const { body } = await req
+    .post("/")
+    .set("content-type", fd.headers["Content-Type"])
+    .send(await readStream(fd.stream, "utf-8"))
+
+  t.is<string>(body.field as string, expected)
+})
+
+test("Reads file contents from a ReadStream", async t => {
+  const filePath = resolve("readme.md")
+  const expected = await readStream(createReadStream(filePath), "utf-8")
+
+  const req = createServer()
+  const fd = new FormData()
+
+  fd.set("file", createReadStream(filePath))
+
+  const {body} = await req
+    .post("/")
+    .set("content-type", fd.headers["Content-Type"])
+    .send(await readStream(fd.stream, "utf-8"))
+
+  t.is<string>(body.file as string, expected as string)
+})
+
+test(".values() is done on the first call when there's no data", t => {
+  const fd = new FormData()
+
+  const curr = fd.values().next()
+
+  t.deepEqual(curr, {
+    done: true,
+    value: undefined
+  })
+})
+
+test("Returns the first value on the first call", t => {
+  const fd = new FormData()
+
+  fd.set("first", "value")
+  fd.set("second", 42)
+  fd.set("third", [1, 2, 3])
+
+  const curr = fd.values().next()
+
+  t.deepEqual(curr, {
+    done: false,
+    value: "value"
+  })
+})
+
+test(".toString() returns a proper string", t => {
+  t.is(new FormData().toString(), "[object FormData]")
 })
 
 test(".set() throws TypeError when called with less than 2 arguments", t => {
