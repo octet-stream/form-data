@@ -417,5 +417,3 @@ export class FormData {
     return this[Symbol.toStringTag]
   }
 }
-
-export default FormData
