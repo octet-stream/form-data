@@ -4,7 +4,7 @@ on:
   push:
     branches: [master]
     paths:
-      - "*.ts"
+      - "**.ts"
       - "tsconfig.json"
       - "tsconfig.cjs.json"
       - "tsconfig.esm.json"
@@ -14,7 +14,7 @@ on:
   pull_request:
     branches: [master]
     paths:
-      - "*.ts"
+      - "**.ts"
       - "tsconfig.json"
       - "tsconfig.cjs.json"
       - "tsconfig.esm.json"

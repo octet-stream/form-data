@@ -4,12 +4,12 @@ on:
   push:
     branches: [master]
     paths:
-      - "*.ts"
+      - "**.ts"
       - ".github/workflows/eslint.yml"
   pull_request:
     branches: [master]
     paths:
-      - "*.ts"
+      - "**.ts"
       - ".github/workflows/eslint.yml"
 
 jobs:
