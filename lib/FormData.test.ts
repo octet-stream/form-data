@@ -1,5 +1,7 @@
 import test from "ava"
 
+import sinon from "sinon"
+
 import {createReadStream} from "fs"
 import {Readable} from "stream"
 import {resolve} from "path"
@@ -16,6 +18,8 @@ import readLine from "./__helper__/readLine"
 import File from "./File"
 
 import FormData from "./FormData"
+
+const {spy} = sinon
 
 test("Has the boundary field", t => {
   const fd = new FormData()
@@ -267,6 +271,81 @@ test(".getAll() returns an empty array for non-existent field", t => {
   const fd = new FormData()
 
   t.deepEqual(fd.getAll("field"), [])
+})
+
+test(
+  ".forEach() callback should not be called when FormData has no fields",
+  t => {
+    const fulfill = spy()
+
+    const fd = new FormData()
+
+    fd.forEach(fulfill)
+
+    t.false(fulfill.called)
+  }
+)
+
+test(
+  ".forEach() callback should be called with the nullish context by default",
+  t => {
+    const fulfill = spy()
+
+    const fd = new FormData()
+
+    fd.set("name", "John Doe")
+
+    fd.forEach(fulfill)
+
+    t.is(fulfill.firstCall.thisValue, undefined)
+  }
+)
+
+test(".forEach() callback should be called with the specified context", t => {
+  const fulfill = spy()
+
+  const ctx = new Map()
+
+  const fd = new FormData()
+
+  fd.set("name", "John Doe")
+
+  fd.forEach(fulfill, ctx)
+
+  t.true(fulfill.firstCall.thisValue instanceof Map)
+  t.is(fulfill.firstCall.thisValue, ctx)
+})
+
+test(
+  ".forEach() callback should be called with value, name and FormData itself",
+  t => {
+    const fulfill = spy()
+
+    const fd = new FormData()
+
+    fd.set("name", "John Doe")
+
+    fd.forEach(fulfill)
+
+    t.deepEqual(fulfill.firstCall.args, ["John Doe", "name", fd])
+  }
+)
+
+test(".forEach() callback should be called once on each filed", t => {
+  const fulfill = spy()
+
+  const fd = new FormData()
+
+  fd.set("first", "value")
+  fd.set("second", 42)
+  fd.set("third", [1, 2, 3])
+
+  fd.forEach(fulfill)
+
+  t.true(fulfill.calledThrice)
+  t.deepEqual(fulfill.firstCall.args, ["value", "first", fd])
+  t.deepEqual(fulfill.secondCall.args, ["42", "second", fd])
+  t.deepEqual(fulfill.thirdCall.args, ["1,2,3", "third", fd])
 })
 
 test("Emits the footer for an empty content", async t => {
