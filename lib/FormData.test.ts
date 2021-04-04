@@ -2,6 +2,9 @@ import test from "ava"
 
 import Blob from "fetch-blob"
 
+import skip from "./__helper__/skipIterations"
+import readLine from "./__helper__/readLine"
+
 import File from "./File"
 
 import FormData from "./FormData"
@@ -124,13 +127,81 @@ test(".getAll() returns an empty array for non-existent field", t => {
   t.deepEqual(fd.getAll("field"), [])
 })
 
+test("Emits the footer for an empty content", async t => {
+  const fd = new FormData()
+
+  const iterable = readLine(fd.stream)
+
+  const {value} = await iterable.next()
+
+  t.is(value, `--${fd.boundary}--`)
+})
+
+test("Has the boundary line when any data is present", async t => {
+  const fd = new FormData()
+
+  fd.set("field", "Some string")
+
+  const iterable = readLine(fd.stream)
+
+  const {value} = await iterable.next()
+
+  t.is(value, `--${fd.boundary}`)
+})
+
+test("Has correct field's header", async t => {
+  const fd = new FormData()
+
+  fd.set("field", "Some string")
+
+  const iterable = await skip(readLine(fd.stream), 1)
+
+  const {value} = await iterable.next()
+
+  t.is(
+    value,
+    "Content-Disposition: form-data; name=\"field\"",
+
+    "Header MUST have both content-dispositions and field's name."
+  )
+})
+
+test("Has correct File's header", async t => {
+  const file = new File(["Some content"], "file.txt")
+  const fd = new FormData()
+
+  fd.set("file", file)
+
+  const iterable = await skip(readLine(fd.stream), 1)
+
+  const {value} = await iterable.next()
+
+  t.is(
+    value,
+    "Content-Disposition: form-data; name=\"file\"; filename=\"file.txt\""
+  )
+})
+
+test("Takes content-type from the filename", async t => {
+  const file = new File(["Some content"], "file.txt")
+  const fd = new FormData()
+
+  fd.set("file", file)
+
+  const iterable = await skip(readLine(fd.stream), 2)
+
+  const {value} = await iterable.next()
+
+  t.is(value, "Content-Type: text/plain")
+})
+
 test(".set() throws TypeError when called with less than 2 arguments", t => {
   const fd = new FormData()
 
   // @ts-ignore
   const trap = () => fd.set("field")
 
-  t.throws(trap, {
+  t.throws<TypeError>(trap, {
     instanceOf: TypeError,
     message: "Failed to execute 'set' on 'FormData': "
       + "2 arguments required, but only 1 present."
@@ -146,7 +217,7 @@ test(
 
     const trap = () => fd.set("field", "Some value", "field.txt")
 
-    t.throws(trap, {
+    t.throws<TypeError>(trap, {
       instanceOf: TypeError,
       message: "Failed to execute 'set' on 'FormData': "
         + "parameter 2 is not one of the following types: "
