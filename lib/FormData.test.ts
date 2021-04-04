@@ -79,8 +79,37 @@ test(".set() appends a string field", t => {
   t.is(fd.get("field"), "string")
 })
 
+test(".append() append a new field", t => {
+  const fd = new FormData()
+
+  fd.append("field", "string")
+
+  t.is(fd.get("field"), "string")
+})
+
+test(".append() appends to and existent field", t => {
+  const fd = new FormData()
+
+  fd.append("field", "one")
+  fd.append("field", "two")
+
+  t.deepEqual(fd.getAll("field"), ["one", "two"])
+})
+
 test(".has() returns false for non-existent field", t => {
   const fd = new FormData()
+
+  t.false(fd.has("field"))
+})
+
+test(".delete() removes a field", t => {
+  const fd = new FormData()
+
+  fd.set("field", "Some data")
+
+  t.true(fd.has("field"))
+
+  fd.delete("field")
 
   t.false(fd.has("field"))
 })
@@ -97,6 +126,15 @@ test(".get() returns number values as string", t => {
   fd.set("field", 42)
 
   t.is(fd.get("field"), "42")
+})
+
+test(".get() returns only first value from the field", t => {
+  const fd = new FormData()
+
+  fd.append("field", "one")
+  fd.append("field", "two")
+
+  t.is(fd.get("field"), "one")
 })
 
 test(".get() returns Blob as a File", t => {

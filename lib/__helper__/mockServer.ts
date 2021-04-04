@@ -1,20 +1,21 @@
 import {createServer} from "http"
-import {promises as fs} from "fs"
 
 import {parse} from "then-busboy"
 
 import toObject from "object-deep-from-entries"
 import req from "supertest"
 
+import readStream from "./readStream"
+
 async function transform(body: any) {
   const files = await Promise.all(body.files.entries().map(
-    ([path, file]) => fs.readFile(file.path).then(content => [
-      path, String(content)
+    ([path, file]) => readStream(file.stream(), "utf-8").then(content => [
+      path, content
     ])
   ))
 
   return toObject([
-    ...body.fields.entries().map(([path, { value }]) => [path, value]),
+    ...body.fields.entries().map(([path, {value}]) => [path, value]),
     ...files
   ])
 }
