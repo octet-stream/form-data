@@ -2,6 +2,8 @@ import {Readable} from "stream"
 
 async function readStream(
   readable: Readable,
+
+  // eslint-disable-next-line no-undef
   encoding?: BufferEncoding
 ): Promise<Buffer | string> {
   const chunks: Buffer[] = []

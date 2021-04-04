@@ -6,7 +6,8 @@ import {ReadableStream} from "web-streams-polyfill"
 import Blob from "fetch-blob"
 
 import isReadStream from "./isReadStream"
-import File from "../File"
+
+import {File} from "../File"
 
 type FileLike = ReadableStream | ReadStream | Readable | File | Blob
 

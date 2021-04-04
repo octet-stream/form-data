@@ -1,6 +1,6 @@
 import test from "ava"
 
-import {basename, resolve} from "path"
+import {resolve} from "path"
 import {createReadStream} from "fs"
 import {Readable} from "stream"
 
@@ -8,7 +8,7 @@ import {ReadableStream} from "web-streams-polyfill"
 
 import Blob from "fetch-blob"
 
-import File from "../File"
+import {File} from "../File"
 
 import getFilename from "./getFilename"
 

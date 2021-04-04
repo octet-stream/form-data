@@ -1,6 +1,6 @@
 import test from "ava"
 
-import File from "./File"
+import {File} from "./File"
 
 test("Takes the name field taken from the second argument", t => {
   const expected = "file.txt"

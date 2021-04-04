@@ -1,24 +1,59 @@
 {
-  "env": {
-    "browser": true
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.eslint.json"
   },
-  "plugins": ["ava"],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "ava"
+  ],
   "extends": [
+    "airbnb-typescript",
     "@octetstream",
     "plugin:ava/recommended"
   ],
   "rules": {
-    "max-len": ["error", {
-      "ignoreComments": true,
-      "code": 80
-    }],
-    "max-classes-per-file": 0,
-    "operator-linebreak": ["error", "before", {
-      "overrides": {
-        "+": "ignore"
+    "no-void": 0,
+    "func-names": 0,
+    "no-shadow": 0,
+    "no-use-before-define": 0,
+    "max-len": [
+      "error",
+      {
+        "code": 80,
+        "ignoreComments": true
       }
-    }],
+    ],
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": [
+          "dinky.js"
+        ]
+      }
+    ],
 
-    "import/no-unresolved": "error"
+    "no-plusplus": 0,
+
+    // These two rules are false-positive and have no solution for TS
+    "no-dupe-class-members": 0,
+    "lines-between-class-members": 0,
+
+    "@typescript-eslint/semi": 0,
+    "@typescript-eslint/no-shadow": 0,
+    "@typescript-eslint/quotes": [
+      "error",
+      "double"
+    ],
+    "@typescript-eslint/object-curly-spacing": [
+      "error",
+      "never"
+    ],
+    "@typescript-eslint/comma-dangle": 0
   }
 }

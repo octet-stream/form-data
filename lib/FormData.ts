@@ -7,7 +7,8 @@ import fromPath from "fetch-blob/from.js"
 
 import {ReadableStream} from "web-streams-polyfill"
 
-import File from "./File"
+import {File} from "./File"
+
 import isBlob from "./util/isBlob"
 import isStream from "./util/isStream"
 import isObject from "./util/isObject"
@@ -44,11 +45,6 @@ interface FormDataField {
   values: Array<{value: FormDataFieldValue, filename: string}>
 }
 
-interface SetFieldOptions {
-  name: string
-  value: unknown
-}
-
 export class FormData {
   /**
    * Returns internal readable stream, allowing to read the FormData content
@@ -75,8 +71,9 @@ export class FormData {
   /**
    * Returns field's footer
    */
-  private readonly _footer =
-    `${DASHES}${this.boundary}${DASHES}${CARRIAGE.repeat(2)}`
+  private readonly _footer = `${DASHES}${this.boundary}${DASHES}${
+    CARRIAGE.repeat(2)
+  }`
 
   constructor() {
     this.stream = Readable.from(this._read())
@@ -252,7 +249,8 @@ export class FormData {
   append(name: string, value: unknown, filename?: string): void
   append(
     name: string,
-    value: unknown, options?: FormDataFieldOptions & {filename?: string}
+    value: unknown,
+    options?: FormDataFieldOptions & {filename?: string}
   ): void
   append(
     name: string,

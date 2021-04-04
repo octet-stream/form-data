@@ -11,7 +11,9 @@ export class File extends Blob {
   lastModified: number
 
   constructor(
-    blobParts: Array<string | Blob | ArrayBufferLike | ArrayBufferView | Buffer>,
+    blobParts: Array<
+    string | Blob | ArrayBufferLike | ArrayBufferView | Buffer
+    >,
     name: string,
     options: FileOptions = {}
   ) {
@@ -21,5 +23,3 @@ export class File extends Blob {
     this.lastModified = options.lastModified || Date.now()
   }
 }
-
-export default File
