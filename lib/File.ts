@@ -5,7 +5,7 @@ export interface FileOptions {
   lastModified?: number
 }
 
-class File extends Blob {
+export class File extends Blob {
   name: string
 
   lastModified: number

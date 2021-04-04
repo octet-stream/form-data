@@ -1,4 +1,4 @@
-const {FormData, File} = require("./lib/cjs")
+const {FormData, File} = require(".")
 
 global.FormData = FormData
 
@@ -6,4 +6,5 @@ if (!global.File) {
   global.File = File
 }
 
-module.exports = FormData
+exports.FormData = FormData
+exports.File = File
