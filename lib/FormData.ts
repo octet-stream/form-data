@@ -214,11 +214,11 @@ export class FormData {
   async getComputedLength(): Promise<number | undefined> {
     let length = 0
 
-    const carriageLength = Buffer.from(CARRIAGE).length
+    const carriageLength = Buffer.byteLength(CARRIAGE)
 
     for (const [name, {values}] of this._content) {
       for (const {value, filename} of values) {
-        length += Buffer.from(this._getHeader(name, filename)).length
+        length += Buffer.byteLength(this._getHeader(name, filename))
 
         const valueLength = await getLength(value)
 
@@ -232,7 +232,7 @@ export class FormData {
       }
     }
 
-    return length + Buffer.from(this._footer).length
+    return length + Buffer.byteLength(this._footer)
   }
 
   /**
