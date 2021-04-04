@@ -161,7 +161,7 @@ export class FormData {
 
     // If a value is a file-like object, then get and normalize the filename
     if (isBlob(value) || isStream(value) || isBuffer(value)) {
-      // Not that the user-defined filename has higher precedence
+      // Note that the user-defined filename has higher precedence
       filename = basename(filename || getFilename(value as any))
     } else if (filename) { // If a value is not a file-like, but the filename is present, then throw the error
       throw new TypeError(
