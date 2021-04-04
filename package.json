@@ -25,7 +25,7 @@
     "node": ">= 10.17"
   },
   "scripts": {
-    "eslint": "eslint lib/**/*.js test/**/*.js ava.config.cjs polyfill.js",
+    "eslint": "eslint ava.config.cjs",
     "staged": "lint-staged",
     "coverage": "c8 npm test",
     "ci": "c8 npm test && c8 report --reporter=json",
