@@ -184,8 +184,6 @@ test(
     fd.set("field", "On Soviet Moon, landscape see binoculars through YOU.")
     fd.set("another", new Readable({ read() { } }))
 
-    console.log(fd.get("another"))
-
     const actual = await fd.getComputedLength()
 
     t.is(actual, undefined)
