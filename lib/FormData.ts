@@ -3,7 +3,7 @@ import {basename} from "path"
 import {inspect} from "util"
 
 import mimes from "mime-types"
-import fromPath from "fetch-blob/from"
+import fromPath from "fetch-blob/from.js"
 
 import {ReadableStream} from "web-streams-polyfill"
 
