@@ -131,6 +131,18 @@ test(".append() appends to and existent field", t => {
   t.deepEqual(fd.getAll("field"), ["one", "two"])
 })
 
+test(
+  ".append() does nothing on existent field if it was created with .set()",
+  t => {
+    const fd = new FormData()
+
+    fd.set("field", "one")
+    fd.append("field", "two")
+
+    t.is(fd.get("field"), "one")
+  }
+)
+
 test(".has() returns false for non-existent field", t => {
   const fd = new FormData()
 
