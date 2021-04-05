@@ -30,7 +30,7 @@ just use `FormData#stream` property for that.
 
 You can send queries via HTTP clients that supports headers setting Readable stream as body.
 
-Let's take a look at minimal example with [got](https://github.com/sindresorhus/got):
+1. Let's take a look at minimal example with [got](https://github.com/sindresorhus/got):
 
 ```js
 import {FormData} from "formdata-node"
@@ -49,6 +49,54 @@ const options = {
 got.post("http://example.com", options)
   .then(res => console.log("Res: ", res.body))
   .catch(err => console.error("Error: ", err))
+```
+
+2. Sending files over form-data:
+
+```js
+import {createReadStream} from "fs"
+
+import {FormData} from "formdata-node"
+
+// I assume that there's node-fetch@3 is used for this example since it has formdata-node support out of the box
+// Note that they still in beta.
+import fetch from "node-fetch"
+
+const fd = new FormData()
+
+fd.set("file", createReadStream("/path/to/a/file"))
+
+// Just like that, you can send a file with formdata-node
+await fetch("https://example.com", {method: "post", body: fd})
+```
+
+3. You can also append files using `fileFromPathSync` helper. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`
+
+```js
+import {FormData, fileFromPathSync} from "formdata-node"
+
+import fetch from "node-fetch"
+
+const fd = new FormData()
+
+fd.set("file", fileFromPathSync("/path/to/a/file"))
+
+await fetch("https://example.com", {method: "post", body: fd})
+```
+
+4. And of course you can create your own File manually – formdata-node gets you covered. It has a `File` object that inherits `Blob` from [`fetc-blob`](https://github.com/node-fetch/fetch-blob) package
+
+```js
+import {FormData, File} from "formdata-node"
+
+import fetch from "node-fetch"
+
+const fd = new FormData()
+const file = new File(["My hovercraft is full of eels"], "hovercraft.txt")
+
+fd.set("file", file)
+
+await fetch("https://example.com", {method: "post", body: fd})
 ```
 
 ## API
