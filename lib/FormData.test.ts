@@ -14,7 +14,7 @@ import readLine from "./__helper__/readLine"
 
 import {File} from "./File"
 
-import {FormData} from "./FormData"
+import {FormData, FormDataConstructorEntries} from "./FormData"
 
 const {spy} = sinon
 
@@ -30,6 +30,24 @@ test("Has the Content-Type header with proper value", t => {
   t.deepEqual(fd.headers, {
     "Content-Type": `multipart/form-data; boundary=${fd.boundary}`
   })
+})
+
+test("Allows to append fields from constructor", t => {
+  const expected: FormDataConstructorEntries = [
+    {
+      name: "field",
+      value: "On Soviet Moon, landscape see binoculars through YOU"
+    },
+    {
+      name: "file",
+      value: new File(["My hovercraft is full of eels"], "hovercraft.txt")
+    }
+  ]
+
+  const fd = new FormData(expected)
+
+  t.true(fd.has("field"))
+  t.true(fd.has("file"))
 })
 
 test("Creates a new File instance for given File", t => {

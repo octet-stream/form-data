@@ -31,6 +31,9 @@ export interface FormDataFieldOptions {
   filename?: string
 }
 
+/**
+ * Private oprions for FormData#_setField() method
+ */
 interface FormDataSetFieldOptions {
   name: string
   value: unknown
@@ -48,6 +51,9 @@ interface FormDataFieldElement {
   filename?: string
 }
 
+/**
+ * Internal representation of a field
+ */
 interface FormDataField {
   /**
    * Indicates whether the field was added with FormData#append() method
@@ -59,6 +65,16 @@ interface FormDataField {
    */
   values: [FormDataFieldElement, ...FormDataFieldElement[]]
 }
+
+/**
+ * Constructor entries for FormData
+ */
+export type FormDataConstructorEntries = Array<{
+  name: string,
+  value: unknown,
+  filename?: string
+  options?: FormDataFieldOptions
+}>
 
 export class FormData {
   /**
@@ -90,8 +106,14 @@ export class FormData {
     CARRIAGE.repeat(2)
   }`
 
-  constructor() {
+  constructor(entries?: FormDataConstructorEntries) {
     this.stream = Readable.from(this._read())
+
+    if (entries) {
+      entries.forEach(({name, value, filename, options}) => this.append(
+        name, value, filename, options
+      ))
+    }
   }
 
   private _getMime(filename: string): string {
