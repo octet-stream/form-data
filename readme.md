@@ -240,6 +240,16 @@ An alias for [`FormData#entries()`](#entries---iterator)
 Returns an async iterator allowing to read a data from internal Readable stream using **for-await** syntax.
 Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
 
+### `constructor File(blobParts, filename[, options])`
+
+The File interface provides information about files.
+
+  - **{(ArrayBufferLike | ArrayBufferView | Blob | Buffer | string)[]}** blobParts
+  - **{string}** filename – Representing the file name.
+  - **{object}** [options = {}] - An options object containing optional attributes for the file. Available options are as follows
+  - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
+  - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
+
 ### `fileFromPathSync(path[, filename, options]) -> {File}`
 
 Creates a File referencing the one on a disk by given path
