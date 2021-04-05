@@ -500,7 +500,7 @@ test(
       instanceOf: TypeError,
       message: "Failed to execute 'set' on 'FormData': "
         + "parameter 2 is not one of the following types: "
-        + "ReadableStream | ReadStream | Readable | Buffer | File | Blob"
+        + "ReadStream | Buffer | File | Blob"
     })
   }
 )

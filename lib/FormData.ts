@@ -158,7 +158,7 @@ export class FormData {
       throw new TypeError(
         `Failed to execute '${methodName}' on 'FormData': `
           + "parameter 2 is not one of the following types: "
-          + "ReadableStream | ReadStream | Readable | Buffer | File | Blob"
+          + "ReadStream | Buffer | File | Blob"
       )
     }
 
