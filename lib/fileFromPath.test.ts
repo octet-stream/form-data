@@ -5,7 +5,7 @@ import {resolve, basename} from "path"
 
 import readStream from "./__helper__/readStream"
 
-import {File} from "./File"
+import {File, FileOptions} from "./File"
 import {fileFromPathSync} from "./fileFromPath"
 
 const filePath = resolve("readme.md")
@@ -44,7 +44,20 @@ test("sync: User-defined filename has higher precedence", t => {
 
 test("sync: User-defined lastModified has higher precedence", t => {
   const expected = Date.now()
-  const file = fileFromPathSync(filePath, undefined, {lastModified: expected})
+  const file = fileFromPathSync(filePath, "some-file.txt", {
+    lastModified: expected
+  })
 
   t.is<number>(file.lastModified, expected)
+})
+
+test("Allows to set file options from second argument", t => {
+  const expected: FileOptions = {lastModified: Date.now(), type: "text/plain"}
+
+  const file = fileFromPathSync(filePath, expected)
+
+  t.deepEqual<FileOptions>({
+    lastModified: file.lastModified,
+    type: file.type
+  }, expected)
 })

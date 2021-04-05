@@ -99,6 +99,21 @@ fd.set("file", file)
 await fetch("https://example.com", {method: "post", body: fd})
 ```
 
+5. Blobs as field's values allowed too
+
+```js
+import {FormData} from "formdata-node"
+
+import Blob from "fetch-blob"
+
+const fd = new FormData()
+const blob = new Blob(["Some content"], {type: "text/plain"})
+
+fd.set("blob", blob)
+
+fd.get("blob") // Will always be returned as `File`
+```
+
 ## API
 
 ### `constructor FormData([entries])`
@@ -114,16 +129,16 @@ Initialize new FormData instance
 
 ##### `boundary -> {string}`
 
-Returns a boundary string of the current `FormData` instance.
+Returns a boundary string of the current `FormData` instance. Read-only property.
 
 ##### `stream -> {stream.Readable}`
 
 Returns an internal Readable stream. Use it to send queries, but don't push
-anything into it.
+anything into it. Read-only property.
 
 ##### `headers -> {object}`
 
-Returns object with `content-type` header
+Returns object with `Content-Type` header. Read-only property.
 
 #### Instance methods
 
@@ -139,10 +154,11 @@ or add the new field if it does not already exist.
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
     **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
-  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer` and `Readable` .
+  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
   - **{object}** [object = {}] - Additional field options
-  - **{number}** [object.size = undefined] – A size of field's content. If it set on a stream, then given stream will be treated as File-like object.
-    Can be omited for `Blob`, `File` and `Buffer` values or if you don't know the **actual** length of the stream.
+  - **{string}** [object.filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
+  - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
+  - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
 
 ##### `append(name, value[, filename, options]) -> {void}`
 
@@ -156,18 +172,20 @@ or adds the key if it does not already exist.
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
     **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
-  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer` and `Readable` .
-  - **{number}** [object.size = undefined] – A size of field's content. If it set on a stream, then given stream will be treated as File-like object.
-    Can be omited for `Blob`, `File` and `Buffer` values or if you don't know the **actual** length of the stream.
+  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
+  - **{object}** [object = {}] - Additional field options
+  - **{string}** [object.filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
+  - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
+  - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
 
-##### `get(name) -> {string | Readable | ReadStream | ReadableStream | File}`
+##### `get(name) -> {string | File}`
 
 Returns the first value associated with the given name.
 If the field has `Blob`, `Buffer` or any `Readable` and `ReadableStream` (and when options.size is set for this stream) value, the File-like object will be returned.
 
   - **{string}** name – A name of the value you want to retrieve.
 
-##### `getAll(name) -> {Array<string | Readable | ReadStream | ReadableStream | File>}`
+##### `getAll(name) -> {Array<string | File>}`
 
 Returns all the values associated with a given key from within a **FormData** object.
 If the field has `Blob`, `Buffer` or any `Readable` and `ReadableStream` (and when options.size is set for this stream) value, the File-like object will be returned.
@@ -186,7 +204,7 @@ Deletes a key and its value(s) from a `FormData` object.
 
   - **{string}** name – The name of the key you want to delete.
 
-##### `getComputedLength() -> {Promise<number | undefined>}`
+##### `getComputedLength() -> {Promise<number>}`
 
 Returns computed length of the FormData content. If FormData instance contains
 a stream value with unknown length, the method will always return `undefined`.
@@ -196,7 +214,7 @@ a stream value with unknown length, the method will always return `undefined`.
 Executes a given **callback** for each field of the FormData instance
 
   - **{function}** callback – Function to execute for each element, taking three arguments:
-    + **{any}** value – A value(s) of the current field.
+    + **{string | File}** value – A value(s) of the current field.
     + **{string}** name – Name of the current field.
     + **{FormData}** fd – The FormData instance that **forEach** is being applied to
   - **{any}** [ctx = null] – Value to use as **this** context when executing the given **callback**
@@ -205,29 +223,37 @@ Executes a given **callback** for each field of the FormData instance
 
 Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** keys
 
-##### `values() -> {IterableIterator<any>}`
+##### `values() -> {Generator<string | File>}`
 
 Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** values
 
-##### `entries() -> {IterableIterator<[string, any]>}`
+##### `entries() -> {Generator<[string, string | File]>}`
 
 Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** key/value pairs
 
-##### `[Symbol.iterator]() -> {IterableIterator<[string, any]>}`
+##### `[Symbol.iterator]() -> {Generator<[string, string | File]>}`
 
-An alias of [FormData#entries](#entries---iterator)
+An alias for [`FormData#entries()`](#entries---iterator)
 
-##### `[Symbol.asyncIterator]() -> {AsyncIterableIterator<Buffer>}`
+##### `[Symbol.asyncIterator]() -> {AsyncGenerator<Buffer>}`
 
 Returns an async iterator allowing to read a data from internal Readable stream using **for-await** syntax.
-Read the [async iteration proposal](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
+Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
+
+### `fileFromPathSync(path[, filename, options]) -> {File}`
+
+Creates a File referencing the one on a disk by given path
+
+  - **{string}** path - Path to a file
+  - **{string}** [filename] - Name of the file. Will be passed as second argument in `File` constructor. If not presented, the file path will be used to get it.
+  - **{object}** [options = {}] - File options.
+  - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
+  - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
 
 ## Related links
 
-  - [`web-streams-polyfill`](https://github.com/MattiasBuelens/web-streams-polyfill) a Web Streams, based on the WHATWG spec reference implementation.
+  - [`formdata-polyfill`](https://github.com/jimmywarting/FormData) HTML5 `FormData` polyfill for Browsers.
   - [`fetch-blob`](https://github.com/bitinn/fetch-blob) a Blob implementation on node.js, originally from node-fetch.
-  - [`then-busboy`](https://github.com/octet-stream/then-busboy) is a promise-based wrapper around Busboy.
-    Process multipart/form-data content and returns it as a single object.
-    Will be helpful to handle your data on the server-side applications.
+  - [`then-busboy`](https://github.com/octet-stream/then-busboy) a promise-based wrapper around Busboy. Process multipart/form-data content and returns it as a single object. Will be helpful to handle your data on the server-side applications.
   - [`@octetstream/object-to-form-data`](https://github.com/octet-stream/object-to-form-data) converts JavaScript object to FormData.
   - [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) interface documentation on MDN

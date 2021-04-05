@@ -154,7 +154,7 @@ export class FormData {
     if (isObject(filenameOrOptions)) {
       [options, filename] = [filenameOrOptions, undefined]
     } else {
-      [filename, options] = [filenameOrOptions, {}]
+      filename = filenameOrOptions
     }
 
     // FormData required at least 2 arguments to be set.
@@ -166,7 +166,7 @@ export class FormData {
     }
 
     // Get a filename from either an argument or oprions
-    filename ||= options.filename
+    filename ||= options?.filename
 
     // If a value is a file-like object, then get and normalize the filename
     if (isBlob(value) || isReadStream(value) || isBuffer(value)) {

@@ -41,6 +41,7 @@
     "no-plusplus": 0,
 
     // These two rules are false-positive and have no solution for TS
+    "no-redeclare": 0,
     "no-dupe-class-members": 0,
     "lines-between-class-members": 0,
 
