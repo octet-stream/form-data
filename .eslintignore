@@ -1,4 +1,6 @@
+@type
 lib/cjs/**/*.js
 lib/esm/**/*.js
 ava.config.cjs
-@type
+polyfill.js
+polyfill.mjs
