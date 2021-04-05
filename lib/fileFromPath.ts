@@ -1,7 +1,9 @@
 import {basename} from "path"
 import {statSync} from "fs"
 
+// @ts-ignore
 import blobFromPath from "fetch-blob/from.js"
+
 import Blob from "fetch-blob"
 
 import {File, FileOptions} from "./File"

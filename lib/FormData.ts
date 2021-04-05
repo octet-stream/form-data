@@ -27,7 +27,25 @@ export type FormDataFieldValue = string | File
 
 export interface FormDataFieldOptions {
   type?: string
-  lastModified?: number
+  lastModified?: number,
+  filename?: string
+}
+
+interface FormDataSetFieldOptions {
+  name: string
+  value: unknown
+  append: boolean
+  filenameOrOptions?: string | FormDataFieldOptions
+  options?: FormDataFieldOptions
+  argsLength: number
+}
+
+/**
+ * Internal representation of the field's data and additional info
+ */
+interface FormDataFieldElement {
+  value: FormDataFieldValue
+  filename?: string
 }
 
 interface FormDataField {
@@ -39,7 +57,7 @@ interface FormDataField {
   /**
    * Contains a set of necessary field's information
    */
-  values: Array<{value: FormDataFieldValue, filename: string}>
+  values: [FormDataFieldElement, ...FormDataFieldElement[]]
 }
 
 export class FormData {
@@ -80,7 +98,7 @@ export class FormData {
     return mimes.lookup(filename) || DEFAULT_CONTENT_TYPE
   }
 
-  private _getHeader(name: string, filename: string): string {
+  private _getHeader(name: string, filename?: string): string {
     let header = ""
 
     header += `${DASHES}${this.boundary}${CARRIAGE}`
@@ -121,18 +139,18 @@ export class FormData {
     }
   }
 
-  private _setField(
-    name: string,
-    value: unknown,
-    filenameOrOptions: string | FormDataFieldOptions,
-    options: FormDataFieldOptions & {filename?: string},
-    append: boolean,
-    argsLength: number
-  ): void {
+  private _setField({
+    name,
+    value,
+    append,
+    filenameOrOptions,
+    options,
+    argsLength
+  }: FormDataSetFieldOptions): void {
     const fieldName = String(name)
     const methodName = append ? "append" : "set"
 
-    let filename: string
+    let filename: string | undefined
     if (isObject(filenameOrOptions)) {
       [options, filename] = [filenameOrOptions, undefined]
     } else {
@@ -164,10 +182,9 @@ export class FormData {
 
     // Normalize field's value
     if (isReadStream(value)) {
-      // value = new File([fromPath(String(value.path))], filename, options)
       value = fileFromPathSync(String(value.path), filename, options)
     } else if (isBlob(value) || isBuffer(value)) {
-      value = new File([value], filename, options)
+      value = new File([value], filename as string, options)
     } else { // ? Should I deprecate streams as field's value?
       // A non-file fields must be converted to string
       value = String(value)
@@ -253,14 +270,14 @@ export class FormData {
     filenameOrOptions?: string | FormDataFieldOptions,
     options?: FormDataFieldOptions
   ): void {
-    return this._setField(
+    return this._setField({
       name,
       value,
       filenameOrOptions,
       options,
-      true,
-      arguments.length
-    )
+      append: true,
+      argsLength: arguments.length
+    })
   }
 
   /**
@@ -295,14 +312,14 @@ export class FormData {
     filenameOrOptions?: string | FormDataFieldOptions,
     options?: FormDataFieldOptions
   ): void {
-    return this._setField(
+    return this._setField({
       name,
       value,
       filenameOrOptions,
       options,
-      false,
-      arguments.length
-    )
+      append: false,
+      argsLength: arguments.length
+    })
   }
 
   /**
@@ -311,16 +328,16 @@ export class FormData {
    *
    * @param {string} name A name of the value you want to retrieve.
    */
-  get<
-    T extends FormDataFieldValue = FormDataFieldValue
-  >(name: string): T | null {
+  get(name: string): FormDataFieldValue | null {
     name = String(name)
 
-    if (!this.has(name)) {
+    const field = this._content.get(name)
+
+    if (!field) {
       return null
     }
 
-    return this._content.get(name).values[0].value as T
+    return field.values[0].value
   }
 
   /**
@@ -329,14 +346,16 @@ export class FormData {
    *
    * @param {string} name A name of the value you want to retrieve.
    */
-  getAll<T extends FormDataFieldValue = FormDataFieldValue>(name: string): T[] {
+  getAll(name: string): FormDataFieldValue[] {
     name = String(name)
 
-    if (!this.has(name)) {
+    const field = this._content.get(name)
+
+    if (!field) {
       return []
     }
 
-    return this._content.get(name).values.map(({value}) => value) as T[]
+    return field.values.map(({value}) => value)
   }
 
   /**
@@ -359,13 +378,13 @@ export class FormData {
     return this._content.delete(String(name))
   }
 
-  * keys() {
+  * keys(): Generator<string> {
     for (const key of this._content.keys()) {
       yield key
     }
   }
 
-  * entries() {
+  * entries(): Generator<[string, FormDataFieldValue]> {
     for (const name of this.keys()) {
       const values = this.getAll(name)
 
@@ -376,9 +395,9 @@ export class FormData {
     }
   }
 
-  * values() {
-    for (const [, values] of this) {
-      yield values
+  * values(): Generator<FormDataFieldValue> {
+    for (const [, value] of this) {
+      yield value
     }
   }
 
