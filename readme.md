@@ -149,8 +149,7 @@ or add the new field if it does not already exist.
 
   - **{string}** name – The name of the field whose data is contained in **value**
   - **{any}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`),
-    [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable),
-    [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+    [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`ReadStream`](https://nodejs.org/dist/latest/docs/api/fs.html#fs_class_fs_readstream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
     **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
@@ -167,8 +166,7 @@ or adds the key if it does not already exist.
 
   - **{string}** name – The name of the field whose data is contained in **value**
   - **{any}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`),
-    [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable),
-    [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+    [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`ReadStream`](https://nodejs.org/dist/latest/docs/api/fs.html#fs_class_fs_readstream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
     **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
@@ -181,14 +179,14 @@ or adds the key if it does not already exist.
 ##### `get(name) -> {string | File}`
 
 Returns the first value associated with the given name.
-If the field has `Blob`, `Buffer` or any `Readable` and `ReadableStream` (and when options.size is set for this stream) value, the File-like object will be returned.
+If the field has `Blob`, `Buffer`, `File` or `ReadStream` value, the File-like object will be returned.
 
   - **{string}** name – A name of the value you want to retrieve.
 
 ##### `getAll(name) -> {Array<string | File>}`
 
 Returns all the values associated with a given key from within a **FormData** object.
-If the field has `Blob`, `Buffer` or any `Readable` and `ReadableStream` (and when options.size is set for this stream) value, the File-like object will be returned.
+If the field has `Blob`, `Buffer`, `File` or `ReadStream` value, the File-like object will be returned.
 
   - **{string}** name – A name of the value you want to retrieve.
 
@@ -206,8 +204,7 @@ Deletes a key and its value(s) from a `FormData` object.
 
 ##### `getComputedLength() -> {Promise<number>}`
 
-Returns computed length of the FormData content. If FormData instance contains
-a stream value with unknown length, the method will always return `undefined`.
+Returns computed length of the FormData content.
 
 ##### `forEach(callback[, ctx]) -> {void}`
 
