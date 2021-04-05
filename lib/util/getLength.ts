@@ -6,7 +6,7 @@ import isBlob from "./isBlob"
 const {isBuffer} = Buffer
 const {stat} = fs
 
-async function getLength(value: unknown): Promise<number | undefined> {
+async function getLength(value: unknown): Promise<number> {
   if (isReadStream(value)) {
     return stat(value.path).then(({size}) => size)
   }

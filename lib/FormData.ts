@@ -215,12 +215,6 @@ export class FormData {
 
         const valueLength = await getLength(value)
 
-        // Return `undefined` if can't tell field's length
-        // (it's probably a stream with unknown length)
-        if (valueLength === undefined) {
-          return undefined
-        }
-
         length += Number(valueLength) + carriageLength
       }
     }
