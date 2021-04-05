@@ -22,7 +22,7 @@
     "require": "./lib/cjs/index.js"
   },
   "engines": {
-    "node": ">= 10.17"
+    "node": ">= 12"
   },
   "scripts": {
     "eslint": "eslint lib/**/*.ts",
