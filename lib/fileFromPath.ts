@@ -1,10 +1,7 @@
 import {basename} from "path"
 import {statSync} from "fs"
 
-// @ts-ignore
 import blobFromPath from "fetch-blob/from.js"
-
-import Blob from "fetch-blob"
 
 import {File, FileOptions} from "./File"
 
@@ -17,7 +14,7 @@ export function fileFromPathSync(
     options.lastModified = statSync(path).mtimeMs
   }
 
-  const blob = blobFromPath(path) as Blob
+  const blob = blobFromPath(path)
 
   return new File([blob], filename || basename(path), options)
 }
