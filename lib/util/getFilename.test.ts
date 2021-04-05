@@ -2,9 +2,6 @@ import test from "ava"
 
 import {resolve} from "path"
 import {createReadStream} from "fs"
-import {Readable} from "stream"
-
-import {ReadableStream} from "web-streams-polyfill"
 
 import Blob from "fetch-blob"
 
@@ -18,14 +15,6 @@ test("Returns default filename for Blob", t => {
   const blob = new Blob(["Some content"])
 
   t.is(getFilename(blob), "blob")
-})
-
-test("Returns default filename for ReadableStream", t => {
-  t.is(getFilename(new ReadableStream()), "blob")
-})
-
-test("Returns default filename for Readable", t => {
-  t.is(getFilename(new Readable({read() { }})), "blob")
 })
 
 test("Returns a filename for File", t => {

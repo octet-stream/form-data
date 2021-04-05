@@ -1,10 +1,7 @@
 import test from "ava"
 
 import {resolve} from "path"
-import {Readable} from "stream"
 import {promises as fs, createReadStream} from "fs"
-
-import {ReadableStream} from "web-streams-polyfill"
 
 import Blob from "fetch-blob"
 
@@ -15,14 +12,6 @@ const data = "My hovercraft is full of eels"
 
 test("Returns 0 for empty input", async t => {
   t.is(await getLength(""), 0)
-})
-
-test("Returns undefined for ReadableStream", async t => {
-  t.is(await getLength(new ReadableStream()), undefined)
-})
-
-test("Returns undefined for Readable", async t => {
-  t.is(await getLength(new Readable({read() { }})), undefined)
 })
 
 test("Returns legnth of the Buffer", async t => {

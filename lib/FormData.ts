@@ -4,18 +4,14 @@ import {inspect} from "util"
 
 import mimes from "mime-types"
 
-import {ReadableStream} from "web-streams-polyfill"
-
 import {File} from "./File"
 
 import {fileFromPathSync} from "./fileFromPath"
 
 import isBlob from "./util/isBlob"
-import isStream from "./util/isStream"
 import isObject from "./util/isObject"
 import getLength from "./util/getLength"
 import createBoundary from "./util/createBoundary"
-import getStreamIterator from "./util/getStreamIterator"
 import isReadStream from "./util/isReadStream"
 import getFilename from "./util/getFilename"
 
@@ -27,7 +23,7 @@ const DASHES = "-".repeat(2)
 
 const CARRIAGE = "\r\n"
 
-export type FormDataFieldValue = string | ReadableStream | Readable | File
+export type FormDataFieldValue = string | File
 
 export interface FormDataFieldOptions {
   type?: string
@@ -105,10 +101,7 @@ export class FormData {
         yield this._getHeader(name, filename)
 
         if (isBlob(value)) {
-          yield* getStreamIterator(value.stream())
-        } else if (isStream(value)) {
-          // Read the stream content
-          yield* getStreamIterator(value)
+          yield* value.stream()
         } else {
           yield value
         }
@@ -158,7 +151,7 @@ export class FormData {
     filename ||= options.filename
 
     // If a value is a file-like object, then get and normalize the filename
-    if (isBlob(value) || isStream(value) || isBuffer(value)) {
+    if (isBlob(value) || isReadStream(value) || isBuffer(value)) {
       // Note that the user-defined filename has higher precedence
       filename = basename(filename || getFilename(value as any))
     } else if (filename) { // If a value is not a file-like, but the filename is present, then throw the error
@@ -175,7 +168,7 @@ export class FormData {
       value = fileFromPathSync(String(value.path), filename, options)
     } else if (isBlob(value) || isBuffer(value)) {
       value = new File([value], filename, options)
-    } else if (!isStream(value)) { // ? Should I deprecate streams as field's value?
+    } else { // ? Should I deprecate streams as field's value?
       // A non-file fields must be converted to string
       value = String(value)
     }
@@ -324,14 +317,16 @@ export class FormData {
    *
    * @param {string} name A name of the value you want to retrieve.
    */
-  get(name: string): FormDataFieldValue {
+  get<
+    T extends FormDataFieldValue = FormDataFieldValue
+  >(name: string): T | null {
     name = String(name)
 
     if (!this.has(name)) {
       return null
     }
 
-    return this._content.get(name).values[0].value
+    return this._content.get(name).values[0].value as T
   }
 
   /**
@@ -340,14 +335,14 @@ export class FormData {
    *
    * @param {string} name A name of the value you want to retrieve.
    */
-  getAll(name: string): FormDataFieldValue[] {
+  getAll<T extends FormDataFieldValue = FormDataFieldValue>(name: string): T[] {
     name = String(name)
 
     if (!this.has(name)) {
       return []
     }
 
-    return this._content.get(name).values.map(({value}) => value)
+    return this._content.get(name).values.map(({value}) => value) as T[]
   }
 
   /**

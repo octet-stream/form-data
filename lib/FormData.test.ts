@@ -3,10 +3,7 @@ import test from "ava"
 import sinon from "sinon"
 
 import {createReadStream} from "fs"
-import {Readable} from "stream"
 import {resolve} from "path"
-
-import {ReadableStream} from "web-streams-polyfill"
 
 import Blob from "fetch-blob"
 
@@ -76,22 +73,6 @@ test("Allows filename argument to be set from options", t => {
   fd.set("file", blob, {filename: expected})
 
   t.is((fd.get("file") as File).name, expected)
-})
-
-test("Allows ReadableStream as field's value", t => {
-  const fd = new FormData()
-
-  fd.set("stream", new ReadableStream())
-
-  t.true(fd.get("stream") instanceof ReadableStream)
-})
-
-test("Allows Readable as field's value", t => {
-  const fd = new FormData()
-
-  fd.set("stream", new Readable({read() { }}))
-
-  t.true(fd.get("stream") instanceof Readable)
 })
 
 test(".set() appends a string field", t => {
@@ -219,20 +200,6 @@ test(
     const actual = await fd.getComputedLength()
 
     t.is(actual, Buffer.byteLength(`--${fd.boundary}--\r\n\r\n`))
-  }
-)
-
-test(
-  ".getComputedLength() Returns undefined when FormData have Readable fields",
-  async t => {
-    const fd = new FormData()
-
-    fd.set("field", "On Soviet Moon, landscape see binoculars through YOU.")
-    fd.set("another", new Readable({read() { }}))
-
-    const actual = await fd.getComputedLength()
-
-    t.is(actual, undefined)
   }
 )
 

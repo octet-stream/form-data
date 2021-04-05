@@ -1,7 +1,4 @@
-import {Readable} from "stream"
 import {ReadStream} from "fs"
-
-import {ReadableStream} from "web-streams-polyfill"
 
 import Blob from "fetch-blob"
 
@@ -9,7 +6,7 @@ import isReadStream from "./isReadStream"
 
 import {File} from "../File"
 
-type FileLike = ReadableStream | ReadStream | Readable | File | Blob
+type FileLike = ReadStream | File | Blob
 
 /**
  * Returns filename for File, Blob and streams (where possible)
