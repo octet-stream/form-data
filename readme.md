@@ -84,7 +84,7 @@ fd.set("file", fileFromPathSync("/path/to/a/file"))
 await fetch("https://example.com", {method: "post", body: fd})
 ```
 
-4. And of course you can create your own File manually – formdata-node gets you covered. It has a `File` object that inherits `Blob` from [`fetc-blob`](https://github.com/node-fetch/fetch-blob) package
+4. And of course you can create your own File manually – formdata-node gets you covered. It has a `File` object that inherits `Blob` from [`fetch-blob`](https://github.com/node-fetch/fetch-blob) package
 
 ```js
 import {FormData, File} from "formdata-node"
