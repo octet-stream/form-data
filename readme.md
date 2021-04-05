@@ -242,7 +242,7 @@ Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-ite
 
 ### `constructor File(blobParts, filename[, options])`
 
-The File interface provides information about files.
+The `File` class provides information about files. The `File` object inherits `Blob` from [`fetch-blob`](https://github.com/bitinn/fetch-blob) package.
 
   - **{(ArrayBufferLike | ArrayBufferView | Blob | Buffer | string)[]}** blobParts
   - **{string}** filename – Representing the file name.
@@ -252,7 +252,7 @@ The File interface provides information about files.
 
 ### `fileFromPathSync(path[, filename, options]) -> {File}`
 
-Creates a File referencing the one on a disk by given path
+Creates a `File` referencing the one on a disk by given path.
 
   - **{string}** path - Path to a file
   - **{string}** [filename] - Name of the file. Will be passed as second argument in `File` constructor. If not presented, the file path will be used to get it.
