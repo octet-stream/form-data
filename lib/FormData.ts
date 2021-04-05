@@ -400,12 +400,18 @@ export class FormData {
     return this._content.delete(String(name))
   }
 
+  /**
+   * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** keys
+   */
   * keys(): Generator<string> {
     for (const key of this._content.keys()) {
       yield key
     }
   }
 
+  /**
+   * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** key/value pairs
+   */
   * entries(): Generator<[string, FormDataFieldValue]> {
     for (const name of this.keys()) {
       const values = this.getAll(name)
@@ -417,16 +423,25 @@ export class FormData {
     }
   }
 
+  /**
+   * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** values
+   */
   * values(): Generator<FormDataFieldValue> {
     for (const [, value] of this) {
       yield value
     }
   }
 
+  /**
+   * An alias for FormData#entries()
+   */
   [Symbol.iterator]() {
     return this.entries()
   }
 
+  /**
+   * Executes given callback function for each field of the FormData instance
+   */
   forEach(
     fn: (value: FormDataFieldValue, key: string, fd: FormData) => void,
 
@@ -437,10 +452,6 @@ export class FormData {
     }
   }
 
-  toString(): string {
-    return "[object FormData]"
-  }
-
   get [Symbol.toStringTag](): string {
     return "FormData"
   }
@@ -449,6 +460,10 @@ export class FormData {
     return this[Symbol.toStringTag]
   }
 
+  /**
+   * Returns an async iterator allowing to read a data from internal Readable stream using **for-await-of** syntax.
+   * Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
+   */
   [Symbol.asyncIterator]() {
     return this.stream[Symbol.asyncIterator]()
   }
