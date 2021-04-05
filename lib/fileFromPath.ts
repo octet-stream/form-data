@@ -5,7 +5,7 @@ import blobFromPathSync from "fetch-blob/from.js"
 
 import {File, FileOptions} from "./File"
 
-import isObject from "./util/isObject"
+import isPlainObject from "./util/isPlainObject"
 
 /**
  * Creates a new File from Blob backed by filesystem
@@ -28,7 +28,7 @@ export function fileFromPathSync(
   options: FileOptions = {}
 ): File {
   let filename: string | undefined
-  if (isObject(filenameOrOptions)) {
+  if (isPlainObject(filenameOrOptions)) {
     [options, filename] = [filenameOrOptions, undefined]
   } else {
     filename = filenameOrOptions

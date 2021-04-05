@@ -9,8 +9,8 @@ import {File} from "./File"
 import {fileFromPathSync} from "./fileFromPath"
 
 import isBlob from "./util/isBlob"
-import isObject from "./util/isObject"
 import getLength from "./util/getLength"
+import isPlainObject from "./util/isPlainObject"
 import createBoundary from "./util/createBoundary"
 import isReadStream from "./util/isReadStream"
 import getFilename from "./util/getFilename"
@@ -173,7 +173,7 @@ export class FormData {
     const methodName = append ? "append" : "set"
 
     let filename: string | undefined
-    if (isObject(filenameOrOptions)) {
+    if (isPlainObject(filenameOrOptions)) {
       [options, filename] = [filenameOrOptions, undefined]
     } else {
       filename = filenameOrOptions
