@@ -155,7 +155,7 @@ export class FormData {
     yield this._footer
   }
 
-  private async* _read() {
+  private async* _read(): AsyncGenerator<Buffer> {
     for await (const ch of this._getField()) {
       yield isBuffer(ch) ? ch : Buffer.from(String(ch))
     }
