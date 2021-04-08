@@ -152,7 +152,6 @@ or add the new field if it does not already exist.
     [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`ReadStream`](https://nodejs.org/dist/latest/docs/api/fs.html#fs_class_fs_readstream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
-    **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
   - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
   - **{object}** [object = {}] - Additional field options
   - **{string}** [object.filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
@@ -169,7 +168,6 @@ or adds the key if it does not already exist.
     [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`ReadStream`](https://nodejs.org/dist/latest/docs/api/fs.html#fs_class_fs_readstream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
-    **You also need compatible polyfills or ponyfills to use ReadableStream, File and Blob as a field value**
   - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
   - **{object}** [object = {}] - Additional field options
   - **{string}** [object.filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
