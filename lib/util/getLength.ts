@@ -1,7 +1,7 @@
 import {promises as fs} from "fs"
 
 import isReadStream from "./isReadStream"
-import isBlob from "./isBlob"
+import isFile from "./isFile"
 
 const {isBuffer} = Buffer
 const {stat} = fs
@@ -15,7 +15,7 @@ async function getLength(value: unknown): Promise<number> {
     return value.length
   }
 
-  if (isBlob(value)) {
+  if (isFile(value)) {
     return value.size
   }
 
