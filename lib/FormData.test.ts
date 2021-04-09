@@ -70,7 +70,7 @@ test("Assigns a filename argument to Blob field", t => {
   t.is((fd.get("file") as File).name, expected)
 })
 
-test("User-defined filename has higher precedence for File", t => {
+test("User-defined filename has higher precedence", t => {
   const expected = "some-file.txt"
 
   const file = new File(["Some content"], "file.txt")
@@ -79,6 +79,17 @@ test("User-defined filename has higher precedence for File", t => {
   fd.set("file", file, expected)
 
   t.is((fd.get("file") as File).name, expected)
+})
+
+test("User-defined type has higher precedence", t => {
+  const expected = "text/markdown"
+
+  const file = new File(["Some content"], "file.text", {type: "text/plain"})
+  const fd = new FormData()
+
+  fd.set("file", file, {type: expected})
+
+  t.is((fd.get("file") as File).type, expected)
 })
 
 test("Allows filename argument to be set from options", t => {
@@ -412,6 +423,24 @@ test("Takes content-type from the filename", async t => {
 
   t.is(value, "Content-Type: text/plain")
 })
+
+test(
+  "User-defined type has higher precedence in content-type header",
+  async t => {
+    const expected = "text/markdown"
+
+    const file = new File(["Some content"], "file.txt")
+    const fd = new FormData()
+
+    fd.set("file", file, {type: expected})
+
+    const iterable = await skip(readLine(fd.stream), 2)
+
+    const {value} = await iterable.next()
+
+    t.is(value, `Content-Type: ${expected}`)
+  }
+)
 
 test("Sends a file content", async t => {
   const expected = "Some content"

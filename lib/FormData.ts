@@ -8,7 +8,7 @@ import {File} from "./File"
 
 import {fileFromPathSync} from "./fileFromPath"
 
-import isBlob from "./util/isBlob"
+import isFile from "./util/isFile"
 import getLength from "./util/getLength"
 import isPlainObject from "./util/isPlainObject"
 import createBoundary from "./util/createBoundary"
@@ -26,8 +26,19 @@ const CARRIAGE = "\r\n"
 export type FormDataFieldValue = string | File
 
 export interface FormDataFieldOptions {
+  /**
+   * Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
+   */
   type?: string
+
+  /**
+   * The last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
+   */
   lastModified?: number,
+
+  /**
+   * The name of the file.
+   */
   filename?: string
 }
 
@@ -118,7 +129,7 @@ export class FormData {
     header += `${DASHES}${this.boundary}${CARRIAGE}`
     header += `Content-Disposition: form-data; name="${name}"`
 
-    if (isBlob(value)) {
+    if (isFile(value)) {
       header += `; filename="${value.name}"${CARRIAGE}`
       header += `Content-Type: ${value.type || this._getMime(value.name)}`
     }
@@ -132,7 +143,7 @@ export class FormData {
         // Set field's header
         yield this._getHeader(name, value)
 
-        if (isBlob(value)) {
+        if (isFile(value)) {
           yield* value.stream()
         } else {
           yield value
@@ -183,9 +194,9 @@ export class FormData {
     filename ||= options?.filename
 
     // If a value is a file-like object, then get and normalize the filename
-    if (isBlob(value) || isReadStream(value) || isBuffer(value)) {
+    if (isFile(value) || isReadStream(value) || isBuffer(value)) {
       // Note that the user-defined filename has higher precedence
-      filename = basename(filename || getFilename(value as any))
+      filename = basename(filename || getFilename(value))
     } else if (filename) { // If a value is not a file-like, but the filename is present, then throw the error
       throw new TypeError(
         `Failed to execute '${methodName}' on 'FormData': `
@@ -197,8 +208,17 @@ export class FormData {
     // Normalize field's value
     if (isReadStream(value)) {
       value = fileFromPathSync(String(value.path), filename, options)
-    } else if (isBlob(value) || isBuffer(value)) {
+    } else if (isBuffer(value)) {
       value = new File([value], filename as string, options)
+    } else if (isFile(value)) {
+      value = new File([value], filename as string, {
+        ...options,
+
+        // Take params from the previous File or Blob instance
+        // But keep user-defined options higher percidence
+        type: options?.type || value.type,
+        lastModified: options?.lastModified || value.lastModified
+      })
     } else {
       // A non-file fields must be converted to string
       value = String(value)
