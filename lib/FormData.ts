@@ -32,7 +32,7 @@ export interface FormDataFieldOptions {
 }
 
 /**
- * Private oprions for FormData#_setField() method
+ * Private options for FormData#_setField() method
  */
 interface FormDataSetFieldOptions {
   name: string
@@ -41,14 +41,6 @@ interface FormDataSetFieldOptions {
   filenameOrOptions?: string | FormDataFieldOptions
   options?: FormDataFieldOptions
   argsLength: number
-}
-
-/**
- * Internal representation of the field's data and additional info
- */
-interface FormDataFieldElement {
-  value: FormDataFieldValue
-  filename?: string
 }
 
 /**
@@ -63,7 +55,7 @@ interface FormDataField {
   /**
    * Contains a set of necessary field's information
    */
-  values: [FormDataFieldElement, ...FormDataFieldElement[]]
+  values: [FormDataFieldValue, ...FormDataFieldValue[]]
 }
 
 /**
@@ -120,15 +112,15 @@ export class FormData {
     return mimes.lookup(filename) || DEFAULT_CONTENT_TYPE
   }
 
-  private _getHeader(name: string, filename?: string): string {
+  private _getHeader(name: string, value: FormDataFieldValue): string {
     let header = ""
 
     header += `${DASHES}${this.boundary}${CARRIAGE}`
     header += `Content-Disposition: form-data; name="${name}"`
 
-    if (filename) {
-      header += `; filename="${filename}"${CARRIAGE}`
-      header += `Content-Type: ${this._getMime(filename)}`
+    if (isBlob(value)) {
+      header += `; filename="${value.name}"${CARRIAGE}`
+      header += `Content-Type: ${value.type || this._getMime(value.name)}`
     }
 
     return `${header}${CARRIAGE.repeat(2)}`
@@ -136,9 +128,9 @@ export class FormData {
 
   private async* _getField() {
     for (const [name, {values}] of this._content) {
-      for (const {value, filename} of values) {
+      for (const value of values) {
         // Set field's header
-        yield this._getHeader(name, filename)
+        yield this._getHeader(name, value)
 
         if (isBlob(value)) {
           yield* value.stream()
@@ -187,7 +179,7 @@ export class FormData {
       )
     }
 
-    // Get a filename from either an argument or oprions
+    // Get a filename from either an argument or options
     filename ||= options?.filename
 
     // If a value is a file-like object, then get and normalize the filename
@@ -216,14 +208,14 @@ export class FormData {
 
     if (!field) {
       return void this._content.set(fieldName, {
-        append, values: [{value: value as FormDataFieldValue, filename}]
+        append, values: [value as FormDataFieldValue]
       })
     }
 
     // Replace a value of the existing field if "set" called
     if (!append) {
       return void this._content.set(fieldName, {
-        append, values: [{value: value as FormDataFieldValue, filename}]
+        append, values: [value as FormDataFieldValue]
       })
     }
 
@@ -233,7 +225,7 @@ export class FormData {
     }
 
     // Append a new value to the existing field
-    field.values.push({value: value as FormDataFieldValue, filename})
+    field.values.push(value as FormDataFieldValue)
 
     this._content.set(fieldName, field)
   }
@@ -243,14 +235,14 @@ export class FormData {
    * If data contains stream.Readable field(s),
    * the method will always return undefined.
    */
-  async getComputedLength(): Promise<number | undefined> {
+  async getComputedLength(): Promise<number> {
     let length = 0
 
     const carriageLength = Buffer.byteLength(CARRIAGE)
 
     for (const [name, {values}] of this._content) {
-      for (const {value, filename} of values) {
-        length += Buffer.byteLength(this._getHeader(name, filename))
+      for (const value of values) {
+        length += Buffer.byteLength(this._getHeader(name, value))
 
         const valueLength = await getLength(value)
 
@@ -359,7 +351,7 @@ export class FormData {
       return null
     }
 
-    return field.values[0].value
+    return field.values[0]
   }
 
   /**
@@ -377,7 +369,7 @@ export class FormData {
       return []
     }
 
-    return field.values.map(({value}) => value)
+    return [...field.values]
   }
 
   /**
