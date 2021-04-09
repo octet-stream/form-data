@@ -4,6 +4,7 @@ import sinon from "sinon"
 
 import {createReadStream} from "fs"
 import {resolve} from "path"
+import {inspect} from "util"
 
 import Blob from "fetch-blob"
 
@@ -519,6 +520,10 @@ test("Returns the first value on the first call", t => {
 
 test(".toString() returns a proper string", t => {
   t.is(new FormData().toString(), "[object FormData]")
+})
+
+test("util.inspect() returns a proper string", t => {
+  t.is<string>(inspect(new FormData()), "FormData")
 })
 
 test(".set() throws TypeError when called with less than 2 arguments", t => {
