@@ -559,7 +559,7 @@ test(".values() is done on the first call when there's no data", t => {
   })
 })
 
-test("Returns the first value on the first call", t => {
+test(".values() Returns the first value on the first call", t => {
   const fd = new FormData()
 
   fd.set("first", "value")
@@ -571,6 +571,32 @@ test("Returns the first value on the first call", t => {
   t.deepEqual(curr, {
     done: false,
     value: "value"
+  })
+})
+
+test(".keys() is done on the first call when there's no data", t => {
+  const fd = new FormData()
+
+  const curr = fd.keys().next()
+
+  t.deepEqual(curr, {
+    done: true,
+    value: undefined
+  })
+})
+
+test(".keys() Returns the first value on the first call", t => {
+  const fd = new FormData()
+
+  fd.set("first", "value")
+  fd.set("second", 42)
+  fd.set("third", [1, 2, 3])
+
+  const curr = fd.keys().next()
+
+  t.deepEqual(curr, {
+    done: false,
+    value: "first"
   })
 })
 
@@ -607,6 +633,37 @@ test(
     t.throws<TypeError>(trap, {
       instanceOf: TypeError,
       message: "Failed to execute 'set' on 'FormData': "
+        + "parameter 2 is not one of the following types: "
+        + "ReadStream | Buffer | File | Blob"
+    })
+  }
+)
+
+test(".append() throws TypeError when called with less than 2 arguments", t => {
+  const fd = new FormData()
+
+  // @ts-ignore
+  const trap = () => fd.append("field")
+
+  t.throws<TypeError>(trap, {
+    instanceOf: TypeError,
+    message: "Failed to execute 'append' on 'FormData': "
+      + "2 arguments required, but only 1 present."
+  })
+})
+
+test(
+  ".append() throws TypeError when the filename argument is present, "
+    + "but the value is not a File",
+
+  t => {
+    const fd = new FormData()
+
+    const trap = () => fd.append("field", "Some value", "field.txt")
+
+    t.throws<TypeError>(trap, {
+      instanceOf: TypeError,
+      message: "Failed to execute 'append' on 'FormData': "
         + "parameter 2 is not one of the following types: "
         + "ReadStream | Buffer | File | Blob"
     })
