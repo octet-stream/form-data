@@ -137,7 +137,7 @@ export class FormData {
     return `${header}${CARRIAGE.repeat(2)}`
   }
 
-  private async* _getField() {
+  private async* _getField(): AsyncGenerator<string | Buffer, void, undefined> {
     // Note to switch back to reading from this._content if any extra logic will be necessary in a future, because the public FormData API returns values only as `string | File`
     for (const [name, value] of this) {
       // Set field's header
