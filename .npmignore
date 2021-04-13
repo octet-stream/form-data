@@ -9,6 +9,7 @@ coverage
 .eslintignore
 yarn-error.log
 .c8rc.json
+.env
 
 /code-of-conduct.md
 /.editorconfig
