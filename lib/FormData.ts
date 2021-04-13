@@ -138,20 +138,19 @@ export class FormData {
   }
 
   private async* _getField() {
-    for (const [name, {values}] of this._content) {
-      for (const value of values) {
-        // Set field's header
-        yield this._getHeader(name, value)
+    // Note to switch back to reading from this._content if any extra logic will be necessary in a future, because the public FormData API returns values only as `string | File`
+    for (const [name, value] of this) {
+      // Set field's header
+      yield this._getHeader(name, value)
 
-        if (isFile(value)) {
-          yield* value.stream()
-        } else {
-          yield value
-        }
-
-        // Add trailing carriage
-        yield CARRIAGE
+      if (isFile(value)) {
+        yield* value.stream()
+      } else {
+        yield value
       }
+
+      // Add trailing carriage
+      yield CARRIAGE
     }
 
     // Add a footer when all fields ended
