@@ -2,13 +2,12 @@ import test from "ava"
 
 import sinon from "sinon"
 
-import {createReadStream} from "fs"
+import {createReadStream, promises as fs} from "fs"
 import {resolve} from "path"
 import {inspect} from "util"
 
 import Blob from "fetch-blob"
 
-import createServer from "./__helper__/mockServer"
 import readStream from "./__helper__/readStream"
 import skip from "./__helper__/skipIterations"
 import readLine from "./__helper__/readLine"
@@ -18,6 +17,7 @@ import {File} from "./File"
 import {FormData, FormDataConstructorEntries} from "./FormData"
 
 const {spy} = sinon
+const {readFile} = fs
 
 test("Has the boundary field", t => {
   const fd = new FormData()
@@ -443,53 +443,109 @@ test(
   }
 )
 
-test("Sends a file content", async t => {
-  const expected = "Some content"
+test("Encoder emits every appended field with proper data", async t => {
+  const expectedDisposition = "Content-Disposition: form-data; name=\"field\""
 
-  const req = createServer()
   const fd = new FormData()
 
-  fd.set("file", new File([expected], "file.txt"))
+  fd.append("field", "Some string")
+  fd.append("field", "Some other string")
 
-  const {body} = await req
-    .post("/")
-    .set("content-type", fd.headers["Content-Type"])
-    .send(await readStream(fd.stream, "utf-8"))
+  const iterable = readLine(fd.stream)
 
-  t.is<string>(body.file as string, expected)
+  await skip(iterable, 1)
+
+  const {value: firstFieldDisposition} = await iterable.next()
+
+  t.is(firstFieldDisposition, expectedDisposition)
+
+  await skip(iterable, 1)
+
+  const {value: firstFieldContent} = await iterable.next()
+
+  t.is(firstFieldContent, "Some string")
+
+  await skip(iterable, 1)
+
+  const {value: secondFieldDisposition} = await iterable.next()
+
+  t.is(secondFieldDisposition, expectedDisposition)
+
+  await skip(iterable, 1)
+
+  const {value: secondFieldContent} = await iterable.next()
+
+  t.is(secondFieldContent, "Some other string")
 })
 
-test("Sends field's content", async t => {
-  const expected = "Some content"
+test("Encoder emits every appended file with proper data", async t => {
+  const expectedDisposition = "Content-Disposition: form-data; name=\"file\""
 
-  const req = createServer()
   const fd = new FormData()
 
-  fd.set("field", expected)
+  fd.append("file", new File(["Some content"], "file.txt"))
+  fd.append("file", new File(["Some **content**"], "file.md"))
 
-  const {body} = await req
-    .post("/")
-    .set("content-type", fd.headers["Content-Type"])
-    .send(await readStream(fd.stream, "utf-8"))
+  const iterable = readLine(fd.stream)
 
-  t.is<string>(body.field as string, expected)
+  await skip(iterable, 1)
+
+  const {value: firstFileDisposition} = await iterable.next()
+
+  t.is(firstFileDisposition, `${expectedDisposition}; filename="file.txt"`)
+
+  const {value: firstFileType} = await iterable.next()
+
+  t.is(firstFileType, "Content-Type: text/plain")
+
+  await skip(iterable, 1)
+
+  const {value: firstFileContent} = await iterable.next()
+
+  t.is(firstFileContent, "Some content")
+
+  await skip(iterable, 1)
+
+  const {value: secondFileDisposition} = await iterable.next()
+
+  t.is(secondFileDisposition, `${expectedDisposition}; filename="file.md"`)
+
+  const {value: secondFileType} = await iterable.next()
+
+  t.is(secondFileType, "Content-Type: text/markdown")
+
+  await skip(iterable, 1)
+
+  const {value: secondFileContent} = await iterable.next()
+
+  t.is(secondFileContent, "Some **content**")
 })
 
-test("Reads file contents from a ReadStream", async t => {
+test("Encoder emits file contents from a ReadStream", async t => {
   const filePath = resolve("readme.md")
-  const expected = await readStream(createReadStream(filePath), "utf-8")
+  const expected = await readFile(filePath, "utf-8")
 
-  const req = createServer()
   const fd = new FormData()
 
   fd.set("file", createReadStream(filePath))
 
-  const {body} = await req
-    .post("/")
-    .set("content-type", fd.headers["Content-Type"])
-    .send(await readStream(fd.stream, "utf-8"))
+  const iterable = readLine(fd.stream)
 
-  t.is<string>(body.file as string, expected as string)
+  await skip(iterable, 4)
+
+  const chunks: string[] = []
+
+  const footer = `--${fd.boundary}--`
+
+  for await (const chunk of iterable) {
+    if (chunk !== footer) {
+      chunks.push(chunk)
+    }
+  }
+
+  chunks.pop() // Remove trailing empty line
+
+  t.is<string>(chunks.join("\n"), expected)
 })
 
 test(".values() is done on the first call when there's no data", t => {
