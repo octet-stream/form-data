@@ -211,7 +211,7 @@ Executes a given **callback** for each field of the FormData instance
     + **{FormData}** fd – The FormData instance that **forEach** is being applied to
   - **{any}** [ctx = null] – Value to use as **this** context when executing the given **callback**
 
-##### `keys() -> {IterableIterator<string>}`
+##### `keys() -> {Generator<string>}`
 
 Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** keys
 
