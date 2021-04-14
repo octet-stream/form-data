@@ -1,7 +1,18 @@
 import {Readable} from "stream"
 
+type Input<T = any> = Readable | {
+  [Symbol.asyncIterator](): AsyncIterableIterator<T>
+}
+
+async function readStream<T = any>(input: Input<T>): Promise<Buffer>
 async function readStream<T = any>(
-  input: Readable | {[Symbol.asyncIterator](): AsyncIterableIterator<T>},
+  input: Input<T>,
+
+  // eslint-disable-next-line no-undef
+  encoding: BufferEncoding
+): Promise<string>
+async function readStream<T = any>(
+  input: Input<T>,
 
   // eslint-disable-next-line no-undef
   encoding?: BufferEncoding
