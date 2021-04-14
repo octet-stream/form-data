@@ -2,8 +2,6 @@ import {Readable} from "stream"
 import {basename} from "path"
 import {inspect} from "util"
 
-import mimes from "mime-types"
-
 import {File} from "./File"
 
 import {fileFromPathSync} from "./fileFromPath"
@@ -12,12 +10,11 @@ import isFile from "./util/isFile"
 import getLength from "./util/getLength"
 import isPlainObject from "./util/isPlainObject"
 import createBoundary from "./util/createBoundary"
+import getMime from "./util/getMimeFromFilename"
 import isReadStream from "./util/isReadStream"
 import getFilename from "./util/getFilename"
 
 const {isBuffer} = Buffer
-
-const DEFAULT_CONTENT_TYPE = "application/octet-stream"
 
 const DASHES = "-".repeat(2)
 
@@ -119,10 +116,6 @@ export class FormData {
     }
   }
 
-  private _getMime(filename: string): string {
-    return mimes.lookup(filename) || DEFAULT_CONTENT_TYPE
-  }
-
   private _getHeader(name: string, value: FormDataFieldValue): string {
     let header = ""
 
@@ -131,7 +124,7 @@ export class FormData {
 
     if (isFile(value)) {
       header += `; filename="${value.name}"${CARRIAGE}`
-      header += `Content-Type: ${value.type || this._getMime(value.name)}`
+      header += `Content-Type: ${value.type || getMime(value.name)}`
     }
 
     return `${header}${CARRIAGE.repeat(2)}`
