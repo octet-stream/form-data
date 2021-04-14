@@ -2,7 +2,7 @@ import test from "ava"
 
 import {File} from "./File"
 
-test("Takes the name field taken from the second argument", t => {
+test("Takes a filename as the second argument", t => {
   const expected = "file.txt"
   const file = new File(["Some content"], expected)
 
