@@ -42,7 +42,7 @@
   "devDependencies": {
     "@octetstream/eslint-config": "5.0.0",
     "@types/mime-types": "2.1.0",
-    "@types/node": "14.14.37",
+    "@types/node": "14.14.41",
     "@types/sinon": "9.0.11",
     "@types/supertest": "2.0.11",
     "@typescript-eslint/eslint-plugin": "4.22.0",
@@ -52,7 +52,7 @@
     "c8": "7.7.1",
     "codecov": "3.8.1",
     "dotenv": "^8.2.0",
-    "eslint": "7.24.0",
+    "eslint": "7.25.0",
     "eslint-config-airbnb-typescript": "12.3.1",
     "eslint-plugin-ava": "12.0.0",
     "eslint-plugin-jsx-a11y": "6.4.1",
