@@ -7,7 +7,9 @@ coverage
 .codecov
 .husky
 .eslintignore
+package-lock.json
 yarn-error.log
+pnpm-lock.yaml
 .c8rc.json
 .env
 

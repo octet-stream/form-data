@@ -31,14 +31,32 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - run: npm install
-      - run: npm run ci
+
+      - name: pnpm cache
+        uses: actions/cache@2
+        env:
+          cache-name: cache-pnpm-store
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.node }}-${{ hashFiles('**/.package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.node }}-
+
+      - name: pnpm setup
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.2.1
+          run_install: true
+
+      - run: pnpm run ci
+
       - name: Codecov
         uses: codecov/codecov-action@v1
-        if: matrix.node == '14.x' && matrix.os == 'ubuntu-latest'
+        if: matrix.node == '16.x' && matrix.os == 'ubuntu-latest'
         with:
           file: ./coverage/coverage-final.json
           flags: unittests
