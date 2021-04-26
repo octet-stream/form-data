@@ -1,9 +1,9 @@
 const {FormData, File, fileFromPathSync} = require(".")
 
-global.FormData = FormData
+globalThis.FormData = FormData
 
-if (!global.File) {
-  global.File = File
+if (!globalThis.File) {
+  globalThis.File = File
 }
 
 exports.fileFromPathSync = fileFromPathSync
