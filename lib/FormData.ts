@@ -107,7 +107,7 @@ export class FormData {
   }`
 
   constructor(entries?: FormDataConstructorEntries) {
-    this.stream = Readable.from(this._read())
+    this.stream = Readable.from(this)
 
     if (entries) {
       entries.forEach(({name, value, filename, options}) => this.append(
@@ -148,12 +148,6 @@ export class FormData {
 
     // Add a footer when all fields ended
     yield this._footer
-  }
-
-  private async* _read(): AsyncGenerator<Buffer> {
-    for await (const ch of this._getField()) {
-      yield isBuffer(ch) ? ch : Buffer.from(String(ch))
-    }
   }
 
   private _setField({
@@ -465,10 +459,12 @@ export class FormData {
   }
 
   /**
-   * Returns an async iterator allowing to read a data from internal Readable stream using **for-await-of** syntax.
+   * Returns an async iterator allowing to read form-data body using **for-await-of** syntax.
    * Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
    */
-  [Symbol.asyncIterator]() {
-    return this.stream[Symbol.asyncIterator]()
+  async* [Symbol.asyncIterator]() {
+    for await (const ch of this._getField()) {
+      yield isBuffer(ch) ? ch : Buffer.from(String(ch))
+    }
   }
 }
