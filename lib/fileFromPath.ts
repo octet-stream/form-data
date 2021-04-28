@@ -8,7 +8,7 @@ import {File, FileOptions} from "./File"
 import isPlainObject from "./util/isPlainObject"
 
 /**
- * Creates a new File from Blob backed by filesystem
+ * Creates a `File` referencing the one on a disk by given path.
  *
  * @param path Path to read a file from
  * @param filename Optional file name. If not presented, the path will be used to get it

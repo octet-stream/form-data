@@ -229,7 +229,7 @@ An alias for [`FormData#entries()`](#entries---iterator)
 
 ##### `[Symbol.asyncIterator]() -> {AsyncGenerator<Buffer>}`
 
-Returns an async iterator allowing to read a data from internal Readable stream using **for-await-of** syntax.
+Returns an async iterator allowing to read form-data body using **for-await-of** syntax.
 Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
 
 ### `constructor File(blobParts, filename[, options])`
