@@ -3,8 +3,8 @@
 FormData implementation for Node.js. Built over Readable stream and async generators.
 
 [![Code Coverage](https://codecov.io/github/octet-stream/form-data/coverage.svg?branch=master)](https://codecov.io/github/octet-stream/form-data?branch=master)
-![CI](https://github.com/octet-stream/form-data/workflows/CI/badge.svg)
-![ESLint](https://github.com/octet-stream/form-data/workflows/ESLint/badge.svg)
+[![CI](https://github.com/octet-stream/form-data/workflows/CI/badge.svg)](https://github.com/octet-stream/form-data/actions/workflows/ci.yml)
+[![ESLint](https://github.com/octet-stream/form-data/workflows/ESLint/badge.svg)](https://github.com/octet-stream/form-data/actions/workflows/eslint.yml)
 
 ## Installation
 
