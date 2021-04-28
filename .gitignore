@@ -1,4 +1,5 @@
 .DS_Store
+yarn.lock
 package-lock.json
 yarn-error.log
 yarn-error.log
