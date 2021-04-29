@@ -9,6 +9,7 @@ import {fileFromPathSync} from "./fileFromPath"
 import isFile from "./util/isFile"
 import getLength from "./util/getLength"
 import isPlainObject from "./util/isPlainObject"
+import deprecateReadStream from "./util/deprecateReadStream"
 import createBoundary from "./util/createBoundary"
 import getMime from "./util/getMimeFromFilename"
 import isReadStream from "./util/isReadStream"
@@ -284,6 +285,7 @@ export class FormData {
     filename?: string,
     options?: FormDataFieldOptions
   ): void
+  @deprecateReadStream
   append(
     name: string,
     value: unknown,
@@ -326,6 +328,7 @@ export class FormData {
     filename?: string,
     options?: FormDataFieldOptions
   ): void
+  @deprecateReadStream
   set(
     name: string,
     value: unknown,
