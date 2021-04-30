@@ -19,7 +19,7 @@ test("sync: Creates a file from path", async t => {
 
   const actual = await readStream(fileFromPathSync(filePath).stream())
 
-  t.true((actual as Buffer).equals(expected))
+  t.true(actual.equals(expected))
 })
 
 test("sync: Has filename taken from file path", t => {
