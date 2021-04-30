@@ -247,14 +247,12 @@ export class FormData {
 
     const carriageLength = Buffer.byteLength(CARRIAGE)
 
-    for (const [name, {values}] of this._content) {
-      for (const value of values) {
-        length += Buffer.byteLength(this._getHeader(name, value))
+    for (const [name, value] of this) {
+      length += Buffer.byteLength(this._getHeader(name, value))
 
-        const valueLength = await getLength(value)
+      const valueLength = await getLength(value)
 
-        length += Number(valueLength) + carriageLength
-      }
+      length += Number(valueLength) + carriageLength
     }
 
     return length + Buffer.byteLength(this._footer)
