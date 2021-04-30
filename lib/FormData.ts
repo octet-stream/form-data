@@ -239,8 +239,6 @@ export class FormData {
 
   /**
    * Returns computed length of the FormData content.
-   * If data contains stream.Readable field(s),
-   * the method will always return undefined.
    */
   async getComputedLength(): Promise<number> {
     let length = 0
