@@ -240,7 +240,7 @@ export class FormData {
   /**
    * Returns computed length of the FormData content.
    */
-  async getComputedLength(): Promise<number> {
+  async getComputedLength(): Promise<number | undefined> {
     let length = 0
 
     for (const [name, value] of this) {
