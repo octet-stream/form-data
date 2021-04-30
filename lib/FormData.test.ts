@@ -85,7 +85,7 @@ test("User-defined filename has higher precedence", t => {
 test("User-defined type has higher precedence", t => {
   const expected = "text/markdown"
 
-  const file = new File(["Some content"], "file.text", {type: "text/plain"})
+  const file = new File(["Some content"], "file.txt", {type: "text/plain"})
   const fd = new FormData()
 
   fd.set("file", file, {type: expected})
