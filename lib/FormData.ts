@@ -98,12 +98,12 @@ export class FormData {
   /**
    * Stores internal data for every field
    */
-  private readonly _content = new Map<string, FormDataField>()
+  readonly #content = new Map<string, FormDataField>()
 
   /**
    * Returns field's footer
    */
-  private readonly _footer = `${DASHES}${this.boundary}${DASHES}${
+  readonly #footer = `${DASHES}${this.boundary}${DASHES}${
     CRLF.repeat(2)
   }`
 
@@ -148,7 +148,7 @@ export class FormData {
     }
 
     // Add a footer when all fields ended
-    yield this._footer
+    yield this.#footer
   }
 
   private _setField({
@@ -211,17 +211,17 @@ export class FormData {
       value = String(value)
     }
 
-    const field = this._content.get(fieldName)
+    const field = this.#content.get(fieldName)
 
     if (!field) {
-      return void this._content.set(fieldName, {
+      return void this.#content.set(fieldName, {
         append, values: [value as FormDataFieldValue]
       })
     }
 
     // Replace a value of the existing field if "set" called
     if (!append) {
-      return void this._content.set(fieldName, {
+      return void this.#content.set(fieldName, {
         append, values: [value as FormDataFieldValue]
       })
     }
@@ -234,7 +234,7 @@ export class FormData {
     // Append a new value to the existing field
     field.values.push(value as FormDataFieldValue)
 
-    this._content.set(fieldName, field)
+    this.#content.set(fieldName, field)
   }
 
   /**
@@ -251,7 +251,7 @@ export class FormData {
       length += Number(valueLength) + CRLF_BYTES_LENGTH
     }
 
-    return length + Buffer.byteLength(this._footer)
+    return length + Buffer.byteLength(this.#footer)
   }
 
   /**
@@ -348,7 +348,7 @@ export class FormData {
   get(name: string): FormDataFieldValue | null {
     name = String(name)
 
-    const field = this._content.get(name)
+    const field = this.#content.get(name)
 
     if (!field) {
       return null
@@ -366,7 +366,7 @@ export class FormData {
   getAll(name: string): FormDataFieldValue[] {
     name = String(name)
 
-    const field = this._content.get(name)
+    const field = this.#content.get(name)
 
     if (!field) {
       return []
@@ -383,7 +383,7 @@ export class FormData {
    * @return
    */
   has(name: string) {
-    return this._content.has(String(name))
+    return this.#content.has(String(name))
   }
 
   /**
@@ -392,14 +392,14 @@ export class FormData {
    * @param name The name of the key you want to delete.
    */
   delete(name: string) {
-    return this._content.delete(String(name))
+    return this.#content.delete(String(name))
   }
 
   /**
    * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** keys
    */
   * keys(): Generator<string> {
-    for (const key of this._content.keys()) {
+    for (const key of this.#content.keys()) {
       yield key
     }
   }
