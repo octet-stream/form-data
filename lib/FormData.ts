@@ -382,7 +382,7 @@ export class FormData {
    *
    * @return
    */
-  has(name: string) {
+  has(name: string): boolean {
     return this.#content.has(String(name))
   }
 
@@ -391,8 +391,8 @@ export class FormData {
    *
    * @param name The name of the key you want to delete.
    */
-  delete(name: string) {
-    return this.#content.delete(String(name))
+  delete(name: string): void {
+    return void this.#content.delete(String(name))
   }
 
   /**
