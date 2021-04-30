@@ -18,8 +18,8 @@ import getFilename from "./util/getFilename"
 const {isBuffer} = Buffer
 
 const DASHES = "-".repeat(2)
-
-const CARRIAGE = "\r\n"
+const CRLF = "\r\n"
+const CRLF_BYTES_LENGTH = Buffer.byteLength(CRLF)
 
 export type FormDataFieldValue = string | File
 
@@ -104,7 +104,7 @@ export class FormData {
    * Returns field's footer
    */
   private readonly _footer = `${DASHES}${this.boundary}${DASHES}${
-    CARRIAGE.repeat(2)
+    CRLF.repeat(2)
   }`
 
   constructor(entries?: FormDataConstructorEntries) {
@@ -120,15 +120,15 @@ export class FormData {
   private _getHeader(name: string, value: FormDataFieldValue): string {
     let header = ""
 
-    header += `${DASHES}${this.boundary}${CARRIAGE}`
+    header += `${DASHES}${this.boundary}${CRLF}`
     header += `Content-Disposition: form-data; name="${name}"`
 
     if (isFile(value)) {
-      header += `; filename="${value.name}"${CARRIAGE}`
+      header += `; filename="${value.name}"${CRLF}`
       header += `Content-Type: ${value.type || getMime(value.name)}`
     }
 
-    return `${header}${CARRIAGE.repeat(2)}`
+    return `${header}${CRLF.repeat(2)}`
   }
 
   private async* _getField(): AsyncGenerator<string | Buffer, void, undefined> {
@@ -144,7 +144,7 @@ export class FormData {
       }
 
       // Add trailing carriage
-      yield CARRIAGE
+      yield CRLF
     }
 
     // Add a footer when all fields ended
@@ -245,14 +245,12 @@ export class FormData {
   async getComputedLength(): Promise<number> {
     let length = 0
 
-    const carriageLength = Buffer.byteLength(CARRIAGE)
-
     for (const [name, value] of this) {
       length += Buffer.byteLength(this._getHeader(name, value))
 
       const valueLength = await getLength(value)
 
-      length += Number(valueLength) + carriageLength
+      length += Number(valueLength) + CRLF_BYTES_LENGTH
     }
 
     return length + Buffer.byteLength(this._footer)
