@@ -60,6 +60,14 @@ test("Creates a new File instance for given File", t => {
   t.not(fd.get("file"), file)
 })
 
+test("File created from Blob has proper default name", t => {
+  const fd = new FormData()
+
+  fd.set("file", new Blob(["Some content"]))
+
+  t.is((fd.get("file") as File).name, "blob")
+})
+
 test("Assigns a filename argument to Blob field", t => {
   const expected = "some-file.txt"
 
