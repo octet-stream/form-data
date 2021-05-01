@@ -3,6 +3,7 @@ import test from "ava"
 import sinon from "sinon"
 
 import {createReadStream, promises as fs} from "fs"
+import {Readable} from "stream"
 import {resolve} from "path"
 import {inspect} from "util"
 
@@ -368,7 +369,7 @@ test(".forEach() callback should be called once on each filed", t => {
 test("Emits the footer for an empty content", async t => {
   const fd = new FormData()
 
-  const iterable = readLine(fd.stream)
+  const iterable = readLine(Readable.from(fd))
 
   const {value} = await iterable.next()
 
@@ -380,7 +381,7 @@ test("Has the boundary line when any data is present", async t => {
 
   fd.set("field", "Some string")
 
-  const iterable = readLine(fd.stream)
+  const iterable = readLine(Readable.from(fd))
 
   const {value} = await iterable.next()
 
@@ -392,7 +393,7 @@ test("Has correct field's header", async t => {
 
   fd.set("field", "Some string")
 
-  const iterable = await skip(readLine(fd.stream), 1)
+  const iterable = await skip(readLine(Readable.from(fd)), 1)
 
   const {value} = await iterable.next()
 
@@ -410,7 +411,7 @@ test("Has correct File's header", async t => {
 
   fd.set("file", file)
 
-  const iterable = await skip(readLine(fd.stream), 1)
+  const iterable = await skip(readLine(Readable.from(fd)), 1)
 
   const {value} = await iterable.next()
 
@@ -426,7 +427,7 @@ test("Takes content-type from the filename", async t => {
 
   fd.set("file", file)
 
-  const iterable = await skip(readLine(fd.stream), 2)
+  const iterable = await skip(readLine(Readable.from(fd)), 2)
 
   const {value} = await iterable.next()
 
@@ -443,7 +444,7 @@ test(
 
     fd.set("file", file, {type: expected})
 
-    const iterable = await skip(readLine(fd.stream), 2)
+    const iterable = await skip(readLine(Readable.from(fd)), 2)
 
     const {value} = await iterable.next()
 
@@ -459,7 +460,7 @@ test("Encoder emits every appended field with proper data", async t => {
   fd.append("field", "Some string")
   fd.append("field", "Some other string")
 
-  const iterable = readLine(fd.stream)
+  const iterable = readLine(Readable.from(fd))
 
   await skip(iterable, 1)
 
@@ -494,7 +495,7 @@ test("Encoder emits every appended file with proper data", async t => {
   fd.append("file", new File(["Some content"], "file.txt"))
   fd.append("file", new File(["Some **content**"], "file.md"))
 
-  const iterable = readLine(fd.stream)
+  const iterable = readLine(Readable.from(fd))
 
   await skip(iterable, 1)
 
@@ -537,7 +538,7 @@ test("Encoder emits file contents from a ReadStream", async t => {
 
   fd.set("file", createReadStream(filePath))
 
-  const iterable = readLine(fd.stream)
+  const iterable = readLine(Readable.from(fd))
 
   await skip(iterable, 4)
 

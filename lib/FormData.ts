@@ -10,6 +10,7 @@ import isFile from "./util/isFile"
 import getLength from "./util/getLength"
 import isPlainObject from "./util/isPlainObject"
 import deprecateReadStream from "./util/deprecateReadStream"
+import deprecateStreamProp from "./util/deprecateStreamProp"
 import createBoundary from "./util/createBoundary"
 import getMime from "./util/getMimeFromFilename"
 import isReadStream from "./util/isReadStream"
@@ -78,10 +79,7 @@ export type FormDataConstructorEntries = Array<{
 }>
 
 export class FormData {
-  /**
-   * Returns internal readable stream, allowing to read the FormData content
-   */
-  readonly stream: Readable
+  readonly #stream: Readable
 
   /**
    * Returns a boundary string
@@ -106,7 +104,7 @@ export class FormData {
   readonly #footer = `${DASHES}${this.boundary}${DASHES}${CRLF.repeat(2)}`
 
   constructor(entries?: FormDataConstructorEntries) {
-    this.stream = Readable.from(this)
+    this.#stream = Readable.from(this)
 
     if (entries) {
       entries.forEach(({name, value, filename, options}) => this.append(
@@ -233,6 +231,16 @@ export class FormData {
     field.values.push(value as FormDataFieldValue)
 
     this.#content.set(fieldName, field)
+  }
+
+  /**
+   * Returns internal readable stream, allowing to read the FormData content
+   *
+   * @deprecated Use `Readable.from()` to create a stream from `FormData` instance.
+   */
+  @deprecateStreamProp
+  get stream() {
+    return this.#stream
   }
 
   /**

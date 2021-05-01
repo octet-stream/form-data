@@ -66,6 +66,8 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
+**Note that this method is preferable over the `FormData#stream` and will be the only option in next major release.**
+
 3. Sending files over form-data:
 
 ```js
