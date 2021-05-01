@@ -34,6 +34,12 @@ test("Has the Content-Type header with proper value", t => {
   })
 })
 
+test("Has Readable stream property", t => {
+  const fd = new FormData()
+
+  t.true(fd.stream instanceof Readable)
+})
+
 test("Allows to append fields from constructor", t => {
   const expected: FormDataConstructorEntries = [
     {

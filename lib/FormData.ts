@@ -236,7 +236,7 @@ export class FormData {
   /**
    * Returns internal readable stream, allowing to read the FormData content
    *
-   * @deprecated Use `Readable.from()` to create a stream from `FormData` instance.
+   * @deprecated Use `Readable.from(formData)` to create a stream from `FormData` instance.
    */
   @deprecateStreamProp
   get stream() {
