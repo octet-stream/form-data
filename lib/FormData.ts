@@ -103,9 +103,7 @@ export class FormData {
   /**
    * Returns field's footer
    */
-  readonly #footer = `${DASHES}${this.boundary}${DASHES}${
-    CRLF.repeat(2)
-  }`
+  readonly #footer = `${DASHES}${this.boundary}${DASHES}${CRLF.repeat(2)}`
 
   constructor(entries?: FormDataConstructorEntries) {
     this.stream = Readable.from(this)
@@ -132,7 +130,7 @@ export class FormData {
   }
 
   private async* _getField(): AsyncGenerator<string | Buffer, void, undefined> {
-    // Note to switch back to reading from this._content if any extra logic will be necessary in a future, because the public FormData API returns values only as `string | File`
+    // Note to switch back to reading from this.#content if any extra logic will be necessary in a future, because the public FormData API returns values only as `string | File`
     for (const [name, value] of this) {
       // Set field's header
       yield this._getHeader(name, value)
