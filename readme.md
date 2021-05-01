@@ -43,12 +43,30 @@ const options = {
   headers: fd.headers // Set headers of the current FormData instance
 }
 
-got.post("http://example.com", options)
+got.post("https://httpbin.org/post", options)
   .then(res => console.log("Res: ", res.body))
   .catch(err => console.error("Error: ", err))
 ```
 
-2. Sending files over form-data:
+2. Because every FormData instance (in this package) has Symbol.asyncIterator method, you can create a stream from it using `Readable.from()`:
+
+```js
+import {Readable} from "stream"
+
+import {FormData} from "formdata-node"
+
+import fetch from "node-fetch"
+
+const options = {
+  method: "post",
+  headers: fd.headers,
+  body: Readable.from(fd)
+}
+
+await fetch("https://httpbin.org/post", options)
+```
+
+3. Sending files over form-data:
 
 ```js
 import {createReadStream} from "fs"
@@ -64,10 +82,10 @@ const fd = new FormData()
 fd.set("file", createReadStream("/path/to/a/file"))
 
 // Just like that, you can send a file with formdata-node
-await fetch("https://example.com", {method: "post", body: fd})
+await fetch("https://httpbin.org/post", {method: "post", body: fd})
 ```
 
-3. You can also append files using `fileFromPathSync` helper. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`
+4. You can also append files using `fileFromPathSync` helper. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
 
 ```js
 import {FormData, fileFromPathSync} from "formdata-node"
@@ -78,10 +96,12 @@ const fd = new FormData()
 
 fd.set("file", fileFromPathSync("/path/to/a/file"))
 
-await fetch("https://example.com", {method: "post", body: fd})
+await fetch("https://httpbin.org/post", {method: "post", body: fd})
 ```
 
-4. And of course you can create your own File manually – formdata-node gets you covered. It has a `File` object that inherits `Blob` from [`fetch-blob`](https://github.com/node-fetch/fetch-blob) package
+**Note that this method is preferable over the `fs.createReadStream()` and will be the only option (along with its async version) in next major release.**
+
+5. And of course you can create your own File manually – formdata-node gets you covered. It has a `File` object that inherits `Blob` from [`fetch-blob`](https://github.com/node-fetch/fetch-blob) package:
 
 ```js
 import {FormData, File} from "formdata-node"
@@ -93,10 +113,10 @@ const file = new File(["My hovercraft is full of eels"], "hovercraft.txt")
 
 fd.set("file", file)
 
-await fetch("https://example.com", {method: "post", body: fd})
+await fetch("https://httpbin.org/post", {method: "post", body: fd})
 ```
 
-5. Blobs as field's values allowed too
+6. Blobs as field's values allowed too:
 
 ```js
 import {FormData} from "formdata-node"
