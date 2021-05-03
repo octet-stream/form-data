@@ -1,16 +1,13 @@
-import {promises as fs} from "fs"
-
-import isReadStream from "./isReadStream"
 import isFile from "./isFile"
 
 const {isBuffer} = Buffer
-const {stat} = fs
 
+/**
+ * Returns bytes length of given value
+ *
+ * @api private
+ */
 async function getLength(value: unknown): Promise<number> {
-  if (isReadStream(value)) {
-    return stat(value.path).then(({size}) => size)
-  }
-
   if (isBuffer(value)) {
     return value.length
   }
