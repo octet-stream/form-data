@@ -7,7 +7,7 @@ const {isBuffer} = Buffer
  *
  * @api private
  */
-async function getLength(value: unknown): Promise<number> {
+function getLength(value: unknown): number {
   if (isBuffer(value)) {
     return value.length
   }

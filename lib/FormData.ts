@@ -246,15 +246,13 @@ export class FormData {
   /**
    * Returns computed length of the FormData content.
    */
-  async getComputedLength(): Promise<number | undefined> {
+  // TODO: Make this function synchronous!
+  async getComputedLength(): Promise<number> {
     let length = 0
 
     for (const [name, value] of this) {
       length += Buffer.byteLength(this._getHeader(name, value))
-
-      const valueLength = await getLength(value)
-
-      length += Number(valueLength) + CRLF_BYTES_LENGTH
+      length += getLength(value) + CRLF_BYTES_LENGTH
     }
 
     return length + Buffer.byteLength(this.#footer)
