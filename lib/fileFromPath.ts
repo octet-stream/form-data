@@ -1,11 +1,92 @@
+import {statSync, createReadStream, Stats, promises as fs} from "fs"
 import {basename} from "path"
-import {statSync} from "fs"
 
-import blobFromPathSync from "fetch-blob/from.js"
+import DOMException from "domexception"
 
 import {File, FileOptions} from "./File"
 
 import isPlainObject from "./util/isPlainObject"
+
+const MESSAGE = "The requested file could not be read, "
+  + "typically due to permission problems that have occurred after a reference "
+  + "to a file was acquired."
+
+interface FileFromPathOptions {
+  path: string
+
+  start?: number
+
+  size: number
+
+  lastModified: number
+}
+
+class FileFromPath {
+  #path: string
+
+  #start: number
+
+  size: number
+
+  lastModified: number
+
+  constructor(options: FileFromPathOptions) {
+    this.#path = options.path
+    this.#start = options.start || 0
+    this.size = options.size
+    this.lastModified = options.lastModified
+  }
+
+  slice(start: number, end: number) {
+    return new FileFromPath({
+      path: this.#path,
+      lastModified: this.lastModified,
+      size: end - start,
+      start
+    })
+  }
+
+  async* stream() {
+    const {mtimeMs} = await fs.stat(this.#path)
+
+    if (mtimeMs > this.lastModified) {
+      throw new DOMException(MESSAGE, "NotReadableError")
+    }
+
+    if (this.size) {
+      yield* createReadStream(this.#path, {
+        start: this.#start,
+        end: this.#start + this.size - 1
+      })
+    }
+  }
+
+  get [Symbol.toStringTag]() {
+    return "File"
+  }
+}
+
+function createFileFromPath(
+  path: string,
+  {mtimeMs, size}: Stats,
+  filenameOrOptions?: string | FileOptions,
+  options: FileOptions = {}
+): File {
+  let filename: string | undefined
+  if (isPlainObject(filenameOrOptions)) {
+    [options, filename] = [filenameOrOptions, undefined]
+  } else {
+    filename = filenameOrOptions
+  }
+
+  const file = new FileFromPath({path, size, lastModified: mtimeMs})
+
+  if (!options.lastModified) {
+    options.lastModified = mtimeMs
+  }
+
+  return new File([file as any], filename || basename(path), options)
+}
 
 /**
  * Creates a `File` referencing the one on a disk by given path.
@@ -27,18 +108,23 @@ export function fileFromPathSync(
   filenameOrOptions?: string | FileOptions,
   options: FileOptions = {}
 ): File {
-  let filename: string | undefined
-  if (isPlainObject(filenameOrOptions)) {
-    [options, filename] = [filenameOrOptions, undefined]
-  } else {
-    filename = filenameOrOptions
-  }
+  return createFileFromPath(path, statSync(path), filenameOrOptions, options)
+}
 
-  if (!options.lastModified) {
-    options.lastModified = statSync(path).mtimeMs
-  }
+export function fileFromPath(path: string): Promise<File>
+export function fileFromPath(path: string, filename?: string): Promise<File>
+export function fileFromPath(path: string, options?: FileOptions): Promise<File>
+export function fileFromPath(
+  path: string,
+  filename?: string,
+  options?: FileOptions
+): Promise<File>
+export async function fileFromPath(
+  path: string,
+  filenameOrOptions?: string | FileOptions,
+  options?: FileOptions
+): Promise<File> {
+  const stats = await fs.stat(path)
 
-  const blob = blobFromPathSync(path)
-
-  return new File([blob], filename || basename(path), options)
+  return createFileFromPath(path, stats, filenameOrOptions, options)
 }

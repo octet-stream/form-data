@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@octetstream/eslint-config': 5.0.0
+  '@types/domexception': ^2.0.1
   '@types/mime-types': 2.1.0
   '@types/node': 15.0.1
   '@types/sinon': 10.0.0
@@ -38,6 +39,7 @@ dependencies:
 
 devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@7.25.0
+  '@types/domexception': 2.0.1
   '@types/mime-types': 2.1.0
   '@types/node': 15.0.1
   '@types/sinon': 10.0.0
@@ -286,6 +288,12 @@ packages:
     resolution: {integrity: sha512-t73xJJrvdTjXrn4jLS9VSGRbz0nUY3cl2DMGDU48lKl+HR9dbbjW2A9r3g40VA++mQpy6uuHg33gy7du2BKpog==}
     dev: true
 
+  /@types/domexception/2.0.1:
+    resolution: {integrity: sha512-kpdcBend0C/eL64+m1furve/CLo/SDj/UbW7srhBn7rODktOGX+bYUlR4StmoTZE7MHpyEgIEUCxzohPKY0Gog==}
+    dependencies:
+      '@types/webidl-conversions': 6.1.0
+    dev: true
+
   /@types/is-windows/1.0.0:
     resolution: {integrity: sha512-tJ1rq04tGKuIJoWIH0Gyuwv4RQ3+tIu7wQrC0MV47raQ44kIzXSSFKfrxFUOWVRvesoF7mrTqigXmqoZJsXwTg==}
     dev: true
@@ -339,6 +347,10 @@ packages:
     resolution: {integrity: sha512-uci4Esokrw9qGb9bvhhSVEjd6rkny/dk5PK/Qz4yxKiyppEI+dOPlNrZBahE3i+PoKFYyDxChVXZ/ysS/nrm1Q==}
     dependencies:
       '@types/superagent': 4.1.10
+    dev: true
+
+  /@types/webidl-conversions/6.1.0:
+    resolution: {integrity: sha512-SI9Jyayf2Ia28QFm0Mb3rVcA7ZwU89sos+gQQ6oY4/eKAReHyYYWTZD8Oqsq+CIRfZ+rEskvBaTZzHJ9njGZZQ==}
     dev: true
 
   /@typescript-eslint/eslint-plugin/4.22.0_e3b52a83531895e7febd6ecd5ba813eb:

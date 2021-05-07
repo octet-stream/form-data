@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@octetstream/eslint-config": "5.0.0",
+    "@types/domexception": "^2.0.1",
     "@types/mime-types": "2.1.0",
     "@types/node": "15.0.1",
     "@types/sinon": "10.0.0",
