@@ -31,7 +31,7 @@ test("Has the Content-Type header with proper value", async t => {
 
   t.deepEqual(fd.headers, {
     "Content-Type": `multipart/form-data; boundary=${fd.boundary}`,
-    "Content-Length": await readStream(fd).then(buffer => buffer.length)
+    "Content-Length": await readStream(fd).then(({length}) => length)
   })
 })
 
