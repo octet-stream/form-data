@@ -46,31 +46,6 @@ class FileFromPath implements FileLike {
     this.lastModified = options.lastModified
   }
 
-  async text(): Promise<string> {
-    const decoder = new TextDecoder()
-
-    let string = ""
-    for await (const chunk of this.stream()) {
-      string += decoder.decode(chunk, {stream: true})
-    }
-
-    string += decoder.decode()
-
-    return string
-  }
-
-  async arrayBuffer(): Promise<ArrayBuffer> {
-    const array = new Uint8Array(this.size)
-
-    let offset = 0
-    for await (const chunk of this.stream()) {
-      array.set(chunk, offset)
-      offset += chunk.length
-    }
-
-    return array.buffer
-  }
-
   slice(start: number, end: number): FileFromPath {
     return new FileFromPath({
       path: this.#path,

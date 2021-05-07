@@ -18,9 +18,9 @@ export interface FileLike {
    */
   lastModified: number
 
-  text(): Promise<string>
+  // text(): Promise<string>
 
-  arrayBuffer(): Promise<ArrayBuffer>
+  // arrayBuffer(): Promise<ArrayBuffer>
 
   stream(): Readable | ReadableStream | AsyncIterableIterator<any>
 }
