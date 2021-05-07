@@ -18,10 +18,6 @@ export interface FileLike {
    */
   lastModified: number
 
-  // text(): Promise<string>
-
-  // arrayBuffer(): Promise<ArrayBuffer>
-
   stream(): Readable | ReadableStream | AsyncIterableIterator<any>
 }
 
