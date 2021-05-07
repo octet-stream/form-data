@@ -79,6 +79,7 @@ export type FormDataConstructorEntries = Array<{
 }>
 
 export class FormData {
+  // TODO: Remove this along with FormData#stream getter in 4.x
   readonly #stream: Readable
 
   /**
@@ -89,8 +90,21 @@ export class FormData {
   /**
    * Returns headers for multipart/form-data
    */
-  readonly headers = {
-    "Content-Type": `multipart/form-data; boundary=${this.boundary}`
+  get headers() {
+    return {
+      "Content-Type": `multipart/form-data; boundary=${this.boundary}`,
+      "Content-Length": this.getComputedLength()
+    }
+  }
+
+  /**
+   * Returns internal readable stream, allowing to read the FormData content
+   *
+   * @deprecated Use `Readable.from(formData)` to create a stream from `FormData` instance.
+   */
+  @deprecateStreamProp
+  get stream() {
+    return this.#stream
   }
 
   /**
@@ -232,16 +246,6 @@ export class FormData {
     field.values.push(value as FormDataFieldValue)
 
     this.#content.set(fieldName, field)
-  }
-
-  /**
-   * Returns internal readable stream, allowing to read the FormData content
-   *
-   * @deprecated Use `Readable.from(formData)` to create a stream from `FormData` instance.
-   */
-  @deprecateStreamProp
-  get stream() {
-    return this.#stream
   }
 
   /**
