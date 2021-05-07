@@ -589,6 +589,16 @@ test(".values() Returns the first value on the first call", t => {
   })
 })
 
+test(".value() yields every value from FormData", t => {
+  const fd = new FormData()
+
+  fd.set("first", "value")
+  fd.set("second", 42)
+  fd.set("third", [1, 2, 3])
+
+  t.deepEqual([...fd.values()], ["value", "42", "1,2,3"])
+})
+
 test(".keys() is done on the first call when there's no data", t => {
   const fd = new FormData()
 
@@ -613,6 +623,16 @@ test(".keys() Returns the first value on the first call", t => {
     done: false,
     value: "first"
   })
+})
+
+test(".keys() yields every key from FormData", t => {
+  const fd = new FormData()
+
+  fd.set("first", "value")
+  fd.set("second", 42)
+  fd.set("third", [1, 2, 3])
+
+  t.deepEqual([...fd.keys()], ["first", "second", "third"])
 })
 
 test(".toString() returns a proper string", t => {
