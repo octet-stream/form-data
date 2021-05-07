@@ -264,9 +264,19 @@ The `File` class provides information about files. The `File` object inherits `B
   - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
   - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
 
-### `fileFromPathSync(path[, filename, options]) -> {File}`
+### `fileFromPath(path[, filename, options]) -> {Promise<File>}`
 
 Creates a `File` referencing the one on a disk by given path.
+
+  - **{string}** path - Path to a file
+  - **{string}** [filename] - Name of the file. Will be passed as second argument in `File` constructor. If not presented, the file path will be used to get it.
+  - **{object}** [options = {}] - File options.
+  - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
+  - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
+
+### `fileFromPathSync(path[, filename, options]) -> {File}`
+
+Creates a `File` referencing the one on a disk by given path. Synchronous version of the `fileFromPath`
 
   - **{string}** path - Path to a file
   - **{string}** [filename] - Name of the file. Will be passed as second argument in `File` constructor. If not presented, the file path will be used to get it.
