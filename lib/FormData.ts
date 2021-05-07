@@ -246,8 +246,7 @@ export class FormData {
   /**
    * Returns computed length of the FormData content.
    */
-  // TODO: Make this function synchronous!
-  async getComputedLength(): Promise<number> {
+  getComputedLength(): number {
     let length = 0
 
     for (const [name, value] of this) {

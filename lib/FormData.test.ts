@@ -239,10 +239,10 @@ test(".get() returns File as-is", t => {
 
 test(
   ".getComputedLength() Returns a length of the empty FormData",
-  async t => {
+  t => {
     const fd = new FormData()
 
-    const actual = await fd.getComputedLength()
+    const actual = fd.getComputedLength()
 
     t.is(actual, Buffer.byteLength(`--${fd.boundary}--\r\n\r\n`))
   }
@@ -255,7 +255,7 @@ test(
 
     fd.set("name", "Nyx")
 
-    const actual = await fd.getComputedLength()
+    const actual = fd.getComputedLength()
     const expected = await readStream(fd).then(({length}) => length)
 
     t.is(actual, expected)
@@ -269,7 +269,7 @@ test(
 
     fd.set("field", Buffer.from("Just another string"))
 
-    const actual = await fd.getComputedLength()
+    const actual = fd.getComputedLength()
     const expected = await readStream(fd).then(({length}) => length)
 
     t.is(actual, expected)
@@ -284,7 +284,7 @@ test(
 
     fd.set("file", createReadStream("readme.md"))
 
-    const actual = await fd.getComputedLength()
+    const actual = fd.getComputedLength()
     const expected = await readStream(fd).then(({length}) => length)
 
     t.is(actual, expected)
