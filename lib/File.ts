@@ -1,4 +1,29 @@
+import {Readable} from "stream"
+
 import Blob from "fetch-blob"
+
+export interface FileLike {
+  /**
+   * Name of the file referenced by the File object.
+   */
+  name: string
+
+  /**
+   * Size of the file parts in bytes
+   */
+  size: number
+
+  /**
+   * The last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
+   */
+  lastModified: number
+
+  text(): Promise<string>
+
+  arrayBuffer(): Promise<ArrayBuffer>
+
+  stream(): Readable | ReadableStream | AsyncIterableIterator<any>
+}
 
 export interface FileOptions {
   /**
@@ -12,7 +37,7 @@ export interface FileOptions {
   lastModified?: number
 }
 
-export class File extends Blob {
+export class File extends Blob implements FileLike {
   /**
    * Returns the name of the file referenced by the File object.
    */
@@ -32,12 +57,12 @@ export class File extends Blob {
    */
   constructor(
     blobParts: Array<
-    string | Blob | ArrayBufferLike | ArrayBufferView | Buffer
+    string | Blob | ArrayBufferLike | ArrayBufferView | Buffer | FileLike
     >,
     name: string,
     options: FileOptions = {}
   ) {
-    super(blobParts, options)
+    super(blobParts as any[], options)
 
     this.name = name
     this.lastModified = options.lastModified || Date.now()

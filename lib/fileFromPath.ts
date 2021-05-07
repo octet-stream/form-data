@@ -3,7 +3,7 @@ import {basename} from "path"
 
 import DOMException from "domexception"
 
-import {File, FileOptions} from "./File"
+import {File, FileLike, FileOptions} from "./File"
 
 import isPlainObject from "./util/isPlainObject"
 
@@ -21,10 +21,18 @@ interface FileFromPathOptions {
   lastModified: number
 }
 
-class FileFromPath {
+/**
+ * Represends an object referencing a file on a disk
+ * Based on [`fetch-blob/from.js`](https://github.com/node-fetch/fetch-blob/blob/a3b0d62b9d88e0fa80af2e36f50ce25222535692/from.js#L32-L72) implementation
+ *
+ * @api private
+ */
+class FileFromPath implements FileLike {
   #path: string
 
   #start: number
+
+  name: string
 
   size: number
 
@@ -33,11 +41,37 @@ class FileFromPath {
   constructor(options: FileFromPathOptions) {
     this.#path = options.path
     this.#start = options.start || 0
+    this.name = basename(this.#path)
     this.size = options.size
     this.lastModified = options.lastModified
   }
 
-  slice(start: number, end: number) {
+  async text(): Promise<string> {
+    const decoder = new TextDecoder()
+
+    let string = ""
+    for await (const chunk of this.stream()) {
+      string += decoder.decode(chunk, {stream: true})
+    }
+
+    string += decoder.decode()
+
+    return string
+  }
+
+  async arrayBuffer(): Promise<ArrayBuffer> {
+    const array = new Uint8Array(this.size)
+
+    let offset = 0
+    for await (const chunk of this.stream()) {
+      array.set(chunk, offset)
+      offset += chunk.length
+    }
+
+    return array.buffer
+  }
+
+  slice(start: number, end: number): FileFromPath {
     return new FileFromPath({
       path: this.#path,
       lastModified: this.lastModified,
@@ -46,10 +80,11 @@ class FileFromPath {
     })
   }
 
-  async* stream() {
+  async* stream(): AsyncIterableIterator<Buffer> {
     const {mtimeMs} = await fs.stat(this.#path)
 
     if (mtimeMs > this.lastModified) {
+      // eslint-disable-next-line @typescript-eslint/no-throw-literal
       throw new DOMException(MESSAGE, "NotReadableError")
     }
 
@@ -82,10 +117,10 @@ function createFileFromPath(
   const file = new FileFromPath({path, size, lastModified: mtimeMs})
 
   if (!options.lastModified) {
-    options.lastModified = mtimeMs
+    options.lastModified = file.lastModified
   }
 
-  return new File([file as any], filename || basename(path), options)
+  return new File([file as any], filename || file.name, options)
 }
 
 /**

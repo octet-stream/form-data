@@ -3,12 +3,10 @@ import test from "ava"
 import {promises as fs} from "fs"
 import {resolve, basename} from "path"
 
-import readStream from "./__helper__/readStream"
-
 import {File, FileOptions} from "./File"
 import {fileFromPathSync, fileFromPath} from "./fileFromPath"
 
-const filePath = resolve("readme.md")
+const filePath = resolve("license")
 
 test("Returns File instance", async t => {
   t.true(await fileFromPath(filePath) instanceof File)
@@ -23,15 +21,16 @@ test("Creates a file from path", async t => {
 
   const file = await fileFromPath(filePath)
 
-  const actual: Buffer = await readStream(file.stream())
+  const actual = Buffer.from(await file.arrayBuffer())
 
   t.true(actual.equals(expected))
 })
 
 test("sync: Creates a file from path", async t => {
   const expected: Buffer = await fs.readFile(filePath)
+  const file = fileFromPathSync(filePath)
 
-  const actual = await readStream(fileFromPathSync(filePath).stream())
+  const actual = Buffer.from(await file.arrayBuffer())
 
   t.true(actual.equals(expected))
 })
@@ -56,10 +55,12 @@ test("Has lastModified field taken from file stats", async t => {
   t.is<number>(file.lastModified, mtimeMs)
 })
 
-test("sync: Has lastModified field taken from file stats", async t => {
-  const {mtimeMs} = await fs.stat(filePath)
+test("Has the size property reflecting the one of the actual file", async t => {
+  const {size} = await fs.stat(filePath)
 
-  t.is<number>(fileFromPathSync(filePath).lastModified, mtimeMs)
+  const file = await fileFromPath(filePath)
+
+  t.is<number>(file.size, size)
 })
 
 test("User-defined filename has higher precedence", async t => {
@@ -114,4 +115,48 @@ test("sync: Allows to set file options from second argument", t => {
     lastModified: file.lastModified,
     type: file.type
   }, expected)
+})
+
+test("Can be read as text", async t => {
+  const expected = await fs.readFile(filePath, "utf-8")
+  const file = await fileFromPath(filePath)
+
+  const actual = await file.text()
+
+  t.is<string>(actual, expected)
+})
+
+test("Can be read as ArrayBuffer", async t => {
+  const expected = await fs.readFile(filePath)
+  const file = await fileFromPath(filePath)
+
+  const actual = await file.arrayBuffer()
+
+  t.true(actual instanceof ArrayBuffer, "The result must be an ArrayBuffer")
+  t.true(Buffer.from(actual).equals(expected))
+})
+
+test("Can be sliced", async t => {
+  const file = await fileFromPath(filePath)
+
+  const actual = await file.slice(0, 15).text()
+
+  t.is<string>(actual, "The MIT License")
+})
+
+test("Can be sliced from the arbitrary start", async t => {
+  const file = await fileFromPath(filePath)
+
+  const actual = await file.slice(4, 15).text()
+
+  t.is<string>(actual, "MIT License")
+})
+
+test("Reads from empty file", async t => {
+  const file = await fileFromPath(filePath)
+
+  const sliced = file.slice(0, 0)
+
+  t.is<number>(sliced.size, 0, "Must have 0 size")
+  t.is<string>(await sliced.text(), "", "Must return empty string")
 })
