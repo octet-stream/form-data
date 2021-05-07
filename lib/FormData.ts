@@ -190,9 +190,10 @@ export class FormData {
 
     // Normalize field's value
     if (isReadStream(value)) {
+      // TODO: Remove ReadStream support in favour of fileFromPath and fileFromPathSync
       value = fileFromPathSync(String(value.path), filename, options)
     } else if (isBuffer(value)) {
-      value = new File([value], filename as string, options)
+      value = new File([value.buffer], filename as string, options)
     } else if (isFile(value)) {
       value = new File([value], filename as string, {
         ...options,
