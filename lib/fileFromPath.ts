@@ -99,7 +99,7 @@ function createFileFromPath(
 }
 
 /**
- * Creates a `File` referencing the one on a disk by given path.
+ * Creates a `File` referencing the one on a disk by given path. Synchronous version of the `fileFromPath`
  *
  * @param path Path to read a file from
  * @param filename Optional file name. If not presented, the path will be used to get it
@@ -121,10 +121,23 @@ export function fileFromPathSync(
   return createFileFromPath(path, statSync(path), filenameOrOptions, options)
 }
 
-export function fileFromPath(path: string): Promise<File>
-export function fileFromPath(path: string, filename?: string): Promise<File>
-export function fileFromPath(path: string, options?: FileOptions): Promise<File>
-export function fileFromPath(
+/**
+ * Creates a `File` referencing the one on a disk by given path.
+ *
+ * @param path Path to read a file from
+ * @param filename Optional file name. If not presented, the path will be used to get it
+ * @param options File options
+ */
+export async function fileFromPath(path: string): Promise<File>
+export async function fileFromPath(
+  path: string,
+  filename?: string
+): Promise<File>
+export async function fileFromPath(
+  path: string,
+  options?: FileOptions
+): Promise<File>
+export async function fileFromPath(
   path: string,
   filename?: string,
   options?: FileOptions
