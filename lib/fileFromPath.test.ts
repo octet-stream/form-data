@@ -6,6 +6,8 @@ import {resolve, basename} from "path"
 import {File, FileOptions} from "./File"
 import {fileFromPathSync, fileFromPath} from "./fileFromPath"
 
+import sleep from "./__helper__/sleep"
+
 const filePath = resolve("license")
 
 test("Returns File instance", async t => {
@@ -159,4 +161,22 @@ test("Reads from empty file", async t => {
 
   t.is<number>(sliced.size, 0, "Must have 0 size")
   t.is<string>(await sliced.text(), "", "Must return empty string")
+})
+
+test("Fails attempt to read modified file", async t => {
+  const path = resolve("readme.md")
+  const file = await fileFromPath(path)
+
+  await sleep(100) // wait 100ms
+
+  const now = new Date()
+
+  await fs.utimes(path, now, now)
+
+  await t.throwsAsync(() => file.text(), {
+    name: "NotReadableError",
+    message: "The requested file could not be read, "
+      + "typically due to permission problems that have occurred "
+      + "after a reference to a file was acquired."
+  })
 })
