@@ -219,7 +219,7 @@ Deletes a key and its value(s) from a `FormData` object.
 
   - **{string}** name – The name of the key you want to delete.
 
-##### `getComputedLength() -> {Promise<number>}`
+##### `getComputedLength() -> {number}`
 
 Returns computed length of the FormData content.
 
