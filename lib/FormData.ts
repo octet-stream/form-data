@@ -92,8 +92,7 @@ export class FormData {
    */
   get headers() {
     return {
-      "Content-Type": `multipart/form-data; boundary=${this.boundary}`,
-      "Content-Length": this.getComputedLength()
+      "Content-Type": `multipart/form-data; boundary=${this.boundary}`
     }
   }
 

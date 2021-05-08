@@ -26,12 +26,11 @@ test("Has the boundary field", t => {
   t.is(typeof fd.boundary, "string")
 })
 
-test("Has correct headers property", async t => {
+test("Has correct headers property", t => {
   const fd = new FormData()
 
   t.deepEqual(fd.headers, {
-    "Content-Type": `multipart/form-data; boundary=${fd.boundary}`,
-    "Content-Length": await readStream(fd).then(({length}) => length)
+    "Content-Type": `multipart/form-data; boundary=${fd.boundary}`
   })
 })
 
