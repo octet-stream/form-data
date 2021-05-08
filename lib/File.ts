@@ -18,7 +18,7 @@ export interface FileLike {
    */
   lastModified: number
 
-  stream(): Readable | ReadableStream | AsyncIterableIterator<any>
+  stream(): Readable | AsyncIterableIterator<any>
 }
 
 export interface FileOptions {
