@@ -26,7 +26,7 @@ test("Has the boundary field", t => {
   t.is(typeof fd.boundary, "string")
 })
 
-test("Has the Content-Type header with proper value", async t => {
+test("Has correct headers property", async t => {
   const fd = new FormData()
 
   t.deepEqual(fd.headers, {
