@@ -206,6 +206,7 @@ export class FormData {
       // TODO: Remove ReadStream support in favour of fileFromPath and fileFromPathSync
       value = fileFromPathSync(String(value.path), filename, options)
     } else if (isBuffer(value)) {
+      // TODO: Remove Buffer in a field's value support in favour of Blob.
       value = new File([value], filename as string, options)
     } else if (isFile(value)) {
       value = new File([value], filename as string, {
