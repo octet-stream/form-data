@@ -43,7 +43,7 @@
     "@octetstream/eslint-config": "5.0.0",
     "@types/domexception": "^2.0.1",
     "@types/mime-types": "2.1.0",
-    "@types/node": "15.0.2",
+    "@types/node": "15.3.0",
     "@types/sinon": "10.0.0",
     "@types/supertest": "2.0.11",
     "@typescript-eslint/eslint-plugin": "4.23.0",

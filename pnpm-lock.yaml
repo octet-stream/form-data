@@ -4,7 +4,7 @@ specifiers:
   '@octetstream/eslint-config': 5.0.0
   '@types/domexception': ^2.0.1
   '@types/mime-types': 2.1.0
-  '@types/node': 15.0.2
+  '@types/node': 15.3.0
   '@types/sinon': 10.0.0
   '@types/supertest': 2.0.11
   '@typescript-eslint/eslint-plugin': 4.23.0
@@ -39,7 +39,7 @@ devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@7.26.0
   '@types/domexception': 2.0.1
   '@types/mime-types': 2.1.0
-  '@types/node': 15.0.2
+  '@types/node': 15.3.0
   '@types/sinon': 10.0.0
   '@types/supertest': 2.0.11
   '@typescript-eslint/eslint-plugin': 4.23.0_7cfaee78cda985ff9bc3d8b5cb92a136
@@ -322,8 +322,8 @@ packages:
     resolution: {integrity: sha512-dueRKfaJL4RTtSa7bWeTK1M+VH+Gns73oCgzvYfHZywRCoPSd8EkXBL0mZ9unPTveBn+D9phZBaxuzpwjWkW0g==}
     dev: true
 
-  /@types/node/15.0.2:
-    resolution: {integrity: sha512-p68+a+KoxpoB47015IeYZYRrdqMUcpbK8re/zpFB8Ld46LHC1lPEbp3EXgkEhAYEcPvjJF6ZO+869SQ0aH1dcA==}
+  /@types/node/15.3.0:
+    resolution: {integrity: sha512-8/bnjSZD86ZfpBsDlCIkNXIvm+h6wi9g7IqL+kmFkQ+Wvu3JrasgLElfiPgoo8V8vVfnEi0QVS12gbl94h9YsQ==}
     dev: true
 
   /@types/normalize-package-data/2.4.0:
