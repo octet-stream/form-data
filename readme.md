@@ -90,13 +90,13 @@ await fetch("https://httpbin.org/post", {method: "post", body: fd})
 4. You can also append files using `fileFromPathSync` helper. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
 
 ```js
-import {FormData, fileFromPathSync} from "formdata-node"
+import {FormData, fileFromPath} from "formdata-node"
 
 import fetch from "node-fetch"
 
 const fd = new FormData()
 
-fd.set("file", fileFromPathSync("/path/to/a/file"))
+fd.set("file", await fileFromPath("/path/to/a/file"))
 
 await fetch("https://httpbin.org/post", {method: "post", body: fd})
 ```
