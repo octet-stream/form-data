@@ -289,5 +289,6 @@ Creates a `File` referencing the one on a disk by given path. Synchronous versio
 - [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) interface documentation on MDN
 - [`formdata-polyfill`](https://github.com/jimmywarting/FormData) HTML5 `FormData` for Browsers & NodeJS.
 - [`fetch-blob`](https://github.com/bitinn/fetch-blob) a Blob implementation on node.js, originally from node-fetch.
+- [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) - Encoder for multipart/form-data
 - [`then-busboy`](https://github.com/octet-stream/then-busboy) a promise-based wrapper around Busboy. Process multipart/form-data content and returns it as a single object. Will be helpful to handle your data on the server-side applications.
 - [`@octetstream/object-to-form-data`](https://github.com/octet-stream/object-to-form-data) converts JavaScript object to FormData.
