@@ -206,9 +206,9 @@ export class FormData {
       value = fileFromPathSync(String(value.path), filename, options)
     } else if (isBuffer(value)) {
       // TODO: Remove Buffer in a field's value support in favour of Blob.
-      value = new File([value], filename as string, options)
+      value = new File([value], filename!, options)
     } else if (isFile(value)) {
-      value = new File([value], filename as string, {
+      value = new File([value], filename!, {
         ...options,
 
         // Take params from the previous File or Blob instance
