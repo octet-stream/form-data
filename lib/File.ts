@@ -60,6 +60,12 @@ export class File extends Blob implements FileLike {
     name: string,
     options: FileOptions = {}
   ) {
+    if (arguments.length < 2) {
+      throw new TypeError(
+        "Failed to construct 'File': 2 arguments required, but only 1 present."
+      )
+    }
+
     super(blobParts as any[], options)
 
     this.name = name
