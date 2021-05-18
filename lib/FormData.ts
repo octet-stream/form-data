@@ -12,7 +12,6 @@ import isPlainObject from "./util/isPlainObject"
 import deprecateReadStream from "./util/deprecateReadStream"
 import deprecateStreamProp from "./util/deprecateStreamProp"
 import createBoundary from "./util/createBoundary"
-import getMime from "./util/getMimeFromFilename"
 import isReadStream from "./util/isReadStream"
 import getFilename from "./util/getFilename"
 
@@ -134,7 +133,7 @@ export class FormData {
 
     if (isFile(value)) {
       header += `; filename="${value.name}"${CRLF}`
-      header += `Content-Type: ${value.type || getMime(value.name)}`
+      header += `Content-Type: ${value.type || "application/octet-stream"}`
     }
 
     return `${header}${CRLF.repeat(2)}`

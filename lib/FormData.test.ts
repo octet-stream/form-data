@@ -411,7 +411,7 @@ test("Has correct field's header", async t => {
   )
 })
 
-test("Has correct File's header", async t => {
+test("Encoder emits correct Content-Disposition header for File", async t => {
   const file = new File(["Some content"], "file.txt")
   const fd = new FormData()
 
@@ -427,7 +427,7 @@ test("Has correct File's header", async t => {
   )
 })
 
-test("Takes content-type from the filename", async t => {
+test("Emits default content-type when File doesn't have type", async t => {
   const file = new File(["Some content"], "file.txt")
   const fd = new FormData()
 
@@ -437,11 +437,11 @@ test("Takes content-type from the filename", async t => {
 
   const {value} = await iterable.next()
 
-  t.is(value, "Content-Type: text/plain")
+  t.is(value, "Content-Type: application/octet-stream")
 })
 
 test(
-  "User-defined type has higher precedence in content-type header",
+  ".set() user-defined type has higher precedence in content-type header",
   async t => {
     const expected = "text/markdown"
 
@@ -498,8 +498,16 @@ test("Encoder emits every appended file with proper data", async t => {
 
   const fd = new FormData()
 
-  fd.append("file", new File(["Some content"], "file.txt"))
-  fd.append("file", new File(["Some **content**"], "file.md"))
+  const firstFile = new File(["Some content"], "file.txt", {
+    type: "text/plain"
+  })
+
+  const secondFile = new File(["Some **content**"], "file.md", {
+    type: "text/markdown"
+  })
+
+  fd.append("file", firstFile)
+  fd.append("file", secondFile)
 
   const iterable = readLine(Readable.from(fd))
 
@@ -511,13 +519,13 @@ test("Encoder emits every appended file with proper data", async t => {
 
   const {value: firstFileType} = await iterable.next()
 
-  t.is(firstFileType, "Content-Type: text/plain")
+  t.is(firstFileType, `Content-Type: ${firstFile.type}`)
 
   await skip(iterable, 1)
 
   const {value: firstFileContent} = await iterable.next()
 
-  t.is(firstFileContent, "Some content")
+  t.is(firstFileContent, await firstFile.text())
 
   await skip(iterable, 1)
 
@@ -527,13 +535,13 @@ test("Encoder emits every appended file with proper data", async t => {
 
   const {value: secondFileType} = await iterable.next()
 
-  t.is(secondFileType, "Content-Type: text/markdown")
+  t.is(secondFileType, `Content-Type: ${secondFile.type}`)
 
   await skip(iterable, 1)
 
   const {value: secondFileContent} = await iterable.next()
 
-  t.is(secondFileContent, "Some **content**")
+  t.is(secondFileContent, await secondFile.text())
 })
 
 test("Encoder emits file contents from a ReadStream", async t => {
