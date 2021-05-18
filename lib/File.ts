@@ -2,6 +2,8 @@ import {Readable} from "stream"
 
 import Blob from "fetch-blob"
 
+export {Blob}
+
 export interface FileLike {
   /**
    * Name of the file referenced by the File object.
