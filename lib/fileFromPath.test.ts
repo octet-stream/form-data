@@ -37,16 +37,16 @@ test("sync: Creates a file from path", async t => {
   t.true(actual.equals(expected))
 })
 
-test("Has filename taken from file path", async t => {
+test("Has name taken from file path", async t => {
   const file = await fileFromPath(filePath)
 
   t.is<string>(file.name, basename(filePath))
 })
 
-test("sync: Has filename taken from file path", t => {
-  const file = fileFromPathSync(filePath)
+test("Has type taken from file name by default", async t => {
+  const file = await fileFromPath("readme.md")
 
-  t.is<string>(file.name, basename(filePath))
+  t.is<string>(file.type, "text/markdown")
 })
 
 test("Has lastModified field taken from file stats", async t => {
@@ -65,7 +65,7 @@ test("Has the size property reflecting the one of the actual file", async t => {
   t.is<number>(file.size, size)
 })
 
-test("User-defined filename has higher precedence", async t => {
+test("Allows to set file name as the second argument", async t => {
   const expected = "some-file.txt"
 
   const file = await fileFromPath(filePath, expected)
@@ -73,7 +73,7 @@ test("User-defined filename has higher precedence", async t => {
   t.is<string>(file.name, expected)
 })
 
-test("sync: User-defined filename has higher precedence", t => {
+test("sync: Allows to set file name as the second argument", t => {
   const expected = "some-file.txt"
   const file = fileFromPathSync(filePath, expected)
 
@@ -84,15 +84,6 @@ test("User-defined lastModified has higher precedence", async t => {
   const expected = Date.now()
 
   const file = await fileFromPath(filePath, {lastModified: expected})
-
-  t.is<number>(file.lastModified, expected)
-})
-
-test("sync: User-defined lastModified has higher precedence", t => {
-  const expected = Date.now()
-  const file = fileFromPathSync(filePath, {
-    lastModified: expected
-  })
 
   t.is<number>(file.lastModified, expected)
 })
