@@ -22,7 +22,7 @@ yarn add formdata-node
 
 ## Usage
 
-This package has its own encoder that allows to read the content from the FormData instances. Just use `Symbol.asyncIterator` method to get async iterator or just access `FormData#stream` property to get `Readable` stream. Note that in the next major release both of this methods will be removed in favour of [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder), which is basically the reimplementation of builtin `formdata-node` encoder that was separated from this package to allow to re-use it in different HTTP clients or use it to add some additional logic into the encoding process. See form-data-encoder documentation to get more information.
+This package has its own encoder that allows to read the content from the `FormData` instances into the `multipart/form-data` format. Just use `Symbol.asyncIterator` method to get async iterator or just access `FormData#stream` property to get `Readable` stream. Note that in the next major release both of this methods will be removed in favour of [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder), which is basically the reimplementation of builtin `formdata-node` encoder that was separated from this package to allow to re-use it in different HTTP clients or use it to add some additional logic into the encoding process. See `form-data-encoder` documentation to get more information.
 
 1. Let's take a look at minimal example with [got](https://github.com/sindresorhus/got):
 
