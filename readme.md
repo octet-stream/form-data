@@ -22,10 +22,7 @@ yarn add formdata-node
 
 ## Usage
 
-Each FormData instance allows you to read its data from `Readable` stream,
-just use `FormData#stream` property for that.
-
-You can send queries via HTTP clients that supports headers setting Readable stream as body.
+This package has its own encoder that allows to read the content from the FormData instances. Just use `Symbol.asyncIterator` method to get async iterator or just access `FormData#stream` property to get `Readable` stream. Note that in the next major release both of this methods will be removed in favour of [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder), which is basically the reimplementation of builtin `formdata-node` encoder that was separated from this package to allow to re-use it in different HTTP clients or use it to add some additional logic into the encoding process. See form-data-encoder documentation to get more information.
 
 1. Let's take a look at minimal example with [got](https://github.com/sindresorhus/got):
 
@@ -57,6 +54,10 @@ import {FormData} from "formdata-node"
 
 import fetch from "node-fetch"
 
+const fd = new FormData()
+
+fd.set("field", "Some value")
+
 const options = {
   method: "post",
   headers: fd.headers,
@@ -66,9 +67,32 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
-**Note that this method is preferable over the `FormData#stream` and will be the only option in next major release.**
+4. Encode entries using form-data-encoder (in cases when HTTP client does not support spec-compatible FormData):
 
-3. Sending files over form-data:
+```js
+import {Readable} from "stream"
+
+import {Encoder} from "form-data-encoder"
+import {FormData} from "formdata-node"
+
+import fetch from "node-fetch"
+
+const fd = new FormData()
+
+fd.set("field", "Some value")
+
+const encoder = new Encoder(fd)
+
+const options = {
+  method: "post",
+  headers: encoder.headers,
+  body: Readable.from(encoder)
+}
+
+await fetch("https://httpbin.org/post", options)
+```
+
+4. Sending files over form-data:
 
 ```js
 import {createReadStream} from "fs"
@@ -87,7 +111,7 @@ fd.set("file", createReadStream("/path/to/a/file"))
 await fetch("https://httpbin.org/post", {method: "post", body: fd})
 ```
 
-4. You can also append files using `fileFromPathSync` helper. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
+5. You can also append files using `fileFromPathSync` helper. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
 
 ```js
 import {FormData, fileFromPath} from "formdata-node"
@@ -103,7 +127,7 @@ await fetch("https://httpbin.org/post", {method: "post", body: fd})
 
 **Note that this method is preferable over the `fs.createReadStream()` and will be the only option (along with its async version) in next major release.**
 
-5. And of course you can create your own File manually – formdata-node gets you covered. It has a `File` object that inherits `Blob` from [`fetch-blob`](https://github.com/node-fetch/fetch-blob) package:
+6. And of course you can create your own File manually – formdata-node gets you covered. It has a `File` object that inherits `Blob` from [`fetch-blob`](https://github.com/node-fetch/fetch-blob) package:
 
 ```js
 import {FormData, File} from "formdata-node"
@@ -118,7 +142,7 @@ fd.set("file", file)
 await fetch("https://httpbin.org/post", {method: "post", body: fd})
 ```
 
-6. Blobs as field's values allowed too:
+7. Blobs as field's values allowed too:
 
 ```js
 import {FormData} from "formdata-node"
@@ -130,14 +154,27 @@ const blob = new Blob(["Some content"], {type: "text/plain"})
 
 fd.set("blob", blob)
 
-fd.get("blob") // Will always be returned as `File`
+// Will always be returned as `File`
+let file = fd.get("blob")
+
+// The created file has "blob" as the name by default
+console.log(file.name) // -> blob
+
+// To change that, you need to set filename argument manually
+fd.set("file", blob, "some-file.txt")
+
+file = fd.get("file")
+
+console.log(file.name) // -> some-file.txt
 ```
 
 ## API
 
-### `constructor FormData([entries])`
+### `class FormData`
 
-Initialize new FormData instance
+##### `constructor([entries]) -> {FormData}`
+
+Creates a new FormData instance
 
   - **{array}** [entries = null] – an optional FormData initial entries.
     Each initial field should be passed as a collection of the objects
@@ -152,10 +189,14 @@ Returns a boundary string of the current `FormData` instance. Read-only property
 
 ##### `stream -> {stream.Readable}`
 
+**Deprecated!** This property will be removed in 4.x version. Use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode FormData into `multipart/form-data` format in case if your HTTP client does not support spec-compatible FormData implementations.
+
 Returns an internal Readable stream. Use it to send queries, but don't push
 anything into it. Read-only property.
 
 ##### `headers -> {object}`
+
+**Deprecated!** This property will be removed in 4.x version. Use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode FormData into `multipart/form-data` format in case if your HTTP client does not support spec-compatible FormData implementations.
 
 Returns object with `Content-Type` header. Read-only property.
 
@@ -221,6 +262,8 @@ Deletes a key and its value(s) from a `FormData` object.
 
 ##### `getComputedLength() -> {number}`
 
+**Deprecated!** This property will be removed in 4.x version. Use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode FormData into `multipart/form-data` format in case if your HTTP client does not support spec-compatible FormData implementations.
+
 Returns computed length of the FormData content.
 
 ##### `forEach(callback[, ctx]) -> {void}`
@@ -251,10 +294,14 @@ An alias for [`FormData#entries()`](#entries---iterator)
 
 ##### `[Symbol.asyncIterator]() -> {AsyncGenerator<Buffer>}`
 
+**Deprecated!** This property will be removed in 4.x version. Use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode FormData into `multipart/form-data` format in case if your HTTP client does not support spec-compatible FormData implementations.
+
 Returns an async iterator allowing to read form-data body using **for-await-of** syntax.
 Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
 
-### `constructor File(blobParts, filename[, options])`
+### `class File extends Blob`
+
+### `constructor(blobParts, filename[, options]) -> {File}`
 
 The `File` class provides information about files. The `File` object inherits `Blob` from [`fetch-blob`](https://github.com/bitinn/fetch-blob) package.
 
