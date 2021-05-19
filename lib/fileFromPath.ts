@@ -56,7 +56,7 @@ class FileFromPath implements FileLike {
     })
   }
 
-  async* stream(): AsyncIterableIterator<Buffer> {
+  async* stream(): AsyncGenerator<Buffer, void, undefined> {
     const {mtimeMs} = await fs.stat(this.#path)
 
     if (mtimeMs > this.lastModified) {
