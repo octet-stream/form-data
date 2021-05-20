@@ -21,7 +21,7 @@ export interface FileLike {
   lastModified: number
 
   stream(): Readable | {
-    [Symbol.asyncIterator](): AsyncIterableIterator<unknown>
+    [Symbol.asyncIterator](): AsyncIterableIterator<Uint8Array>
   }
 }
 
