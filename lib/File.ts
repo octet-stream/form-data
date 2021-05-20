@@ -20,7 +20,9 @@ export interface FileLike {
    */
   lastModified: number
 
-  stream(): Readable | {[Symbol.asyncIterator](): AsyncIterableIterator<any>}
+  stream(): Readable | {
+    [Symbol.asyncIterator](): AsyncIterableIterator<unknown>
+  }
 }
 
 export interface FileOptions {
