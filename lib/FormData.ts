@@ -6,11 +6,13 @@ import {File} from "./File"
 
 import {fileFromPathSync} from "./fileFromPath"
 
+import deprecateHeaders from "./util/deprecateHeaders"
+import deprecateReadStream from "./util/deprecateReadStream"
+import deprecateStream from "./util/deprecateStream"
+
 import isFile from "./util/isFile"
 import getLength from "./util/getLength"
 import isPlainObject from "./util/isPlainObject"
-import deprecateReadStream from "./util/deprecateReadStream"
-import deprecateStreamProp from "./util/deprecateStreamProp"
 import createBoundary from "./util/createBoundary"
 import isReadStream from "./util/isReadStream"
 import getFilename from "./util/getFilename"
@@ -89,6 +91,7 @@ export class FormData {
   /**
    * Returns headers for multipart/form-data
    */
+  @deprecateHeaders
   get headers() {
     return {
       "Content-Type": `multipart/form-data; boundary=${this.boundary}`
@@ -100,7 +103,7 @@ export class FormData {
    *
    * @deprecated Use `Readable.from(formData)` to create a stream from `FormData` instance.
    */
-  @deprecateStreamProp
+  @deprecateStream
   get stream() {
     return this.#stream
   }

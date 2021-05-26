@@ -13,8 +13,9 @@ function deprecateReadStream(
     if (isReadStream(args[1])) {
       fn = deprecate(
         fn,
-        "The usage of ReadStream as field's value is deprecated. "
-          + "Use fileFromPathSync() instead."
+
+        "The usage of ReadStream in entry's value is deprecated. "
+          + "Use fileFromPath or fileFromPathSync() instead."
       )
     }
 
