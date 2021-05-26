@@ -133,7 +133,7 @@ export class FormData {
     }
   }
 
-  private _getHeader(name: string, value: FormDataFieldValue): string {
+  #getHeader(name: string, value: FormDataFieldValue): string {
     let header = ""
 
     header += `${DASHES}${this.boundary}${CRLF}`
@@ -147,11 +147,11 @@ export class FormData {
     return `${header}${CRLF.repeat(2)}`
   }
 
-  private async* _getField(): AsyncGenerator<string | Buffer, void, undefined> {
+  async* #getField(): AsyncGenerator<string | Buffer, void, undefined> {
     // Note to switch back to reading from this.#content if any extra logic will be necessary in a future, because the public FormData API returns values only as `string | File`
     for (const [name, value] of this) {
       // Set field's header
-      yield this._getHeader(name, value)
+      yield this.#getHeader(name, value)
 
       if (isFile(value)) {
         yield* value.stream()
@@ -167,7 +167,7 @@ export class FormData {
     yield this.#footer
   }
 
-  private _setField({
+  #setField({
     name,
     value,
     append,
@@ -265,7 +265,7 @@ export class FormData {
     let length = 0
 
     for (const [name, value] of this) {
-      length += Buffer.byteLength(this._getHeader(name, value))
+      length += Buffer.byteLength(this.#getHeader(name, value))
       length += getLength(value) + CRLF_BYTES_LENGTH
     }
 
@@ -305,7 +305,7 @@ export class FormData {
     filenameOrOptions?: string | FormDataFieldOptions,
     options?: FormDataFieldOptions
   ): void {
-    return this._setField({
+    return this.#setField({
       name,
       value,
       filenameOrOptions,
@@ -349,7 +349,7 @@ export class FormData {
     filenameOrOptions?: string | FormDataFieldOptions,
     options?: FormDataFieldOptions
   ): void {
-    return this._setField({
+    return this.#setField({
       name,
       value,
       filenameOrOptions,
@@ -483,7 +483,7 @@ export class FormData {
    */
   @deprecateSymbolAsyncIterator
   async* [Symbol.asyncIterator]() {
-    for await (const ch of this._getField()) {
+    for await (const ch of this.#getField()) {
       yield isBuffer(ch) ? ch : Buffer.from(String(ch))
     }
   }
