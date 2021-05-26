@@ -8,6 +8,7 @@ import {fileFromPathSync} from "./fileFromPath"
 
 import deprecateHeaders from "./util/deprecateHeaders"
 import deprecateReadStream from "./util/deprecateReadStream"
+import deprecateGetComputedLength from "./util/deprecateGetComputedLength"
 import deprecateSymbolAsyncIterator from "./util/deprecateSymbolAsyncIterator"
 import deprecateBuffer from "./util/deprecateBuffer"
 import deprecateStream from "./util/deprecateStream"
@@ -92,6 +93,8 @@ export class FormData {
 
   /**
    * Returns headers for multipart/form-data
+   *
+   * @deprecated FormData#headers property is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
   @deprecateHeaders
   get headers() {
@@ -103,7 +106,7 @@ export class FormData {
   /**
    * Returns internal readable stream, allowing to read the FormData content
    *
-   * @deprecated Use `Readable.from(formData)` to create a stream from `FormData` instance.
+   * @deprecated FormData#stream property is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
   @deprecateStream
   get stream() {
@@ -254,7 +257,10 @@ export class FormData {
 
   /**
    * Returns computed length of the FormData content.
+   *
+   * @deprecated FormData#getComputedLength() method is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
+  @deprecateGetComputedLength
   getComputedLength(): number {
     let length = 0
 
@@ -291,6 +297,7 @@ export class FormData {
     filename?: string,
     options?: FormDataFieldOptions
   ): void
+  @deprecateBuffer
   @deprecateReadStream
   append(
     name: string,
@@ -471,6 +478,8 @@ export class FormData {
   /**
    * Returns an async iterator allowing to read form-data body using **for-await-of** syntax.
    * Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
+   *
+   * @deprecated FormData#[Symbol.asyncIterator]() method is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
   @deprecateSymbolAsyncIterator
   async* [Symbol.asyncIterator]() {
