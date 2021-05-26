@@ -8,6 +8,7 @@ import {fileFromPathSync} from "./fileFromPath"
 
 import deprecateHeaders from "./util/deprecateHeaders"
 import deprecateReadStream from "./util/deprecateReadStream"
+import deprecateSymbolAsyncIterator from "./util/deprecateSymbolAsyncIterator"
 import deprecateStream from "./util/deprecateStream"
 
 import isFile from "./util/isFile"
@@ -469,6 +470,7 @@ export class FormData {
    * Returns an async iterator allowing to read form-data body using **for-await-of** syntax.
    * Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
    */
+  @deprecateSymbolAsyncIterator
   async* [Symbol.asyncIterator]() {
     for await (const ch of this._getField()) {
       yield isBuffer(ch) ? ch : Buffer.from(String(ch))

@@ -2,7 +2,7 @@ import {deprecate} from "util"
 
 import isReadStream from "./isReadStream"
 
-function deprecateReadStream(
+function deprecateBuffer(
   _t: unknown,
   _k: string,
   descriptor: PropertyDescriptor
@@ -17,8 +17,8 @@ function deprecateReadStream(
       fn = deprecate(
         fn,
 
-        "The usage of ReadStream in entry's value is deprecated. "
-          + "Use Blob, File, fileFromPath or fileFromPathSync() instead."
+        "The usage of Buffer in entry's value is deprecated. "
+          + "Use Blob, File, fileFromPath() or fileFromPathSync() instead."
       )
     }
 
@@ -26,4 +26,4 @@ function deprecateReadStream(
   }
 }
 
-export default deprecateReadStream
+export default deprecateBuffer
