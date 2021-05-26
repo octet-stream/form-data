@@ -1,7 +1,5 @@
 import {deprecate} from "util"
 
-import isReadStream from "./isReadStream"
-
 function deprecateBuffer(
   _t: unknown,
   _k: string,
@@ -11,7 +9,7 @@ function deprecateBuffer(
   let decorated = false
 
   descriptor.value = function (...args: any[]) {
-    if (isReadStream(args[1]) && !decorated) {
+    if (Buffer.isBuffer(args[1]) && !decorated) {
       decorated = true
 
       fn = deprecate(

@@ -9,6 +9,7 @@ import {fileFromPathSync} from "./fileFromPath"
 import deprecateHeaders from "./util/deprecateHeaders"
 import deprecateReadStream from "./util/deprecateReadStream"
 import deprecateSymbolAsyncIterator from "./util/deprecateSymbolAsyncIterator"
+import deprecateBuffer from "./util/deprecateBuffer"
 import deprecateStream from "./util/deprecateStream"
 
 import isFile from "./util/isFile"
@@ -333,6 +334,7 @@ export class FormData {
     filename?: string,
     options?: FormDataFieldOptions
   ): void
+  @deprecateBuffer
   @deprecateReadStream
   set(
     name: string,
