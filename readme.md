@@ -8,16 +8,22 @@ FormData implementation for Node.js.
 
 ## Installation
 
-You can install this package from npm:
+You can install this package with npm:
 
 ```
 npm install formdata-node
 ```
 
-Or with yarn:
+Or yarn:
 
 ```
 yarn add formdata-node
+```
+
+Or pnpm
+
+```
+pnpm add formdata-node
 ```
 
 ## Usage
@@ -301,7 +307,7 @@ Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-ite
 
 ### `class File extends Blob`
 
-### `constructor(blobParts, filename[, options]) -> {File}`
+##### `constructor(blobParts, filename[, options]) -> {File}`
 
 The `File` class provides information about files. The `File` object inherits `Blob` from [`fetch-blob`](https://github.com/bitinn/fetch-blob) package.
 
