@@ -117,7 +117,7 @@ fd.set("file", createReadStream("/path/to/a/file"))
 await fetch("https://httpbin.org/post", {method: "post", body: fd})
 ```
 
-5. You can also append files using `fileFromPathSync` helper. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
+5. You can also append files using `fileFromPath` or `fileFromPathSync` helpers. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
 
 ```js
 import {FormData, fileFromPath} from "formdata-node"
