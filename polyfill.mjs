@@ -1,9 +1,15 @@
-import {FormData, File, fileFromPathSync} from "."
+import {FormData, Blob, File, fileFromPathSync, fileFromPath} from "."
 
-globalThis.FormData = FormData
+if (!globalThis.FormData) {
+  globalThis.FormData = FormData
+}
+
+if (!globalThis.Blob) {
+  globalThis.Blob
+}
 
 if (!globalThis.File) {
   globalThis.File = File
 }
 
-export {FormData, File, fileFromPathSync}
+export {FormData, Blob, File, fileFromPathSync, fileFromPath}
