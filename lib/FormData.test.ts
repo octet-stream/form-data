@@ -128,7 +128,7 @@ test(".set() appends a string field", t => {
   t.is(fd.get("field"), "string")
 })
 
-test(".set() replaces field if the new one has the same name", t => {
+test(".set() replaces a field with the same name", t => {
   const fd = new FormData()
 
   fd.set("field", "one")
@@ -140,15 +140,28 @@ test(".set() replaces field if the new one has the same name", t => {
   t.is(fd.get("field"), "two")
 })
 
+test(".set() replaces existent field values created with .append()", t => {
+  const fd = new FormData()
+
+  fd.append("field", "one")
+  fd.append("field", "two")
+
+  t.deepEqual(fd.getAll("field"), ["one", "two"])
+
+  fd.set("field", "one")
+
+  t.deepEqual(fd.getAll("field"), ["one"])
+})
+
 test(".append() append a new field", t => {
   const fd = new FormData()
 
   fd.append("field", "string")
 
-  t.is(fd.get("field"), "string")
+  t.deepEqual(fd.getAll("field"), ["string"])
 })
 
-test(".append() appends to and existent field", t => {
+test(".append() appends to an existent field", t => {
   const fd = new FormData()
 
   fd.append("field", "one")
@@ -158,14 +171,14 @@ test(".append() appends to and existent field", t => {
 })
 
 test(
-  ".append() does nothing on existent field if it was created with .set()",
+  ".append() appends to an existent field even if it was created with .set()",
   t => {
     const fd = new FormData()
 
     fd.set("field", "one")
     fd.append("field", "two")
 
-    t.is(fd.get("field"), "one")
+    t.deepEqual(fd.getAll("field"), ["one", "two"])
   }
 )
 

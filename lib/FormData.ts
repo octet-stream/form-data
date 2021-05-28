@@ -60,17 +60,7 @@ interface FormDataSetFieldOptions {
 /**
  * Internal representation of a field
  */
-interface FormDataField {
-  /**
-   * Indicates whether the field was added with FormData#append() method
-   */
-  append: boolean
-
-  /**
-   * Contains a set of necessary field's information
-   */
-  values: [FormDataFieldValue, ...FormDataFieldValue[]]
-}
+type FormDataFieldValues = [FormDataFieldValue, ...FormDataFieldValue[]];
 
 /**
  * Constructor entries for FormData
@@ -116,7 +106,7 @@ export class FormData {
   /**
    * Stores internal data for every field
    */
-  readonly #content = new Map<string, FormDataField>()
+  readonly #content = new Map<string, FormDataFieldValues>()
 
   /**
    * Returns field's footer
@@ -229,30 +219,19 @@ export class FormData {
       value = String(value)
     }
 
-    const field = this.#content.get(fieldName)
+    const values = this.#content.get(fieldName)
 
-    if (!field) {
-      return void this.#content.set(fieldName, {
-        append, values: [value as FormDataFieldValue]
-      })
+    if (!values) {
+      return void this.#content.set(name, [value as FormDataFieldValue])
     }
 
     // Replace a value of the existing field if "set" called
     if (!append) {
-      return void this.#content.set(fieldName, {
-        append, values: [value as FormDataFieldValue]
-      })
-    }
-
-    // Do nothing if the field has been created from .set()
-    if (!field.append) {
-      return undefined
+      return void this.#content.set(fieldName, [value as FormDataFieldValue])
     }
 
     // Append a new value to the existing field
-    field.values.push(value as FormDataFieldValue)
-
-    this.#content.set(fieldName, field)
+    values.push(value as FormDataFieldValue)
   }
 
   /**
@@ -374,7 +353,7 @@ export class FormData {
       return null
     }
 
-    return field.values[0]
+    return field[0]
   }
 
   /**
@@ -392,7 +371,7 @@ export class FormData {
       return []
     }
 
-    return [...field.values]
+    return [...field]
   }
 
   /**
