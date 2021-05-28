@@ -165,8 +165,9 @@ export class FormData {
     options,
     argsLength
   }: FormDataSetFieldOptions): void {
-    const fieldName = String(name)
     const methodName = append ? "append" : "set"
+
+    name = String(name)
 
     let filename: string | undefined
     if (isPlainObject(filenameOrOptions)) {
@@ -219,7 +220,7 @@ export class FormData {
       value = String(value)
     }
 
-    const values = this.#content.get(fieldName)
+    const values = this.#content.get(name)
 
     if (!values) {
       return void this.#content.set(name, [value as FormDataFieldValue])
@@ -227,7 +228,7 @@ export class FormData {
 
     // Replace a value of the existing field if "set" called
     if (!append) {
-      return void this.#content.set(fieldName, [value as FormDataFieldValue])
+      return void this.#content.set(name, [value as FormDataFieldValue])
     }
 
     // Append a new value to the existing field
