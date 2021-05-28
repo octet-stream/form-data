@@ -26,9 +26,6 @@ const DASHES = "-".repeat(2)
 const CRLF = "\r\n"
 const CRLF_BYTES_LENGTH = Buffer.byteLength(CRLF)
 
-/**
- * Internal representation of a field
- */
 export type FormDataFieldValue = string | File
 
 type FormDataFieldValues = [FormDataFieldValue, ...FormDataFieldValue[]]
