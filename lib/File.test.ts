@@ -32,3 +32,14 @@ test("Throws TypeError when constructed with less than 2 arguments", t => {
       + "2 arguments required, but only 1 present."
   })
 })
+
+test("Throws TypeError when constructed without arguments", t => {
+  // @ts-ignore
+  const trap = () => new File()
+
+  t.throws(trap, {
+    instanceOf: TypeError,
+    message: "Failed to construct 'File': "
+      + "2 arguments required, but only 0 present."
+  })
+})

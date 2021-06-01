@@ -64,7 +64,8 @@ export class File extends Blob implements FileLike {
   ) {
     if (arguments.length < 2) {
       throw new TypeError(
-        "Failed to construct 'File': 2 arguments required, but only 1 present."
+        "Failed to construct 'File': 2 arguments required, "
+          + `but only ${arguments.length} present.`
       )
     }
 
