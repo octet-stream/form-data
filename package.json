@@ -68,7 +68,7 @@
   },
   "dependencies": {
     "domexception": "2.0.1",
-    "fetch-blob": "2.1.1",
+    "fetch-blob": "2.1.2",
     "mime-types": "2.1.30"
   }
 }

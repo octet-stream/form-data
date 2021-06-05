@@ -20,7 +20,7 @@ specifiers:
   eslint-plugin-ava: 12.0.0
   eslint-plugin-jsx-a11y: 6.4.1
   eslint-plugin-react: 7.24.0
-  fetch-blob: 2.1.1
+  fetch-blob: 2.1.2
   husky: 6.0.0
   lint-staged: 11.0.0
   mime-types: 2.1.30
@@ -32,7 +32,7 @@ specifiers:
 
 dependencies:
   domexception: 2.0.1
-  fetch-blob: 2.1.1_domexception@2.0.1
+  fetch-blob: 2.1.2_domexception@2.0.1
   mime-types: 2.1.30
 
 devDependencies:
@@ -1811,11 +1811,14 @@ packages:
       reusify: 1.0.4
     dev: true
 
-  /fetch-blob/2.1.1_domexception@2.0.1:
-    resolution: {integrity: sha512-Uf+gxPCe1hTOFXwkxYyckn8iUSk6CFXGy5VENZKifovUTZC9eUODWSBhOBS7zICGrAetKzdwLMr85KhIcePMAQ==}
+  /fetch-blob/2.1.2_domexception@2.0.1:
+    resolution: {integrity: sha512-YKqtUDwqLyfyMnmbw8XD6Q8j9i/HggKtPEI+pZ1+8bvheBu78biSmNaXWusx1TauGqtUUGx/cBb1mKdq2rLYow==}
     engines: {node: ^10.17.0 || >=12.3.0}
     peerDependencies:
-      domexception: ^2.0.1
+      domexception: '*'
+    peerDependenciesMeta:
+      domexception:
+        optional: true
     dependencies:
       domexception: 2.0.1
     dev: false
