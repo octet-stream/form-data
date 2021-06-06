@@ -345,7 +345,9 @@ Check if given value is a File, Blob or file-look-a-like object.
 
 ## Related links
 
-- [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) interface documentation on MDN
+- [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) documentation on MDN
+- [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File) documentation on MDN
+- [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) documentation on MDN
 - [`formdata-polyfill`](https://github.com/jimmywarting/FormData) HTML5 `FormData` for Browsers & NodeJS.
 - [`fetch-blob`](https://github.com/bitinn/fetch-blob) a Blob implementation on node.js, originally from node-fetch.
 - [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) - Encoder for multipart/form-data
