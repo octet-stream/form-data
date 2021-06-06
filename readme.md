@@ -214,7 +214,7 @@ Set a new value for an existing key inside **FormData**,
 or add the new field if it does not already exist.
 
   - **{string}** name – The name of the field whose data is contained in **value**
-  - **{any}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`),
+  - **{unknown}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`),
     [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`ReadStream`](https://nodejs.org/dist/latest/docs/api/fs.html#fs_class_fs_readstream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
@@ -230,7 +230,7 @@ Appends a new value onto an existing key inside a FormData object,
 or adds the key if it does not already exist.
 
   - **{string}** name – The name of the field whose data is contained in **value**
-  - **{any}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`),
+  - **{unknown}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`),
     [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`ReadStream`](https://nodejs.org/dist/latest/docs/api/fs.html#fs_class_fs_readstream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
@@ -280,7 +280,7 @@ Executes a given **callback** for each field of the FormData instance
     + **{string | File}** value – A value(s) of the current field.
     + **{string}** name – Name of the current field.
     + **{FormData}** fd – The FormData instance that **forEach** is being applied to
-  - **{any}** [ctx = null] – Value to use as **this** context when executing the given **callback**
+  - **{unknown}** [ctx = null] – Value to use as **this** context when executing the given **callback**
 
 ##### `keys() -> {Generator<string>}`
 
@@ -329,13 +329,19 @@ Creates a `File` referencing the one on a disk by given path.
 
 ### `fileFromPathSync(path[, filename, options]) -> {File}`
 
-Creates a `File` referencing the one on a disk by given path. Synchronous version of the `fileFromPath`
+Creates a `File` referencing the one on a disk by given path. Synchronous version of the `fileFromPath`.
 
   - **{string}** path - Path to a file
   - **{string}** [filename] - Name of the file. Will be passed as second argument in `File` constructor. If not presented, the file path will be used to get it.
   - **{object}** [options = {}] - File options.
   - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
   - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
+
+### `isFileLike(value) -> {boolean}`
+
+Check if given value is a File, Blob or file-look-a-like object.
+
+  - **{unknown}** value - A value to test
 
 ## Related links
 
