@@ -43,17 +43,17 @@
     "@octetstream/eslint-config": "5.0.0",
     "@types/domexception": "^2.0.1",
     "@types/mime-types": "2.1.0",
-    "@types/node": "15.6.1",
-    "@types/sinon": "10.0.1",
+    "@types/node": "15.12.1",
+    "@types/sinon": "10.0.2",
     "@types/supertest": "2.0.11",
-    "@typescript-eslint/eslint-plugin": "4.25.0",
-    "@typescript-eslint/parser": "4.25.0",
+    "@typescript-eslint/eslint-plugin": "4.26.0",
+    "@typescript-eslint/parser": "4.26.0",
     "@zoltu/typescript-transformer-append-js-extension": "1.0.1",
     "ava": "3.15.0",
     "c8": "7.7.2",
     "codecov": "3.8.2",
     "dotenv": "^10.0.0",
-    "eslint": "7.27.0",
+    "eslint": "7.28.0",
     "eslint-config-airbnb-typescript": "12.3.1",
     "eslint-plugin-ava": "12.0.0",
     "eslint-plugin-jsx-a11y": "6.4.1",
@@ -69,6 +69,6 @@
   "dependencies": {
     "domexception": "2.0.1",
     "fetch-blob": "2.1.2",
-    "mime-types": "2.1.30"
+    "mime-types": "2.1.31"
   }
 }
