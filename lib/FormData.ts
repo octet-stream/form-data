@@ -343,9 +343,7 @@ export class FormData {
    * @param {string} name A name of the value you want to retrieve.
    */
   get(name: string): FormDataFieldValue | null {
-    name = String(name)
-
-    const field = this.#content.get(name)
+    const field = this.#content.get(String(name))
 
     if (!field) {
       return null
@@ -361,9 +359,7 @@ export class FormData {
    * @param {string} name A name of the value you want to retrieve.
    */
   getAll(name: string): FormDataFieldValue[] {
-    name = String(name)
-
-    const field = this.#content.get(name)
+    const field = this.#content.get(String(name))
 
     if (!field) {
       return []
