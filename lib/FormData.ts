@@ -71,7 +71,7 @@ export type FormDataConstructorEntries = Array<{
 
 export class FormData {
   // TODO: Remove this along with FormData#stream getter in 4.x
-  readonly #stream: Readable
+  #stream!: Readable
 
   /**
    * Returns a boundary string
@@ -97,6 +97,10 @@ export class FormData {
    */
   @deprecateStream
   get stream() {
+    if (!this.#stream) {
+      this.#stream = Readable.from(this)
+    }
+
     return this.#stream
   }
 
@@ -111,8 +115,6 @@ export class FormData {
   readonly #footer = `${DASHES}${this.boundary}${DASHES}${CRLF.repeat(2)}`
 
   constructor(entries?: FormDataConstructorEntries) {
-    this.#stream = Readable.from(this)
-
     if (entries) {
       entries.forEach(({name, value, filename, options}) => this.append(
         name, value, filename, options
