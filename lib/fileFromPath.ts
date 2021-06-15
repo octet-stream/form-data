@@ -28,7 +28,7 @@ interface FileFromPathOptions {
  *
  * @api private
  */
-class FileFromPath implements FileLike {
+class FileFromPath implements Omit<FileLike, "type"> {
   #path: string
 
   #start: number
@@ -104,7 +104,7 @@ function createFileFromPath(
     options.type = getMime(filename)
   }
 
-  return new File([file], filename, options)
+  return new File([file as any], filename, options)
 }
 
 /**
