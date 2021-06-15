@@ -16,6 +16,11 @@ export interface FileLike {
   size: number
 
   /**
+   * Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
+   */
+  type: string
+
+  /**
    * The last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
    */
   lastModified: number
