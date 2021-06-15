@@ -61,9 +61,7 @@ export class File extends Blob implements FileLike {
    * @param options An options object containing optional attributes for the file.
    */
   constructor(
-    blobParts: Array<
-    string | Blob | ArrayBufferLike | ArrayBufferView | Buffer | FileLike
-    >,
+    blobParts: unknown[],
     name: string,
     options: FileOptions = {}
   ) {

@@ -104,7 +104,7 @@ function createFileFromPath(
     options.type = getMime(filename)
   }
 
-  return new File([file as any], filename, options)
+  return new File([file], filename, options)
 }
 
 /**
