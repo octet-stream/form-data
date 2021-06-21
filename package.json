@@ -43,7 +43,7 @@
     "@octetstream/eslint-config": "5.0.0",
     "@types/domexception": "^2.0.1",
     "@types/mime-types": "2.1.0",
-    "@types/node": "15.12.2",
+    "@types/node": "15.12.4",
     "@types/sinon": "10.0.2",
     "@types/supertest": "2.0.11",
     "@typescript-eslint/eslint-plugin": "4.27.0",
@@ -53,7 +53,7 @@
     "c8": "7.7.3",
     "codecov": "3.8.2",
     "dotenv": "^10.0.0",
-    "eslint": "7.28.0",
+    "eslint": "7.29.0",
     "eslint-config-airbnb-typescript": "12.3.1",
     "eslint-plugin-ava": "12.0.0",
     "eslint-plugin-jsx-a11y": "6.4.1",
@@ -64,7 +64,7 @@
     "sinon": "11.1.1",
     "ts-node": "10.0.0",
     "ttypescript": "1.5.12",
-    "typescript": "4.3.2"
+    "typescript": "4.3.4"
   },
   "dependencies": {
     "domexception": "2.0.1",
