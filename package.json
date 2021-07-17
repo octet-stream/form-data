@@ -28,6 +28,7 @@
     "eslint": "eslint lib/**/*.ts",
     "staged": "lint-staged",
     "coverage": "c8 npm test",
+    "report:html": "c8 -r=html npm test",
     "ci": "c8 npm test && c8 report --reporter=json",
     "build:esm": "ttsc --project tsconfig.esm.json",
     "build:cjs": "ttsc --project tsconfig.cjs.json",
