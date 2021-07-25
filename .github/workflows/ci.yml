@@ -10,6 +10,7 @@ on:
       - "tsconfig.esm.json"
       - "ava.config.cjs"
       - "package.json"
+      - "pnpm-lock.yaml"
       - ".github/workflows/ci.yml"
   pull_request:
     branches: [master]
@@ -20,6 +21,7 @@ on:
       - "tsconfig.esm.json"
       - "ava.config.cjs"
       - "package.json"
+      - "pnpm-lock.yaml"
       - ".github/workflows/ci.yml"
 
 jobs:
