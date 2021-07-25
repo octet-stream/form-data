@@ -19,8 +19,15 @@
   "browser": "./browser.js",
   "types": "./@type/index.d.ts",
   "exports": {
-    "import": "./lib/esm/index.js",
-    "require": "./lib/cjs/index.js"
+    "node": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    },
+    "browser": {
+      "import": "./lib/esm/browser.js",
+      "require": "./lib/cjs/browser.js"
+    },
+    "default": "./lib/esm/index.js"
   },
   "engines": {
     "node": ">= 12.4"
