@@ -1,7 +1,7 @@
 import {statSync, createReadStream, Stats, promises as fs} from "fs"
 import {basename} from "path"
 
-import DOMException from "domexception"
+import DOMException from "node-domexception"
 
 import {File, FileLike, FileOptions} from "./File"
 
