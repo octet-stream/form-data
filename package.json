@@ -16,7 +16,7 @@
   "license": "MIT",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
-  "browser": "./lib/browser.js",
+  "browser": "./browser.js",
   "types": "./@type/index.d.ts",
   "exports": {
     "import": "./lib/esm/index.js",
