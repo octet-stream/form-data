@@ -13,3 +13,4 @@ coverage
 @type
 
 /lib/**/*.js
+!/lib/browser.js
