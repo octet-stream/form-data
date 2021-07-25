@@ -6,7 +6,6 @@ import DOMException from "domexception"
 import {File, FileLike, FileOptions} from "./File"
 
 import isPlainObject from "./util/isPlainObject"
-import getMime from "./util/getMimeFromFilename"
 
 const MESSAGE = "The requested file could not be read, "
   + "typically due to permission problems that have occurred after a reference "
@@ -98,10 +97,6 @@ function createFileFromPath(
 
   if (!options.lastModified) {
     options.lastModified = file.lastModified
-  }
-
-  if (!options.type) {
-    options.type = getMime(filename)
   }
 
   return new File([file], filename, options)

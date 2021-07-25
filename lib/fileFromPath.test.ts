@@ -43,10 +43,10 @@ test("Has name taken from file path", async t => {
   t.is<string>(file.name, basename(filePath))
 })
 
-test("Has type taken from file name by default", async t => {
+test("Has an empty string as file type by default", async t => {
   const file = await fileFromPath("readme.md")
 
-  t.is<string>(file.type, "text/markdown")
+  t.is<string>(file.type, "")
 })
 
 test("Has lastModified field taken from file stats", async t => {

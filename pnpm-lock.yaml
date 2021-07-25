@@ -23,7 +23,6 @@ specifiers:
   form-data-encoder: ^1.0.1
   husky: 7.0.1
   lint-staged: 11.1.1
-  mime-types: 2.1.31
   pinst: 2.1.6
   sinon: 11.1.1
   ts-node: 10.1.0
@@ -34,7 +33,6 @@ dependencies:
   domexception: 2.0.1
   fetch-blob: 2.1.2_domexception@2.0.1
   form-data-encoder: 1.0.1
-  mime-types: 2.1.31
 
 devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@7.31.0
@@ -2836,18 +2834,6 @@ packages:
       braces: 3.0.2
       picomatch: 2.3.0
     dev: true
-
-  /mime-db/1.48.0:
-    resolution: {integrity: sha512-FM3QwxV+TnZYQ2aRqhlKBMHxk10lTbMt3bBkMAp54ddrNeVSfcQYOOKuGuy3Ddrm38I04If834fOUSq1yzslJQ==}
-    engines: {node: '>= 0.6'}
-    dev: false
-
-  /mime-types/2.1.31:
-    resolution: {integrity: sha512-XGZnNzm3QvgKxa8dpzyhFTHmpP3l5YNusmne07VUOXxou9CqUqYa/HBy124RqtVh/O2pECas/MOcsDgpilPOPg==}
-    engines: {node: '>= 0.6'}
-    dependencies:
-      mime-db: 1.48.0
-    dev: false
 
   /mimic-fn/2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
