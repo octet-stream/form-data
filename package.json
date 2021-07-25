@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@octetstream/eslint-config": "5.0.0",
-    "@types/domexception": "^2.0.1",
+    "@types/domexception": "2.0.1",
     "@types/mime-types": "2.1.0",
     "@types/node": "16.4.2",
     "@types/sinon": "10.0.2",
@@ -69,6 +69,6 @@
   "dependencies": {
     "domexception": "2.0.1",
     "fetch-blob": "2.1.2",
-    "form-data-encoder": "^1.0.1"
+    "form-data-encoder": "1.0.1"
   }
 }
