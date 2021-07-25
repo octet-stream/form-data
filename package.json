@@ -69,6 +69,7 @@
   "dependencies": {
     "domexception": "2.0.1",
     "fetch-blob": "2.1.2",
+    "form-data-encoder": "^1.0.1",
     "mime-types": "2.1.31"
   }
 }

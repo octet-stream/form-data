@@ -2,6 +2,8 @@ import {Readable} from "stream"
 import {basename} from "path"
 import {inspect} from "util"
 
+import {Encoder} from "form-data-encoder"
+
 import {File} from "./File"
 
 import {fileFromPathSync} from "./fileFromPath"
@@ -14,17 +16,11 @@ import deprecateBuffer from "./util/deprecateBuffer"
 import deprecateStream from "./util/deprecateStream"
 
 import isFile from "./util/isFile"
-import getLength from "./util/getLength"
 import isPlainObject from "./util/isPlainObject"
-import createBoundary from "./util/createBoundary"
 import isReadStream from "./util/isReadStream"
 import getFilename from "./util/getFilename"
 
 const {isBuffer} = Buffer
-
-const DASHES = "-".repeat(2)
-const CRLF = "\r\n"
-const CRLF_BYTES_LENGTH = Buffer.byteLength(CRLF)
 
 export type FormDataFieldValue = string | File
 
@@ -73,10 +69,7 @@ export class FormData {
   // TODO: Remove this along with FormData#stream getter in 4.x
   #stream!: Readable
 
-  /**
-   * Returns a boundary string
-   */
-  readonly boundary = `NodeJSFormDataStreamBoundary${createBoundary()}`
+  #encoder: Encoder
 
   /**
    * Returns headers for multipart/form-data
@@ -104,56 +97,23 @@ export class FormData {
     return this.#stream
   }
 
+  get boundary(): string {
+    return this.#encoder.boundary
+  }
+
   /**
    * Stores internal data for every field
    */
   readonly #content = new Map<string, FormDataFieldValues>()
 
-  /**
-   * Returns field's footer
-   */
-  readonly #footer = `${DASHES}${this.boundary}${DASHES}${CRLF.repeat(2)}`
-
   constructor(entries?: FormDataConstructorEntries) {
+    this.#encoder = new Encoder(this)
+
     if (entries) {
       entries.forEach(({name, value, filename, options}) => this.append(
         name, value, filename, options
       ))
     }
-  }
-
-  #getHeader(name: string, value: FormDataFieldValue): string {
-    let header = ""
-
-    header += `${DASHES}${this.boundary}${CRLF}`
-    header += `Content-Disposition: form-data; name="${name}"`
-
-    if (isFile(value)) {
-      header += `; filename="${value.name}"${CRLF}`
-      header += `Content-Type: ${value.type || "application/octet-stream"}`
-    }
-
-    return `${header}${CRLF.repeat(2)}`
-  }
-
-  async* #getField(): AsyncGenerator<string | Buffer, void, undefined> {
-    // Note to switch back to reading from this.#content if any extra logic will be necessary in a future, because the public FormData API returns values only as `string | File`
-    for (const [name, value] of this) {
-      // Set field's header
-      yield this.#getHeader(name, value)
-
-      if (isFile(value)) {
-        yield* value.stream()
-      } else {
-        yield value
-      }
-
-      // Add trailing carriage
-      yield CRLF
-    }
-
-    // Add a footer when all fields ended
-    yield this.#footer
   }
 
   #setField({
@@ -241,14 +201,7 @@ export class FormData {
    */
   @deprecateGetComputedLength
   getComputedLength(): number {
-    let length = 0
-
-    for (const [name, value] of this) {
-      length += Buffer.byteLength(this.#getHeader(name, value))
-      length += getLength(value) + CRLF_BYTES_LENGTH
-    }
-
-    return length + Buffer.byteLength(this.#footer)
+    return this.#encoder.getContentLength()
   }
 
   /**
@@ -457,9 +410,7 @@ export class FormData {
    * @deprecated FormData#[Symbol.asyncIterator]() method is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
   @deprecateSymbolAsyncIterator
-  async* [Symbol.asyncIterator]() {
-    for await (const ch of this.#getField()) {
-      yield isBuffer(ch) ? ch : Buffer.from(String(ch))
-    }
+  async* [Symbol.asyncIterator](): AsyncGenerator<Uint8Array, void, undefined> {
+    yield* this.#encoder.encode()
   }
 }
