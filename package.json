@@ -68,6 +68,6 @@
   "dependencies": {
     "fetch-blob": "2.1.2",
     "form-data-encoder": "1.0.1",
-    "node-domexception": "^1.0.0"
+    "node-domexception": "1.0.0"
   }
 }
