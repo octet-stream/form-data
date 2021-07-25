@@ -174,6 +174,78 @@ file = fd.get("file")
 console.log(file.name) // -> some-file.txt
 ```
 
+8. You can still use files sourced from any stream, but unlike in v2 you'll need some extra work to achieve that:
+
+```js
+import {Readable} from "stream"
+
+import {FormData} from "formdata-node"
+
+class BlobFromStream {
+  #stream
+
+  constructor(stream, size) {
+    this.#stream = stream
+    this.size = size
+  }
+
+  stream() {
+    return this.#stream
+  }
+
+  get [Symbol.toStringTag]() {
+    return "Blob"
+  }
+}
+
+const content = Buffer.from("Stream content")
+
+const stream = new Readable({
+  read() {
+    this.push(content)
+    this.push(null)
+  }
+})
+
+const fd = new FormData()
+
+fd.set("stream", new BlobFromStream(stream, content.length), "file.txt")
+
+await fetch("https://httpbin.org/post", {method: "post", body: fd})
+```
+
+9. Note that if you don't know the length of that stream, you'll also need to handle form-data encoding manually or use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) package. This is necessary to control which headers will be sent with your HTTP request:
+
+```js
+import {Readable} from "stream"
+
+import {Encoder} from "form-data-encoder"
+import {FormData} from "formdata-node"
+
+const fd = new FormData()
+
+// You can use file-shaped or blob-shaped objects as FormData value instead of creating separate class
+fd.set("stream", {
+  type: "text/plain",
+  [Symbol.toStringTag]: "File",
+  stream() {
+    return getStreamFromSomewhere()
+  }
+}, "file.txt")
+
+const encoder = new Encoder(fd)
+
+const options = {
+  method: "post",
+  headers: {
+    "content-type": encoder.contentType
+  },
+  body: Readable.from(encoder)
+}
+
+await fetch("https://httpbin.org/post", {method: "post", body: fd})
+```
+
 ## API
 
 ### `class FormData`
