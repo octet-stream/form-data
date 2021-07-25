@@ -5,7 +5,7 @@ if (!globalThis.FormData) {
 }
 
 if (!globalThis.Blob) {
-  globalThis.Blob
+  globalThis.Blob = Blob
 }
 
 if (!globalThis.File) {
