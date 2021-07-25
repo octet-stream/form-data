@@ -227,11 +227,12 @@ const fd = new FormData()
 // You can use file-shaped or blob-shaped objects as FormData value instead of creating separate class
 fd.set("stream", {
   type: "text/plain",
+  name: "file.txt",
   [Symbol.toStringTag]: "File",
   stream() {
     return getStreamFromSomewhere()
   }
-}, "file.txt")
+})
 
 const encoder = new Encoder(fd)
 
