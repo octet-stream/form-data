@@ -3,8 +3,12 @@ import test from "ava"
 import {promises as fs} from "fs"
 import {resolve, basename} from "path"
 
-import {File, FileOptions} from "./File"
-import {fileFromPathSync, fileFromPath} from "./fileFromPath"
+import {File} from "./File"
+import {
+  fileFromPathSync,
+  fileFromPath,
+  FileFromPathOptions
+} from "./fileFromPath"
 
 import sleep from "./__helper__/sleep"
 
@@ -80,34 +84,20 @@ test("sync: Allows to set file name as the second argument", t => {
   t.is<string>(file.name, expected)
 })
 
-test("User-defined lastModified has higher precedence", async t => {
-  const expected = Date.now()
-
-  const file = await fileFromPath(filePath, {lastModified: expected})
-
-  t.is<number>(file.lastModified, expected)
-})
-
 test("Allows to set file options from second argument", async t => {
-  const expected: FileOptions = {lastModified: Date.now(), type: "text/plain"}
+  const expected: FileFromPathOptions = {type: "text/plain"}
 
   const file = await fileFromPath(filePath, expected)
 
-  t.deepEqual<FileOptions>({
-    lastModified: file.lastModified,
-    type: file.type
-  }, expected)
+  t.deepEqual<FileFromPathOptions>({type: file.type}, expected)
 })
 
 test("sync: Allows to set file options from second argument", t => {
-  const expected: FileOptions = {lastModified: Date.now(), type: "text/plain"}
+  const expected: FileFromPathOptions = {type: "text/plain"}
 
   const file = fileFromPathSync(filePath, expected)
 
-  t.deepEqual<FileOptions>({
-    lastModified: file.lastModified,
-    type: file.type
-  }, expected)
+  t.deepEqual<FileFromPathOptions>({type: file.type}, expected)
 })
 
 test("Can be read as text", async t => {

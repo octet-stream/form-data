@@ -11,7 +11,9 @@ const MESSAGE = "The requested file could not be read, "
   + "typically due to permission problems that have occurred after a reference "
   + "to a file was acquired."
 
-interface FileFromPathOptions {
+export type FileFromPathOptions = Omit<FileOptions, "lastModified">
+
+interface FileFromPathInput {
   path: string
 
   start?: number
@@ -38,12 +40,12 @@ class FileFromPath implements Omit<FileLike, "type"> {
 
   lastModified: number
 
-  constructor(options: FileFromPathOptions) {
-    this.#path = options.path
-    this.#start = options.start || 0
+  constructor(input: FileFromPathInput) {
+    this.#path = input.path
+    this.#start = input.start || 0
     this.name = basename(this.#path)
-    this.size = options.size
-    this.lastModified = options.lastModified
+    this.size = input.size
+    this.lastModified = input.lastModified
   }
 
   slice(start: number, end: number): FileFromPath {
@@ -79,8 +81,8 @@ class FileFromPath implements Omit<FileLike, "type"> {
 function createFileFromPath(
   path: string,
   {mtimeMs, size}: Stats,
-  filenameOrOptions?: string | FileOptions,
-  options: FileOptions = {}
+  filenameOrOptions?: string | FileFromPathOptions,
+  options: FileFromPathOptions = {}
 ): File {
   let filename: string | undefined
   if (isPlainObject(filenameOrOptions)) {
@@ -95,11 +97,9 @@ function createFileFromPath(
     filename = file.name
   }
 
-  if (!options.lastModified) {
-    options.lastModified = file.lastModified
-  }
-
-  return new File([file], filename, options)
+  return new File([file], filename, {
+    ...options, lastModified: file.lastModified
+  })
 }
 
 /**
@@ -111,16 +111,19 @@ function createFileFromPath(
  */
 export function fileFromPathSync(path: string): File
 export function fileFromPathSync(path: string, filename?: string): File
-export function fileFromPathSync(path: string, options?: FileOptions): File
 export function fileFromPathSync(
   path: string,
-  filename?: string,
-  options?: FileOptions
+  options?: FileFromPathOptions
 ): File
 export function fileFromPathSync(
   path: string,
-  filenameOrOptions?: string | FileOptions,
-  options: FileOptions = {}
+  filename?: string,
+  options?: FileFromPathOptions
+): File
+export function fileFromPathSync(
+  path: string,
+  filenameOrOptions?: string | FileFromPathOptions,
+  options: FileFromPathOptions = {}
 ): File {
   return createFileFromPath(path, statSync(path), filenameOrOptions, options)
 }
@@ -139,17 +142,17 @@ export async function fileFromPath(
 ): Promise<File>
 export async function fileFromPath(
   path: string,
-  options?: FileOptions
+  options?: FileFromPathOptions
 ): Promise<File>
 export async function fileFromPath(
   path: string,
   filename?: string,
-  options?: FileOptions
+  options?: FileFromPathOptions
 ): Promise<File>
 export async function fileFromPath(
   path: string,
-  filenameOrOptions?: string | FileOptions,
-  options?: FileOptions
+  filenameOrOptions?: string | FileFromPathOptions,
+  options?: FileFromPathOptions
 ): Promise<File> {
   const stats = await fs.stat(path)
 
