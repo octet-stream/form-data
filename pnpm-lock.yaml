@@ -2,7 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@octetstream/eslint-config': 5.0.0
-  '@types/domexception': ^2.0.1
+  '@types/domexception': 2.0.1
   '@types/mime-types': 2.1.0
   '@types/node': 16.4.2
   '@types/sinon': 10.0.2
@@ -20,7 +20,7 @@ specifiers:
   eslint-plugin-jsx-a11y: 6.4.1
   eslint-plugin-react: 7.24.0
   fetch-blob: 2.1.2
-  form-data-encoder: ^1.0.1
+  form-data-encoder: 1.0.1
   husky: 7.0.1
   lint-staged: 11.1.1
   pinst: 2.1.6
