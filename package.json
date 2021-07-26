@@ -1,6 +1,6 @@
 {
   "name": "formdata-node",
-  "version": "3.6.1",
+  "version": "3.6.2",
   "description": "FormData implementation for Node.js",
   "repository": "octet-stream/form-data",
   "keywords": [
