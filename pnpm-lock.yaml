@@ -2,10 +2,8 @@ lockfileVersion: 5.3
 
 specifiers:
   '@octetstream/eslint-config': 5.0.0
-  '@types/mime-types': 2.1.0
   '@types/node': 16.4.7
   '@types/sinon': 10.0.2
-  '@types/supertest': 2.0.11
   '@typescript-eslint/eslint-plugin': 4.28.5
   '@typescript-eslint/parser': 4.28.5
   '@zoltu/typescript-transformer-append-js-extension': 1.0.1
@@ -35,10 +33,8 @@ dependencies:
 
 devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@7.31.0
-  '@types/mime-types': 2.1.0
   '@types/node': 16.4.7
   '@types/sinon': 10.0.2
-  '@types/supertest': 2.0.11
   '@typescript-eslint/eslint-plugin': 4.28.5_514553717ff968e20f6d1c6e521f8616
   '@typescript-eslint/parser': 4.28.5_eslint@7.31.0+typescript@4.3.5
   '@zoltu/typescript-transformer-append-js-extension': 1.0.1
@@ -330,10 +326,6 @@ packages:
     resolution: {integrity: sha512-eZxlbI8GZscaGS7kkc/trHTT5xgrjH3/1n2JDwusC9iahPKWMRvRjJSAN5mCXviuTGQ/lHnhvv8Q1YTpnfz9gA==}
     dev: true
 
-  /@types/cookiejar/2.1.2:
-    resolution: {integrity: sha512-t73xJJrvdTjXrn4jLS9VSGRbz0nUY3cl2DMGDU48lKl+HR9dbbjW2A9r3g40VA++mQpy6uuHg33gy7du2BKpog==}
-    dev: true
-
   /@types/istanbul-lib-coverage/2.0.3:
     resolution: {integrity: sha512-sz7iLqvVUg1gIedBOvlkxPlc8/uVzyS5OwGz1cKjXzkl3FpL3al0crU8YGU1WoHkxn0Wxbw5tyi6hvzJKNzFsw==}
     dev: true
@@ -344,14 +336,6 @@ packages:
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=}
-    dev: true
-
-  /@types/mime-types/2.1.0:
-    resolution: {integrity: sha1-nKUs2jY/aZxpRmwqbM2q2RPqenM=}
-    dev: true
-
-  /@types/node/14.14.41:
-    resolution: {integrity: sha512-dueRKfaJL4RTtSa7bWeTK1M+VH+Gns73oCgzvYfHZywRCoPSd8EkXBL0mZ9unPTveBn+D9phZBaxuzpwjWkW0g==}
     dev: true
 
   /@types/node/16.4.7:
@@ -370,19 +354,6 @@ packages:
     resolution: {integrity: sha512-BHn8Bpkapj8Wdfxvh2jWIUoaYB/9/XhsL0oOvBfRagJtKlSl9NWPcFOz2lRukI9szwGxFtYZCTejJSqsGDbdmw==}
     dependencies:
       '@sinonjs/fake-timers': 7.1.2
-    dev: true
-
-  /@types/superagent/4.1.10:
-    resolution: {integrity: sha512-xAgkb2CMWUMCyVc/3+7iQfOEBE75NvuZeezvmixbUw3nmENf2tCnQkW5yQLTYqvXUQ+R6EXxdqKKbal2zM5V/g==}
-    dependencies:
-      '@types/cookiejar': 2.1.2
-      '@types/node': 14.14.41
-    dev: true
-
-  /@types/supertest/2.0.11:
-    resolution: {integrity: sha512-uci4Esokrw9qGb9bvhhSVEjd6rkny/dk5PK/Qz4yxKiyppEI+dOPlNrZBahE3i+PoKFYyDxChVXZ/ysS/nrm1Q==}
-    dependencies:
-      '@types/superagent': 4.1.10
     dev: true
 
   /@typescript-eslint/eslint-plugin/4.28.5_514553717ff968e20f6d1c6e521f8616:

@@ -50,10 +50,8 @@
   },
   "devDependencies": {
     "@octetstream/eslint-config": "5.0.0",
-    "@types/mime-types": "2.1.0",
     "@types/node": "16.4.7",
     "@types/sinon": "10.0.2",
-    "@types/supertest": "2.0.11",
     "@typescript-eslint/eslint-plugin": "4.28.5",
     "@typescript-eslint/parser": "4.28.5",
     "@zoltu/typescript-transformer-append-js-extension": "1.0.1",
