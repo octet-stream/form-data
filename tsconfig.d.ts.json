@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.esm.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "./@type",
+    "removeComments": false,
+    "emitDeclarationOnly": true
+  }
+}

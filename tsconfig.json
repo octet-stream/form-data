@@ -21,6 +21,7 @@
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
+    "removeComments": true,
     "plugins": [
       {
         "transform": "@zoltu/typescript-transformer-append-js-extension/output/index.js",
