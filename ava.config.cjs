@@ -1,13 +1,12 @@
 module.exports = {
   environmentVariables: {
-    TS_NODE_COMPILER: "ttypescript",
-    TS_NODE_PROJECT: "tsconfig.cjs.json"
+    TS_NODE_PROJECT: "tsconfig.ava.json"
   },
   extensions: [
     "ts"
   ],
   require: [
-    "ts-node/register/transpile-only",
+    "ts-node/register",
   ],
   files: [
     "lib/**/*.test.ts"

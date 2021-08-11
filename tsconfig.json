@@ -28,8 +28,5 @@
         "after": true
       }
     ]
-  },
-  "ts-node": {
-    "preferTsExts": true
   }
 }

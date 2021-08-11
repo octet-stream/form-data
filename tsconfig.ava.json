@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.cjs.json",
+  "ts-node": {
+    "preferTsExts": true,
+    "transpileOnly": true,
+    "compiler": "ttypescript"
+  }
+}

@@ -16,7 +16,6 @@ pnpm-lock.yaml
 /.editorconfig
 /.eslintrc.json
 /.lintstagedrc
-/.travis.yml
 /ava.config.cjs
 /yarn.lock
 /test.mjs
@@ -25,6 +24,7 @@ pnpm-lock.yaml
 /tsconfig.cjs.json
 /tsconfig.eslint.json
 /tsconfig.d.ts.json
+/tsconfig.ava.json
 /lib/**/*.ts
 
 !/lib/node-domexception.d.ts
