@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@octetstream/eslint-config": "5.0.0",
-    "@types/node": "16.4.13",
+    "@types/node": "16.4.14",
     "@types/sinon": "10.0.2",
     "@typescript-eslint/eslint-plugin": "4.29.1",
     "@typescript-eslint/parser": "4.29.1",
@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "fetch-blob": "2.1.2",
-    "form-data-encoder": "1.4.1",
+    "form-data-encoder": "1.4.3",
     "node-domexception": "1.0.0"
   }
 }
