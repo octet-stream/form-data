@@ -22,6 +22,8 @@ test("Returns true for file-ish object", t => {
   class MyFile implements FileLike {
     name!: string
 
+    type!: string
+
     size!: number
 
     lastModified!: number

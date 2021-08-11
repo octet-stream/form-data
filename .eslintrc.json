@@ -17,6 +17,11 @@
     "@octetstream",
     "plugin:ava/recommended"
   ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
   "rules": {
     "no-void": 0,
     "func-names": 0,
