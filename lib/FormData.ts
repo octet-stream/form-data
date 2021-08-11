@@ -2,7 +2,7 @@ import {Readable} from "stream"
 import {basename} from "path"
 import {inspect} from "util"
 
-import {Encoder} from "form-data-encoder"
+import {FormDataEncoder} from "form-data-encoder"
 
 import {File} from "./File"
 
@@ -69,7 +69,7 @@ export class FormData {
   // TODO: Remove this along with FormData#stream getter in 4.x
   #stream!: Readable
 
-  #encoder: Encoder
+  #encoder: FormDataEncoder
 
   /**
    * Returns headers for multipart/form-data
@@ -107,7 +107,7 @@ export class FormData {
   readonly #content = new Map<string, FormDataFieldValues>()
 
   constructor(entries?: FormDataConstructorEntries) {
-    this.#encoder = new Encoder(this)
+    this.#encoder = new FormDataEncoder(this)
 
     if (entries) {
       entries.forEach(({name, value, filename, options}) => this.append(
