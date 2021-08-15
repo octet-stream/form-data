@@ -2,7 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@octetstream/eslint-config': 5.0.0
-  '@types/node': 16.4.14
+  '@types/node': 16.6.1
   '@types/sinon': 10.0.2
   '@typescript-eslint/eslint-plugin': 4.29.1
   '@typescript-eslint/parser': 4.29.1
@@ -34,7 +34,7 @@ dependencies:
 
 devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@7.32.0
-  '@types/node': 16.4.14
+  '@types/node': 16.6.1
   '@types/sinon': 10.0.2
   '@typescript-eslint/eslint-plugin': 4.29.1_d4376362794b743c19f4cba25c7fc6f5
   '@typescript-eslint/parser': 4.29.1_eslint@7.32.0+typescript@4.3.5
@@ -52,7 +52,7 @@ devDependencies:
   lint-staged: 11.1.2
   pinst: 2.1.6
   sinon: 11.1.2
-  ts-node: 10.2.0_ee6536831f0835a2bf093a079e865a48
+  ts-node: 10.2.0_1ce31f93b456bf092bdcfa22c36a8430
   ttypescript: 1.5.12_ts-node@10.2.0+typescript@4.3.5
   typescript: 4.3.5
 
@@ -352,8 +352,8 @@ packages:
     resolution: {integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=}
     dev: true
 
-  /@types/node/16.4.14:
-    resolution: {integrity: sha512-GZpnVRNtv7sHDXIFncsERt+qvj4rzAgRQtnvzk3Z7OVNtThD2dHXYCMDNc80D5mv4JE278qo8biZCwcmkbdpqw==}
+  /@types/node/16.6.1:
+    resolution: {integrity: sha512-Sr7BhXEAer9xyGuCN3Ek9eg9xPviCF2gfu9kTfuU2HkTVAMYSDeX40fvpmo72n5nansg3nsBjuQBrsS28r+NUw==}
     dev: true
 
   /@types/normalize-package-data/2.4.0:
@@ -3879,7 +3879,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /ts-node/10.2.0_ee6536831f0835a2bf093a079e865a48:
+  /ts-node/10.2.0_1ce31f93b456bf092bdcfa22c36a8430:
     resolution: {integrity: sha512-FstYHtQz6isj8rBtYMN4bZdnXN1vq4HCbqn9vdNQcInRqtB86PePJQIxE6es0PhxKWhj2PHuwbG40H+bxkZPmg==}
     engines: {node: '>=12.0.0'}
     hasBin: true
@@ -3899,7 +3899,7 @@ packages:
       '@tsconfig/node12': 1.0.9
       '@tsconfig/node14': 1.0.1
       '@tsconfig/node16': 1.0.2
-      '@types/node': 16.4.14
+      '@types/node': 16.6.1
       acorn: 8.4.1
       acorn-walk: 8.1.1
       arg: 4.1.3
@@ -3941,7 +3941,7 @@ packages:
       typescript: '>=3.2.2'
     dependencies:
       resolve: 1.20.0
-      ts-node: 10.2.0_ee6536831f0835a2bf093a079e865a48
+      ts-node: 10.2.0_1ce31f93b456bf092bdcfa22c36a8430
       typescript: 4.3.5
     dev: true
 
