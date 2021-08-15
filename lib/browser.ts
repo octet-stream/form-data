@@ -1,21 +1,17 @@
 /* eslint-disable no-undef, no-restricted-globals */
 
-type Names = "FormData" | "Blob" | "File"
-
-function accessValue(name: Names): unknown {
+const globalObject = (function (): typeof globalThis {
   // new standardized access to the global object
   if (typeof globalThis !== "undefined") {
-    return globalThis[name]
+    return globalThis
   }
 
   // WebWorker specific access
   if (typeof self !== "undefined") {
-    return self[name]
+    return self
   }
 
-  return window[name]
-}
+  return window
+}())
 
-export const FormData = accessValue("FormData") as typeof globalThis.FormData
-export const Blob = accessValue("Blob") as typeof globalThis.Blob
-export const File = accessValue("File") as typeof globalThis.File
+export const {FormData, Blob, File} = globalObject
