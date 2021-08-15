@@ -91,6 +91,7 @@ export class FormData {
    *
    * @deprecated FormData#headers property is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
+  // TODO: Remove FormData#headers in v4
   get headers() {
     deprecateHeaders()
 
@@ -102,8 +103,10 @@ export class FormData {
    *
    * @deprecated FormData#stream property is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
+  // TODO: Remove FormData#stream in v4
   get stream() {
     deprecateStream()
+
     if (!this.#stream) {
       this.#stream = Readable.from(this)
     }
@@ -114,6 +117,7 @@ export class FormData {
   /**
    * @deprecated FormData#boundary property is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
+  // TODO: Remove FormData#boundary in v4
   get boundary(): string {
     deprecateBoundary()
 
@@ -234,6 +238,7 @@ export class FormData {
    *
    * @deprecated FormData#getComputedLength() method is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
+  // TODO: Remove FormData#getComputedLength() in v4
   getComputedLength(): number {
     deprecateGetComputedLength()
 
@@ -441,6 +446,7 @@ export class FormData {
    *
    * @deprecated FormData#[Symbol.asyncIterator]() method is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
+  // TODO: Remove FormData#[Symbol.asyncIterator]() in v4
   async* [Symbol.asyncIterator](): AsyncGenerator<Uint8Array, void, undefined> {
     deprecateSymbolAsyncIterator()
 
