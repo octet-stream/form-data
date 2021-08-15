@@ -20,7 +20,6 @@
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
     "removeComments": true,
     "plugins": [
       {

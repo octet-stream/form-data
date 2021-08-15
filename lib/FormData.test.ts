@@ -30,7 +30,8 @@ test("Has correct headers property", t => {
   const fd = new FormData()
 
   t.deepEqual(fd.headers, {
-    "Content-Type": `multipart/form-data; boundary=${fd.boundary}`
+    "Content-Type": `multipart/form-data; boundary=${fd.boundary}`,
+    "Content-Length": String(fd.getComputedLength())
   })
 })
 

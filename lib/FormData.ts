@@ -8,12 +8,16 @@ import {File} from "./File"
 
 import {fileFromPathSync} from "./fileFromPath"
 
-import deprecateHeaders from "./util/deprecateHeaders"
-import deprecateReadStream from "./util/deprecateReadStream"
-import deprecateGetComputedLength from "./util/deprecateGetComputedLength"
-import deprecateSymbolAsyncIterator from "./util/deprecateSymbolAsyncIterator"
-import deprecateBuffer from "./util/deprecateBuffer"
-import deprecateStream from "./util/deprecateStream"
+import {
+  deprecateBoundary,
+  deprecateHeaders,
+  deprecateStream,
+  deprecateBuffer,
+  deprecateReadStream,
+  deprecateOptions,
+  deprecateGetComputedLength,
+  deprecateSymbolAsyncIterator
+} from "./util/deprecations"
 
 import isFile from "./util/isFile"
 import isPlainObject from "./util/isPlainObject"
@@ -26,6 +30,11 @@ export type FormDataFieldValue = string | File
 
 type FormDataFieldValues = [FormDataFieldValue, ...FormDataFieldValue[]]
 
+/**
+ * Additional field options.
+ *
+ * @deprecated The options argument is non-standard and will be removed from this package in the next major release (4.x).
+ */
 export interface FormDataFieldOptions {
   /**
    * Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
@@ -44,7 +53,7 @@ export interface FormDataFieldOptions {
 }
 
 /**
- * Private options for FormData#_setField() method
+ * Private options for FormData#setField() method
  */
 interface FormDataSetFieldOptions {
   name: string
@@ -65,6 +74,12 @@ export type FormDataConstructorEntries = Array<{
   options?: FormDataFieldOptions
 }>
 
+/**
+ * Provides a way to easily construct a set of key/value pairs representing form fields and their values, which can then be easily sent using fetch().
+ *
+ * Note that this object is not a part of Node.js, so you might need to check is an HTTP client of your choice support spec-compliant FormData.
+ * However, if your HTTP client does not support FormData, you can use [`form-data-encoder`](https://npmjs.com/package/form-data-encoder) package to handle "multipart/form-data" encoding.
+ */
 export class FormData {
   // TODO: Remove this along with FormData#stream getter in 4.x
   #stream!: Readable
@@ -76,11 +91,10 @@ export class FormData {
    *
    * @deprecated FormData#headers property is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
-  @deprecateHeaders
   get headers() {
-    return {
-      "Content-Type": `multipart/form-data; boundary=${this.boundary}`
-    }
+    deprecateHeaders()
+
+    return this.#encoder.headers
   }
 
   /**
@@ -88,8 +102,8 @@ export class FormData {
    *
    * @deprecated FormData#stream property is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
-  @deprecateStream
   get stream() {
+    deprecateStream()
     if (!this.#stream) {
       this.#stream = Readable.from(this)
     }
@@ -97,7 +111,12 @@ export class FormData {
     return this.#stream
   }
 
+  /**
+   * @deprecated FormData#boundary property is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
+   */
   get boundary(): string {
+    deprecateBoundary()
+
     return this.#encoder.boundary
   }
 
@@ -128,11 +147,27 @@ export class FormData {
 
     name = String(name)
 
+    // TODO: Remove this message in v4 along with the Buffer support in value argument.
+    if (Buffer.isBuffer(value)) {
+      deprecateBuffer()
+    }
+
+    // TODO: Remove this message in v4 along with ReadStream support in value argument.
+    if (isReadStream(value)) {
+      deprecateReadStream()
+    }
+
+    // Normalize options and filename
     let filename: string | undefined
     if (isPlainObject(filenameOrOptions)) {
       [options, filename] = [filenameOrOptions, undefined]
     } else {
       filename = filenameOrOptions
+    }
+
+    // TODO: Remove this message in v4 along with the options argument.
+    if (isPlainObject(options)) {
+      deprecateOptions()
     }
 
     // FormData required at least 2 arguments to be set.
@@ -199,8 +234,9 @@ export class FormData {
    *
    * @deprecated FormData#getComputedLength() method is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
-  @deprecateGetComputedLength
   getComputedLength(): number {
+    deprecateGetComputedLength()
+
     return this.#encoder.getContentLength()
   }
 
@@ -229,8 +265,6 @@ export class FormData {
     filename?: string,
     options?: FormDataFieldOptions
   ): void
-  @deprecateBuffer
-  @deprecateReadStream
   append(
     name: string,
     value: unknown,
@@ -273,8 +307,6 @@ export class FormData {
     filename?: string,
     options?: FormDataFieldOptions
   ): void
-  @deprecateBuffer
-  @deprecateReadStream
   set(
     name: string,
     value: unknown,
@@ -409,8 +441,9 @@ export class FormData {
    *
    * @deprecated FormData#[Symbol.asyncIterator]() method is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
    */
-  @deprecateSymbolAsyncIterator
   async* [Symbol.asyncIterator](): AsyncGenerator<Uint8Array, void, undefined> {
+    deprecateSymbolAsyncIterator()
+
     yield* this.#encoder.encode()
   }
 }
