@@ -172,6 +172,7 @@ test(".append() appends to an existent field", t => {
 
 test(
   ".append() appends to an existent field even if it was created with .set()",
+
   t => {
     const fd = new FormData()
 
@@ -252,6 +253,7 @@ test(".get() returns File as-is", t => {
 
 test(
   ".getComputedLength() Returns a length of the empty FormData",
+
   t => {
     const fd = new FormData()
 
@@ -263,6 +265,7 @@ test(
 
 test(
   ".getComputedLength() returns the length of the FormData with regular field",
+
   async t => {
     const fd = new FormData()
 
@@ -277,6 +280,7 @@ test(
 
 test(
   ".getComputedLength() returns the length of the FormData with Buffer",
+
   async t => {
     const fd = new FormData()
 
@@ -312,34 +316,35 @@ test(".getAll() returns an empty array for non-existent field", t => {
 
 test(
   ".forEach() callback should not be called when FormData has no fields",
+
   t => {
-    const fulfill = spy()
+    const cb = spy()
 
     const fd = new FormData()
 
-    fd.forEach(fulfill)
+    fd.forEach(cb)
 
-    t.false(fulfill.called)
+    t.false(cb.called)
   }
 )
 
 test(
   ".forEach() callback should be called with the nullish context by default",
   t => {
-    const fulfill = spy()
+    const cb = spy()
 
     const fd = new FormData()
 
     fd.set("name", "John Doe")
 
-    fd.forEach(fulfill)
+    fd.forEach(cb)
 
-    t.is(fulfill.firstCall.thisValue, undefined)
+    t.is(cb.firstCall.thisValue, undefined)
   }
 )
 
 test(".forEach() callback should be called with the specified context", t => {
-  const fulfill = spy()
+  const cb = spy()
 
   const ctx = new Map()
 
@@ -347,29 +352,33 @@ test(".forEach() callback should be called with the specified context", t => {
 
   fd.set("name", "John Doe")
 
-  fd.forEach(fulfill, ctx)
+  fd.forEach(cb, ctx)
 
-  t.true(fulfill.firstCall.thisValue instanceof Map)
-  t.is(fulfill.firstCall.thisValue, ctx)
+  t.true(cb.firstCall.thisValue instanceof Map)
+  t.is(cb.firstCall.thisValue, ctx)
 })
 
 test(
   ".forEach() callback should be called with value, name and FormData itself",
   t => {
-    const fulfill = spy()
+    const cb = spy()
 
     const fd = new FormData()
 
     fd.set("name", "John Doe")
 
-    fd.forEach(fulfill)
+    fd.forEach(cb)
 
-    t.deepEqual(fulfill.firstCall.args, ["John Doe", "name", fd])
+    const [value, key, instance] = cb.firstCall.args
+
+    t.is(value, "John Doe")
+    t.is(key, "name")
+    t.is(instance, fd)
   }
 )
 
 test(".forEach() callback should be called once on each filed", t => {
-  const fulfill = spy()
+  const cb = spy()
 
   const fd = new FormData()
 
@@ -377,12 +386,9 @@ test(".forEach() callback should be called once on each filed", t => {
   fd.set("second", 42)
   fd.set("third", [1, 2, 3])
 
-  fd.forEach(fulfill)
+  fd.forEach(cb)
 
-  t.true(fulfill.calledThrice)
-  t.deepEqual(fulfill.firstCall.args, ["value", "first", fd])
-  t.deepEqual(fulfill.secondCall.args, ["42", "second", fd])
-  t.deepEqual(fulfill.thirdCall.args, ["1,2,3", "third", fd])
+  t.true(cb.calledThrice)
 })
 
 test("Emits the footer for an empty content", async t => {
@@ -455,6 +461,7 @@ test("Emits default content-type when File doesn't have type", async t => {
 
 test(
   ".set() user-defined type has higher precedence in content-type header",
+
   async t => {
     const expected = "text/markdown"
 
@@ -667,7 +674,7 @@ test("util.inspect() returns a proper string", t => {
 test(".set() throws TypeError when called with less than 2 arguments", t => {
   const fd = new FormData()
 
-  // @ts-ignore
+  // @ts-expect-error
   const trap = () => fd.set("field")
 
   t.throws<TypeError>(trap, {
@@ -684,6 +691,8 @@ test(
   t => {
     const fd = new FormData()
 
+    // TODO: Update this error message.
+    // TODO: Should throw: Failed to execute 'append' on 'FormData': parameter 2 is not of type 'Blob'.
     const trap = () => fd.set("field", "Some value", "field.txt")
 
     t.throws<TypeError>(trap, {
@@ -698,7 +707,7 @@ test(
 test(".append() throws TypeError when called with less than 2 arguments", t => {
   const fd = new FormData()
 
-  // @ts-ignore
+  // @ts-expect-error
   const trap = () => fd.append("field")
 
   t.throws<TypeError>(trap, {
@@ -717,6 +726,8 @@ test(
 
     const trap = () => fd.append("field", "Some value", "field.txt")
 
+    // TODO: Update this error message.
+    // TODO: Should throw: Failed to execute 'append' on 'FormData': parameter 2 is not of type 'Blob'.
     t.throws<TypeError>(trap, {
       instanceOf: TypeError,
       message: "Failed to execute 'append' on 'FormData': "

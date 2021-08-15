@@ -23,7 +23,7 @@ test("Takes the lastModified value from options", t => {
 })
 
 test("Throws TypeError when constructed with less than 2 arguments", t => {
-  // @ts-ignore
+  // @ts-expect-error
   const trap = () => new File(["Some content"])
 
   t.throws(trap, {
@@ -34,7 +34,7 @@ test("Throws TypeError when constructed with less than 2 arguments", t => {
 })
 
 test("Throws TypeError when constructed without arguments", t => {
-  // @ts-ignore
+  // @ts-expect-error
   const trap = () => new File()
 
   t.throws(trap, {
