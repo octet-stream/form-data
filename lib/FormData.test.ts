@@ -373,15 +373,12 @@ test(
   t => {
     const fd = new FormData()
 
-    // TODO: Update this error message.
-    // TODO: Should throw: Failed to execute 'append' on 'FormData': parameter 2 is not of type 'Blob'.
     const trap = () => fd.set("field", "Some value", "field.txt")
 
     t.throws<TypeError>(trap, {
       instanceOf: TypeError,
       message: "Failed to execute 'set' on 'FormData': "
-        + "parameter 2 is not one of the following types: "
-        + "ReadStream | Buffer | File | Blob"
+        + "parameter 2 is not of type 'Blob'."
     })
   }
 )
@@ -408,13 +405,10 @@ test(
 
     const trap = () => fd.append("field", "Some value", "field.txt")
 
-    // TODO: Update this error message.
-    // TODO: Should throw: Failed to execute 'append' on 'FormData': parameter 2 is not of type 'Blob'.
     t.throws<TypeError>(trap, {
       instanceOf: TypeError,
       message: "Failed to execute 'append' on 'FormData': "
-        + "parameter 2 is not one of the following types: "
-        + "ReadStream | Buffer | File | Blob"
+        + "parameter 2 is not of type 'Blob'."
     })
   }
 )

@@ -77,8 +77,7 @@ export class FormData {
     } else if (filename) { // If a value is not a file-like, but the filename is present, then throw the error
       throw new TypeError(
         `Failed to execute '${methodName}' on 'FormData': `
-          + "parameter 2 is not one of the following types: "
-          + "ReadStream | Buffer | File | Blob"
+          + "parameter 2 is not of type 'Blob'."
       )
     } else {
       // A non-file fields must be converted to string
