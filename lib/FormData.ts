@@ -1,56 +1,12 @@
-import {Readable} from "stream"
-import {basename} from "path"
 import {inspect} from "util"
-
-import {FormDataEncoder} from "form-data-encoder"
 
 import {File} from "./File"
 
-import {fileFromPathSync} from "./fileFromPath"
-
-import {
-  deprecateBoundary,
-  deprecateHeaders,
-  deprecateStream,
-  deprecateBuffer,
-  deprecateReadStream,
-  deprecateOptions,
-  deprecateGetComputedLength,
-  deprecateSymbolAsyncIterator
-} from "./util/deprecations"
-
 import isFile from "./util/isFile"
-import isPlainObject from "./util/isPlainObject"
-import isReadStream from "./util/isReadStream"
-import getFilename from "./util/getFilename"
-
-const {isBuffer} = Buffer
 
 export type FormDataFieldValue = string | File
 
 type FormDataFieldValues = [FormDataFieldValue, ...FormDataFieldValue[]]
-
-/**
- * Additional field options.
- *
- * @deprecated The options argument is non-standard and will be removed from this package in the next major release (4.x).
- */
-export interface FormDataFieldOptions {
-  /**
-   * Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
-   */
-  type?: string
-
-  /**
-   * The last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
-   */
-  lastModified?: number,
-
-  /**
-   * The name of the file.
-   */
-  filename?: string
-}
 
 /**
  * Private options for FormData#setField() method
@@ -58,9 +14,8 @@ export interface FormDataFieldOptions {
 interface FormDataSetFieldOptions {
   name: string
   value: unknown
+  filename?: string
   append: boolean
-  filenameOrOptions?: string | FormDataFieldOptions
-  options?: FormDataFieldOptions
   argsLength: number
 }
 
@@ -71,7 +26,6 @@ export type FormDataConstructorEntries = Array<{
   name: string,
   value: unknown,
   filename?: string
-  options?: FormDataFieldOptions
 }>
 
 /**
@@ -81,60 +35,15 @@ export type FormDataConstructorEntries = Array<{
  * However, if your HTTP client does not support FormData, you can use [`form-data-encoder`](https://npmjs.com/package/form-data-encoder) package to handle "multipart/form-data" encoding.
  */
 export class FormData {
-  // TODO: Remove this along with FormData#stream getter in 4.x
-  #stream!: Readable
-
-  #encoder: FormDataEncoder
-
-  /**
-   * Returns headers for multipart/form-data
-   *
-   * @deprecated FormData#headers property is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
-   */
-  // TODO: Remove FormData#headers in v4
-  get headers() {
-    deprecateHeaders()
-
-    return this.#encoder.headers
-  }
-
-  /**
-   * Returns internal readable stream, allowing to read the FormData content
-   *
-   * @deprecated FormData#stream property is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
-   */
-  // TODO: Remove FormData#stream in v4
-  get stream() {
-    deprecateStream()
-
-    if (!this.#stream) {
-      this.#stream = Readable.from(this)
-    }
-
-    return this.#stream
-  }
-
-  /**
-   * @deprecated FormData#boundary property is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
-   */
-  // TODO: Remove FormData#boundary in v4
-  get boundary(): string {
-    deprecateBoundary()
-
-    return this.#encoder.boundary
-  }
-
   /**
    * Stores internal data for every field
    */
   readonly #content = new Map<string, FormDataFieldValues>()
 
   constructor(entries?: FormDataConstructorEntries) {
-    this.#encoder = new FormDataEncoder(this)
-
     if (entries) {
-      entries.forEach(({name, value, filename, options}) => this.append(
-        name, value, filename, options
+      entries.forEach(({name, value, filename}) => this.append(
+        name, value, filename
       ))
     }
   }
@@ -143,36 +52,12 @@ export class FormData {
     name,
     value,
     append,
-    filenameOrOptions,
-    options,
+    filename,
     argsLength
   }: FormDataSetFieldOptions): void {
     const methodName = append ? "append" : "set"
 
     name = String(name)
-
-    // TODO: Remove this message in v4 along with the Buffer support in value argument.
-    if (Buffer.isBuffer(value)) {
-      deprecateBuffer()
-    }
-
-    // TODO: Remove this message in v4 along with ReadStream support in value argument.
-    if (isReadStream(value)) {
-      deprecateReadStream()
-    }
-
-    // Normalize options and filename
-    let filename: string | undefined
-    if (isPlainObject(filenameOrOptions)) {
-      [options, filename] = [filenameOrOptions, undefined]
-    } else {
-      filename = filenameOrOptions
-    }
-
-    // TODO: Remove this message in v4 along with the options argument.
-    if (isPlainObject(options)) {
-      deprecateOptions()
-    }
 
     // FormData required at least 2 arguments to be set.
     if (argsLength < 2) {
@@ -182,37 +67,19 @@ export class FormData {
       )
     }
 
-    // Get a filename from either an argument or options
-    filename ||= options?.filename
-
-    // If a value is a file-like object, then get and normalize the filename
-    if (isFile(value) || isReadStream(value) || isBuffer(value)) {
-      // Note that the user-defined filename has higher precedence
-      filename = basename(filename || getFilename(value))
+    // Normalize field's value
+    if (isFile(value)) {
+      // Take params from the previous File or Blob instance
+      value = new File([value], filename || value.name || "blob", {
+        type: value.type,
+        lastModified: value.lastModified
+      })
     } else if (filename) { // If a value is not a file-like, but the filename is present, then throw the error
       throw new TypeError(
         `Failed to execute '${methodName}' on 'FormData': `
           + "parameter 2 is not one of the following types: "
           + "ReadStream | Buffer | File | Blob"
       )
-    }
-
-    // Normalize field's value
-    if (isReadStream(value)) {
-      // TODO: Remove ReadStream support in favour of fileFromPath and fileFromPathSync
-      value = fileFromPathSync(String(value.path), filename, options)
-    } else if (isBuffer(value)) {
-      // TODO: Remove Buffer in a field's value support in favour of Blob.
-      value = new File([value], filename!, options)
-    } else if (isFile(value)) {
-      value = new File([value], filename!, {
-        ...options,
-
-        // Take params from the previous File or Blob instance
-        // But keep user-defined options higher percidence
-        type: options?.type || value.type,
-        lastModified: options?.lastModified || value.lastModified
-      })
     } else {
       // A non-file fields must be converted to string
       value = String(value)
@@ -234,18 +101,6 @@ export class FormData {
   }
 
   /**
-   * Returns computed length of the FormData content.
-   *
-   * @deprecated FormData#getComputedLength() method is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
-   */
-  // TODO: Remove FormData#getComputedLength() in v4
-  getComputedLength(): number {
-    deprecateGetComputedLength()
-
-    return this.#encoder.getContentLength()
-  }
-
-  /**
    * Appends a new value onto an existing key inside a FormData object,
    * or adds the key if it does not already exist.
    *
@@ -257,30 +112,11 @@ export class FormData {
    * @param filename A filename of given field.
    * @param options Additional field options.
    */
-  append(name: string, value: unknown): void
-  append(name: string, value: unknown, filename?: string): void
-  append(
-    name: string,
-    value: unknown,
-    options?: FormDataFieldOptions & {filename?: string}
-  ): void
-  append(
-    name: string,
-    value: unknown,
-    filename?: string,
-    options?: FormDataFieldOptions
-  ): void
-  append(
-    name: string,
-    value: unknown,
-    filenameOrOptions?: string | FormDataFieldOptions,
-    options?: FormDataFieldOptions
-  ): void {
+  append(name: string, value: unknown, filename?: string): void {
     return this.#setField({
       name,
       value,
-      filenameOrOptions,
-      options,
+      filename,
       append: true,
       argsLength: arguments.length
     })
@@ -299,30 +135,11 @@ export class FormData {
    * @param options Additional field options.
    *
    */
-  set(name: string, value: unknown): void
-  set(name: string, value: unknown, filename?: string): void
-  set(
-    name: string,
-    value: unknown,
-    options?: FormDataFieldOptions & {filename?: string}
-  ): void
-  set(
-    name: string,
-    value: unknown,
-    filename?: string,
-    options?: FormDataFieldOptions
-  ): void
-  set(
-    name: string,
-    value: unknown,
-    filenameOrOptions?: string | FormDataFieldOptions,
-    options?: FormDataFieldOptions
-  ): void {
+  set(name: string, value: unknown, filename?: string): void {
     return this.#setField({
       name,
       value,
-      filenameOrOptions,
-      options,
+      filename,
       append: false,
       argsLength: arguments.length
     })
@@ -357,7 +174,7 @@ export class FormData {
       return []
     }
 
-    return [...field]
+    return field.slice()
   }
 
   /**
@@ -438,18 +255,5 @@ export class FormData {
 
   [inspect.custom](): string {
     return this[Symbol.toStringTag]
-  }
-
-  /**
-   * Returns an async iterator allowing to read form-data body using **for-await-of** syntax.
-   * Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
-   *
-   * @deprecated FormData#[Symbol.asyncIterator]() method is non-standard and will be removed from this package in the next major release (4.x). Use https://npmjs.com/form-data-encoder package to serilize FormData.
-   */
-  // TODO: Remove FormData#[Symbol.asyncIterator]() in v4
-  async* [Symbol.asyncIterator](): AsyncGenerator<Uint8Array, void, undefined> {
-    deprecateSymbolAsyncIterator()
-
-    yield* this.#encoder.encode()
   }
 }

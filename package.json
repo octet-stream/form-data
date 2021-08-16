@@ -75,7 +75,6 @@
   },
   "dependencies": {
     "fetch-blob": "2.1.2",
-    "form-data-encoder": "1.4.3",
     "node-domexception": "1.0.0"
   }
 }
