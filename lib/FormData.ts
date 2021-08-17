@@ -1,8 +1,7 @@
 import {inspect} from "util"
 
 import {File} from "./File"
-
-import isFile from "./util/isFile"
+import {isFile} from "./isFile"
 
 export type FormDataFieldValue = string | File
 

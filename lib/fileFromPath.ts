@@ -5,7 +5,7 @@ import DOMException from "node-domexception"
 
 import {File, FileLike, FileOptions} from "./File"
 
-import isPlainObject from "./util/isPlainObject"
+import isPlainObject from "./isPlainObject"
 
 const MESSAGE = "The requested file could not be read, "
   + "typically due to permission problems that have occurred after a reference "

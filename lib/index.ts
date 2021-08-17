@@ -1,5 +1,4 @@
-export {default as isFileLike} from "./util/isFile"
-
 export * from "./File"
+export * from "./isFile"
 export * from "./fileFromPath"
 export * from "./FormData"
