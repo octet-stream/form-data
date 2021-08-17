@@ -35,9 +35,9 @@ export type FormDataConstructorEntries = Array<{
  */
 export class FormData {
   /**
-   * Stores internal data for every field
+   * Stores internal data for every entry
    */
-  readonly #content = new Map<string, FormDataFieldValues>()
+  readonly #entries = new Map<string, FormDataFieldValues>()
 
   constructor(entries?: FormDataConstructorEntries) {
     if (entries) {
@@ -83,15 +83,15 @@ export class FormData {
       value = String(value)
     }
 
-    const values = this.#content.get(name)
+    const values = this.#entries.get(name)
 
     if (!values) {
-      return void this.#content.set(name, [value as FormDataFieldValue])
+      return void this.#entries.set(name, [value as FormDataFieldValue])
     }
 
     // Replace a value of the existing field if "set" called
     if (!append) {
-      return void this.#content.set(name, [value as FormDataFieldValue])
+      return void this.#entries.set(name, [value as FormDataFieldValue])
     }
 
     // Append a new value to the existing field
@@ -150,7 +150,7 @@ export class FormData {
    * @param {string} name A name of the value you want to retrieve.
    */
   get(name: string): FormDataFieldValue | null {
-    const field = this.#content.get(String(name))
+    const field = this.#entries.get(String(name))
 
     if (!field) {
       return null
@@ -166,7 +166,7 @@ export class FormData {
    * @param {string} name A name of the value you want to retrieve.
    */
   getAll(name: string): FormDataFieldValue[] {
-    const field = this.#content.get(String(name))
+    const field = this.#entries.get(String(name))
 
     if (!field) {
       return []
@@ -183,7 +183,7 @@ export class FormData {
    * @return
    */
   has(name: string): boolean {
-    return this.#content.has(String(name))
+    return this.#entries.has(String(name))
   }
 
   /**
@@ -192,14 +192,14 @@ export class FormData {
    * @param name The name of the key you want to delete.
    */
   delete(name: string): void {
-    return void this.#content.delete(String(name))
+    return void this.#entries.delete(String(name))
   }
 
   /**
    * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** keys
    */
   * keys(): Generator<string> {
-    for (const key of this.#content.keys()) {
+    for (const key of this.#entries.keys()) {
       yield key
     }
   }
