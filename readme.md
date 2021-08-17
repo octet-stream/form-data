@@ -53,6 +53,7 @@ import {Readable} from "stream"
 import {FormDataEncoder} from "form-data-encoder"
 import {FormData} from "formdata-node"
 
+// Note that `node-fetch` >= 3.x have builtin support for spec-compliant FormData, sou you'll only need the `form-data-encoder` if you use `node-fetch` <= 2.x.
 import fetch from "node-fetch"
 
 const form = new FormData()
@@ -92,21 +93,21 @@ import {FormData} from "formdata-node"
 
 import Blob from "fetch-blob"
 
-const fd = new FormData()
+const form = new FormData()
 const blob = new Blob(["Some content"], {type: "text/plain"})
 
-fd.set("blob", blob)
+form.set("blob", blob)
 
 // Will always be returned as `File`
-let file = fd.get("blob")
+let file = form.get("blob")
 
 // The created file has "blob" as the name by default
 console.log(file.name) // -> blob
 
 // To change that, you need to set filename argument manually
-fd.set("file", blob, "some-file.txt")
+form.set("file", blob, "some-file.txt")
 
-file = fd.get("file")
+file = form.get("file")
 
 console.log(file.name) // -> some-file.txt
 ```
@@ -118,11 +119,11 @@ import {FormData, fileFromPath} from "formdata-node"
 
 import fetch from "node-fetch"
 
-const fd = new FormData()
+const form = new FormData()
 
-fd.set("file", await fileFromPath("/path/to/a/file"))
+form.set("file", await fileFromPath("/path/to/a/file"))
 
-await fetch("https://httpbin.org/post", {method: "post", body: fd})
+await fetch("https://httpbin.org/post", {method: "post", body: form})
 ```
 
 6. You can still use files sourced from any stream, but unlike in v2 you'll need some extra work to achieve that:
@@ -158,11 +159,11 @@ const stream = new Readable({
   }
 })
 
-const fd = new FormData()
+const form = new FormData()
 
-fd.set("stream", new BlobFromStream(stream, content.length), "file.txt")
+form.set("stream", new BlobFromStream(stream, content.length), "file.txt")
 
-await fetch("https://httpbin.org/post", {method: "post", body: fd})
+await fetch("https://httpbin.org/post", {method: "post", body: form})
 ```
 
 7. Note that if you don't know the length of that stream, you'll also need to handle form-data encoding manually or use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) package. This is necessary to control which headers will be sent with your HTTP request:
@@ -173,10 +174,10 @@ import {Readable} from "stream"
 import {Encoder} from "form-data-encoder"
 import {FormData} from "formdata-node"
 
-const fd = new FormData()
+const form = new FormData()
 
 // You can use file-shaped or blob-shaped objects as FormData value instead of creating separate class
-fd.set("stream", {
+form.set("stream", {
   type: "text/plain",
   name: "file.txt",
   [Symbol.toStringTag]: "File",
@@ -185,7 +186,7 @@ fd.set("stream", {
   }
 })
 
-const encoder = new Encoder(fd)
+const encoder = new Encoder(form)
 
 const options = {
   method: "post",
@@ -195,7 +196,7 @@ const options = {
   body: Readable.from(encoder)
 }
 
-await fetch("https://httpbin.org/post", {method: "post", body: fd})
+await fetch("https://httpbin.org/post", {method: "post", body: form})
 ```
 
 ## API
