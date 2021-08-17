@@ -20,7 +20,9 @@
   "types": "./@type/index.d.ts",
   "typesVersions": {
     "*": {
-      "file-from-path": ["@type/fileFromPath.d.ts"]
+      "file-from-path": [
+        "@type/fileFromPath.d.ts"
+      ]
     }
   },
   "exports": {
