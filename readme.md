@@ -79,7 +79,7 @@ import {FormData, File} from "formdata-node"
 import fetch from "node-fetch"
 
 const form = new FormData()
-const file = new File(["My hovercraft is full of eels"], "hovercraft.txt")
+const file = new File(["My hovercraft is full of eels"], "file.txt")
 
 form.set("file", file)
 
