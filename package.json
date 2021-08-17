@@ -18,16 +18,27 @@
   "module": "./lib/esm/index.js",
   "browser": "./lib/cjs/browser.js",
   "types": "./@type/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "file-from-path": ["@type/fileFromPath.d.ts"]
+    }
+  },
   "exports": {
-    "node": {
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js"
+    ".": {
+      "node": {
+        "import": "./lib/esm/index.js",
+        "require": "./lib/cjs/index.js"
+      },
+      "browser": {
+        "import": "./lib/esm/browser.js",
+        "require": "./lib/cjs/browser.js"
+      },
+      "default": "./lib/esm/index.js"
     },
-    "browser": {
-      "import": "./lib/esm/browser.js",
-      "require": "./lib/cjs/browser.js"
-    },
-    "default": "./lib/esm/index.js"
+    "./file-from-path": {
+      "import": "./lib/esm/fileFromPath.js",
+      "require": "./lib/cjs/fileFromPath.js"
+    }
   },
   "engines": {
     "node": ">= 12.4"
