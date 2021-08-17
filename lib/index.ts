@@ -1,3 +1,2 @@
-export * from "./File"
-export * from "./isFile"
 export * from "./FormData"
+export * from "./File"

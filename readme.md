@@ -74,7 +74,7 @@ await fetch("https://httpbin.org/post", options)
 3. Sending files over form-data:
 
 ```js
-import {FormData, File} from "formdata-node"
+import {FormData, File} from "formdata-node" // You can use `File` from fetch-blob >= 3.x
 
 import fetch from "node-fetch"
 
@@ -89,9 +89,7 @@ await fetch("https://httpbin.org/post", {method: "post", body: form})
 4. Blobs as field's values allowed too:
 
 ```js
-import {FormData} from "formdata-node"
-
-import Blob from "fetch-blob"
+import {FormData, Blob} from "formdata-node" // You can use `Blob` from fetch-blob
 
 const form = new FormData()
 const blob = new Blob(["Some content"], {type: "text/plain"})
@@ -115,7 +113,8 @@ console.log(file.name) // -> some-file.txt
 5. You can also append files using `fileFromPath` or `fileFromPathSync` helpers. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
 
 ```js
-import {FormData, fileFromPath} from "formdata-node"
+import {fileFromPath} from "formdata-node/file-from-path"
+import {FormData} from "formdata-node"
 
 import fetch from "node-fetch"
 
@@ -304,6 +303,8 @@ The `File` class provides information about files. The `File` object inherits `B
 
 ### `fileFromPath(path[, filename, options]) -> {Promise<File>}`
 
+Available from `formdata-node/file-from-path` subpath.
+
 Creates a `File` referencing the one on a disk by given path.
 
   - **{string}** path - Path to a file
@@ -313,6 +314,8 @@ Creates a `File` referencing the one on a disk by given path.
 
 ### `fileFromPathSync(path[, filename, options]) -> {File}`
 
+Available from `formdata-node/file-from-path` subpath.
+
 Creates a `File` referencing the one on a disk by given path. Synchronous version of the `fileFromPath`.
 
   - **{string}** path - Path to a file
@@ -320,9 +323,11 @@ Creates a `File` referencing the one on a disk by given path. Synchronous versio
   - **{object}** [options = {}] - File options.
   - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
 
-### `isFileLike(value) -> {boolean}`
+### `isFile(value) -> {boolean}`
 
-Check if given value is a File, Blob or file-look-a-like object.
+Available from `formdata-node/file-from-path` subpath.
+
+Checks if given value is a File, Blob or file-look-a-like object.
 
   - **{unknown}** value - A value to test
 

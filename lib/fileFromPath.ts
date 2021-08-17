@@ -7,6 +7,8 @@ import {File, FileLike, FileOptions} from "./File"
 
 import isPlainObject from "./isPlainObject"
 
+export * from "./isFile"
+
 const MESSAGE = "The requested file could not be read, "
   + "typically due to permission problems that have occurred after a reference "
   + "to a file was acquired."
