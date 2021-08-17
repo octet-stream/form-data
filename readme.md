@@ -28,66 +28,38 @@ pnpm add formdata-node
 
 ## Usage
 
-This package has its own encoder that allows to read the content from the `FormData` instances into the `multipart/form-data` format. Just use `Symbol.asyncIterator` method to get async iterator or just access `FormData#stream` property to get `Readable` stream. Note that in the next major release both of this methods will be removed in favour of [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder), which is basically the reimplementation of builtin `formdata-node` encoder that was separated from this package to allow to re-use it in different HTTP clients or use it to add some additional logic into the encoding process. See `form-data-encoder` documentation to get more information.
-
 1. Let's take a look at minimal example with [got](https://github.com/sindresorhus/got):
 
 ```js
 import {FormData} from "formdata-node"
 
+// I assume Got >= 12.x is used for this example
 import got from "got"
 
-const fd = new FormData()
+const form = new FormData()
 
-fd.set("greeting", "Hello, World!")
+form.set("greeting", "Hello, World!")
 
-const options = {
-  body: fd.stream, // Set internal stream as request body
-  headers: fd.headers // Set headers of the current FormData instance
-}
-
-got.post("https://httpbin.org/post", options)
+got.post("https://httpbin.org/post", {body: form})
   .then(res => console.log("Res: ", res.body))
   .catch(err => console.error("Error: ", err))
 ```
 
-2. Because every FormData instance (in this package) has Symbol.asyncIterator method, you can create a stream from it using `Readable.from()`:
+2. If your HTTP client does not support spec-compliant FomrData, you can use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode entries:
 
 ```js
 import {Readable} from "stream"
 
+import {FormDataEncoder} from "form-data-encoder"
 import {FormData} from "formdata-node"
 
 import fetch from "node-fetch"
 
-const fd = new FormData()
+const form = new FormData()
 
-fd.set("field", "Some value")
+form.set("field", "Some value")
 
-const options = {
-  method: "post",
-  headers: fd.headers,
-  body: Readable.from(fd)
-}
-
-await fetch("https://httpbin.org/post", options)
-```
-
-4. Encode entries using form-data-encoder (in cases when HTTP client does not support spec-compatible FormData):
-
-```js
-import {Readable} from "stream"
-
-import {Encoder} from "form-data-encoder"
-import {FormData} from "formdata-node"
-
-import fetch from "node-fetch"
-
-const fd = new FormData()
-
-fd.set("field", "Some value")
-
-const encoder = new Encoder(fd)
+const encoder = new FormDataEncoder(form)
 
 const options = {
   method: "post",
@@ -98,57 +70,22 @@ const options = {
 await fetch("https://httpbin.org/post", options)
 ```
 
-4. Sending files over form-data:
-
-```js
-import {createReadStream} from "fs"
-
-import {FormData} from "formdata-node"
-
-// I assume that there's node-fetch@3 is used for this example since it has formdata-node support out of the box
-// Note that they still in beta.
-import fetch from "node-fetch"
-
-const fd = new FormData()
-
-fd.set("file", createReadStream("/path/to/a/file"))
-
-// Just like that, you can send a file with formdata-node
-await fetch("https://httpbin.org/post", {method: "post", body: fd})
-```
-
-5. You can also append files using `fileFromPath` or `fileFromPathSync` helpers. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
-
-```js
-import {FormData, fileFromPath} from "formdata-node"
-
-import fetch from "node-fetch"
-
-const fd = new FormData()
-
-fd.set("file", await fileFromPath("/path/to/a/file"))
-
-await fetch("https://httpbin.org/post", {method: "post", body: fd})
-```
-
-**Note that this method is preferable over the `fs.createReadStream()` and will be the only option (along with its async version) in next major release.**
-
-6. And of course you can create your own File manually – formdata-node gets you covered. It has a `File` object that inherits `Blob` from [`fetch-blob`](https://github.com/node-fetch/fetch-blob) package:
+3. Sending files over form-data:
 
 ```js
 import {FormData, File} from "formdata-node"
 
 import fetch from "node-fetch"
 
-const fd = new FormData()
+const form = new FormData()
 const file = new File(["My hovercraft is full of eels"], "hovercraft.txt")
 
-fd.set("file", file)
+form.set("file", file)
 
-await fetch("https://httpbin.org/post", {method: "post", body: fd})
+await fetch("https://httpbin.org/post", {method: "post", body: form})
 ```
 
-7. Blobs as field's values allowed too:
+4. Blobs as field's values allowed too:
 
 ```js
 import {FormData} from "formdata-node"
@@ -174,7 +111,21 @@ file = fd.get("file")
 console.log(file.name) // -> some-file.txt
 ```
 
-8. You can still use files sourced from any stream, but unlike in v2 you'll need some extra work to achieve that:
+5. You can also append files using `fileFromPath` or `fileFromPathSync` helpers. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
+
+```js
+import {FormData, fileFromPath} from "formdata-node"
+
+import fetch from "node-fetch"
+
+const fd = new FormData()
+
+fd.set("file", await fileFromPath("/path/to/a/file"))
+
+await fetch("https://httpbin.org/post", {method: "post", body: fd})
+```
+
+6. You can still use files sourced from any stream, but unlike in v2 you'll need some extra work to achieve that:
 
 ```js
 import {Readable} from "stream"
@@ -214,7 +165,7 @@ fd.set("stream", new BlobFromStream(stream, content.length), "file.txt")
 await fetch("https://httpbin.org/post", {method: "post", body: fd})
 ```
 
-9. Note that if you don't know the length of that stream, you'll also need to handle form-data encoding manually or use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) package. This is necessary to control which headers will be sent with your HTTP request:
+7. Note that if you don't know the length of that stream, you'll also need to handle form-data encoding manually or use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) package. This is necessary to control which headers will be sent with your HTTP request:
 
 ```js
 import {Readable} from "stream"
@@ -260,58 +211,29 @@ Creates a new FormData instance
     with "name", "value" and "filename" props.
     See the [FormData#append()](#appendname-value-filename---void) for more info about the available format.
 
-#### Instance properties
-
-##### `boundary -> {string}`
-
-Returns a boundary string of the current `FormData` instance. Read-only property.
-
-##### `stream -> {stream.Readable}`
-
-**Deprecated!** This property will be removed in 4.x version. Use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode FormData into `multipart/form-data` format in case if your HTTP client does not support spec-compatible FormData implementations.
-
-Returns an internal Readable stream. Use it to send queries, but don't push
-anything into it. Read-only property.
-
-##### `headers -> {object}`
-
-**Deprecated!** This property will be removed in 4.x version. Use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode FormData into `multipart/form-data` format in case if your HTTP client does not support spec-compatible FormData implementations.
-
-Returns object with `Content-Type` header. Read-only property.
-
 #### Instance methods
 
-##### `set(name, value[, filename, options]) -> {void}`
+##### `set(name, value[, filename]) -> {void}`
 
 Set a new value for an existing key inside **FormData**,
 or add the new field if it does not already exist.
 
   - **{string}** name – The name of the field whose data is contained in **value**
-  - **{unknown}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`),
-    [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`ReadStream`](https://nodejs.org/dist/latest/docs/api/fs.html#fs_class_fs_readstream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+  - **{unknown}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
-  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
-  - **{object}** [object = {}] - Additional field options
-  - **{string}** [object.filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
-  - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
-  - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
+  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `File` and `Blob`.
 
-##### `append(name, value[, filename, options]) -> {void}`
+##### `append(name, value[, filename]) -> {void}`
 
 Appends a new value onto an existing key inside a FormData object,
 or adds the key if it does not already exist.
 
   - **{string}** name – The name of the field whose data is contained in **value**
-  - **{unknown}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`),
-    [`Buffer`](https://nodejs.org/api/buffer.html#buffer_buffer), [`ReadStream`](https://nodejs.org/dist/latest/docs/api/fs.html#fs_class_fs_readstream), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+  - **{unknown}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
     Note that Arrays and Object will be converted to **string** by using **String** function.
-  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
-  - **{object}** [object = {}] - Additional field options
-  - **{string}** [object.filename = undefined] – A filename of given field. Can be added only for `Buffer`, `File`, `Blob`  and `ReadStream`. You can set it either from and argument or options.
-  - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
-  - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
+  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `File` and `Blob`.
 
 ##### `get(name) -> {string | File}`
 
@@ -339,12 +261,6 @@ Deletes a key and its value(s) from a `FormData` object.
 
   - **{string}** name – The name of the key you want to delete.
 
-##### `getComputedLength() -> {number}`
-
-**Deprecated!** This property will be removed in 4.x version. Use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode FormData into `multipart/form-data` format in case if your HTTP client does not support spec-compatible FormData implementations.
-
-Returns computed length of the FormData content.
-
 ##### `forEach(callback[, ctx]) -> {void}`
 
 Executes a given **callback** for each field of the FormData instance
@@ -371,20 +287,13 @@ Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/
 
 An alias for [`FormData#entries()`](#entries---iterator)
 
-##### `[Symbol.asyncIterator]() -> {AsyncGenerator<Buffer>}`
-
-**Deprecated!** This property will be removed in 4.x version. Use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode FormData into `multipart/form-data` format in case if your HTTP client does not support spec-compatible FormData implementations.
-
-Returns an async iterator allowing to read form-data body using **for-await-of** syntax.
-Read the [`async iteration proposal`](https://github.com/tc39/proposal-async-iteration) to get more info about async iterators.
-
 ### `class File extends Blob`
 
 ##### `constructor(blobParts, filename[, options]) -> {File}`
 
 The `File` class provides information about files. The `File` object inherits `Blob` from [`fetch-blob`](https://github.com/bitinn/fetch-blob) package.
 
-  - **{(ArrayBufferLike | ArrayBufferView | Blob | Buffer | string)[]}** blobParts
+  - **{(ArrayBufferLike | ArrayBufferView | Blob | string)[]}** blobParts
   - **{string}** filename – Representing the file name.
   - **{object}** [options = {}] - An options object containing optional attributes for the file. Available options are as follows
   - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
@@ -420,7 +329,7 @@ Check if given value is a File, Blob or file-look-a-like object.
 - [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File) documentation on MDN
 - [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) documentation on MDN
 - [`formdata-polyfill`](https://github.com/jimmywarting/FormData) HTML5 `FormData` for Browsers & NodeJS.
-- [`fetch-blob`](https://github.com/bitinn/fetch-blob) a Blob implementation on node.js, originally from node-fetch.
+- [`fetch-blob`](https://github.com/node-fetch/fetch-blob) a Blob implementation on node.js, originally from node-fetch.
 - [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) - Encoder for multipart/form-data
 - [`then-busboy`](https://github.com/octet-stream/then-busboy) a promise-based wrapper around Busboy. Process multipart/form-data content and returns it as a single object. Will be helpful to handle your data on the server-side applications.
 - [`@octetstream/object-to-form-data`](https://github.com/octet-stream/object-to-form-data) converts JavaScript object to FormData.
