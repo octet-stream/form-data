@@ -102,13 +102,12 @@ export class FormData {
    * Appends a new value onto an existing key inside a FormData object,
    * or adds the key if it does not already exist.
    *
-   * @param name The name of the field whose data is contained in value
-   * @param value The field value. You can pass any primitive type
-   *   (including null and undefined), Buffer or Readable stream.
-   *   Note that Arrays and Object will be converted to string
-   *   by using String function.
-   * @param filename A filename of given field.
-   * @param options Additional field options.
+   * The difference between `set()` and `append()` is that if the specified key already exists, `set()` will overwrite all existing values with the new one, whereas `append()` will append the new value onto the end of the existing set of values.
+   *
+   * @param name The name of the field whose data is contained in `value`.
+   * @param value The field's value. This can be [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+    or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File). If none of these are specified the value is converted to a string.
+   * @param filename The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
    */
   append(name: string, value: unknown, filename?: string): void {
     return this.#setEntry({
@@ -124,13 +123,10 @@ export class FormData {
    * Set a new value for an existing key inside FormData,
    * or add the new field if it does not already exist.
    *
-   * @param name The name of the field whose data is contained in value
-   * @param value The field value. You can pass any primitive type
-   *   (including null and undefined), Buffer or Readable stream.
-   *   Note that Arrays and Object will be converted to string
-   *   by using String function.
-   * @param filename A filename of given field.
-   * @param options Additional field options.
+   * @param name The name of the field whose data is contained in `value`.
+   * @param value The field's value. This can be [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+    or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File). If none of these are specified the value is converted to a string.
+   * @param filename The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
    *
    */
   set(name: string, value: unknown, filename?: string): void {
@@ -144,10 +140,12 @@ export class FormData {
   }
 
   /**
-   * Returns the first value associated with the given name.
-   * Buffer and Readable values will be returned as-is.
+   * Returns the first value associated with a given key from within a `FormData` object.
+   * If you expect multiple values and want all of them, use the `getAll()` method instead.
    *
    * @param {string} name A name of the value you want to retrieve.
+   *
+   * @returns A `FormDataEntryValue` containing the value. If the key doesn't exist, the method returns null.
    */
   get(name: string): FormDataEntryValue | null {
     const field = this.#entries.get(String(name))
@@ -160,10 +158,11 @@ export class FormData {
   }
 
   /**
-   * Returns all the values associated with
-   * a given key from within a FormData object.
+   * Returns all the values associated with a given key from within a `FormData` object.
    *
    * @param {string} name A name of the value you want to retrieve.
+   *
+   * @returns An array of `FormDataEntryValue` whose key matches the value passed in the `name` parameter. If the key doesn't exist, the method returns an empty list.
    */
   getAll(name: string): FormDataEntryValue[] {
     const field = this.#entries.get(String(name))
@@ -176,18 +175,18 @@ export class FormData {
   }
 
   /**
-   * Check if a field with the given name exists inside FormData.
+   * Returns a boolean stating whether a `FormData` object contains a certain key.
    *
-   * @param name A name of the field you want to test for.
+   * @param name A string representing the name of the key you want to test for.
    *
-   * @return
+   * @return A boolean value.
    */
   has(name: string): boolean {
     return this.#entries.has(String(name))
   }
 
   /**
-   * Deletes a key and its value(s) from a FormData object.
+   * Deletes a key and its value(s) from a `FormData` object.
    *
    * @param name The name of the key you want to delete.
    */
@@ -196,7 +195,8 @@ export class FormData {
   }
 
   /**
-   * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** keys
+   * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through all keys contained in this `FormData` object.
+   * Each key is a `string`.
    */
   * keys(): Generator<string> {
     for (const key of this.#entries.keys()) {
@@ -205,7 +205,8 @@ export class FormData {
   }
 
   /**
-   * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** key/value pairs
+   * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the `FormData` key/value pairs.
+   * The key of each pair is a string; the value is a [`FormDataValue`](https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue).
    */
   * entries(): Generator<[string, FormDataEntryValue]> {
     for (const name of this.keys()) {
@@ -219,7 +220,8 @@ export class FormData {
   }
 
   /**
-   * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** values
+   * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through all values contained in this object `FormData` object.
+   * Each value is a [`FormDataValue`](https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue).
    */
   * values(): Generator<FormDataEntryValue> {
     for (const [, value] of this) {

@@ -1,6 +1,6 @@
 # FormData
 
-FormData implementation for Node.js
+Spec-compliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) implementation for Node.js
 
 [![Code Coverage](https://codecov.io/github/octet-stream/form-data/coverage.svg?branch=master)](https://codecov.io/github/octet-stream/form-data?branch=master)
 [![CI](https://github.com/octet-stream/form-data/workflows/CI/badge.svg)](https://github.com/octet-stream/form-data/actions/workflows/ci.yml)
@@ -219,42 +219,41 @@ Creates a new FormData instance
 Set a new value for an existing key inside **FormData**,
 or add the new field if it does not already exist.
 
-  - **{string}** name – The name of the field whose data is contained in **value**
-  - **{unknown}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
-    or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
-    Note that Arrays and Object will be converted to **string** by using **String** function.
-  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `File` and `Blob`.
+  - **{string}** name – The name of the field whose data is contained in `value`.
+  - **{unknown}** value – The field's value. This can be [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+    or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File). If none of these are specified the value is converted to a string.
+  - **{string}** [filename = undefined] – The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
 
 ##### `append(name, value[, filename]) -> {void}`
 
 Appends a new value onto an existing key inside a FormData object,
 or adds the key if it does not already exist.
 
-  - **{string}** name – The name of the field whose data is contained in **value**
-  - **{unknown}** value – The field value. You can pass any JavaScript primitive type (including `null` and `undefined`), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
-    or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
-    Note that Arrays and Object will be converted to **string** by using **String** function.
-  - **{string}** [filename = undefined] – A filename of given field. Can be added only for `File` and `Blob`.
+The difference between `set()` and `append()` is that if the specified key already exists, `set()` will overwrite all existing values with the new one, whereas `append()` will append the new value onto the end of the existing set of values.
 
-##### `get(name) -> {string | File}`
+  - **{string}** name – The name of the field whose data is contained in `value`.
+  - **{unknown}** value – The field's value. This can be [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+    or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File). If none of these are specified the value is converted to a string.
+  - **{string}** [filename = undefined] – The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
 
-Returns the first value associated with the given name.
-If the field has `Blob`, `Buffer`, `File` or `ReadStream` value, the File-like object will be returned.
+##### `get(name) -> {FormDataValue}`
+
+Returns the first value associated with a given key from within a `FormData` object.
+If you expect multiple values and want all of them, use the `getAll()` method instead.
 
   - **{string}** name – A name of the value you want to retrieve.
 
-##### `getAll(name) -> {Array<string | File>}`
+##### `getAll(name) -> {Array<FormDataValue>}`
 
-Returns all the values associated with a given key from within a **FormData** object.
-If the field has `Blob`, `Buffer`, `File` or `ReadStream` value, the File-like object will be returned.
+Returns all the values associated with a given key from within a `FormData` object.
 
   - **{string}** name – A name of the value you want to retrieve.
 
 ##### `has(name) -> {boolean}`
 
-Check if a field with the given **name** exists inside **FormData**.
+Returns a boolean stating whether a `FormData` object contains a certain key.
 
-  - **{string}** – A name of the field you want to test for.
+  - **{string}** – A string representing the name of the key you want to test for.
 
 ##### `delete(name) -> {void}`
 
@@ -267,24 +266,27 @@ Deletes a key and its value(s) from a `FormData` object.
 Executes a given **callback** for each field of the FormData instance
 
   - **{function}** callback – Function to execute for each element, taking three arguments:
-    + **{string | File}** value – A value(s) of the current field.
+    + **{FormDataValue}** value – A value(s) of the current field.
     + **{string}** name – Name of the current field.
     + **{FormData}** fd – The FormData instance that **forEach** is being applied to
   - **{unknown}** [ctx = null] – Value to use as **this** context when executing the given **callback**
 
 ##### `keys() -> {Generator<string>}`
 
-Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** keys
+Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through all keys contained in this `FormData` object.
+Each key is a `string`.
 
-##### `values() -> {Generator<string | File>}`
+##### `values() -> {Generator<FormDataValue>}`
 
-Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** values
+Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through all values contained in this object `FormData` object.
+Each value is a [`FormDataValue`](https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue).
 
-##### `entries() -> {Generator<[string, string | File]>}`
+##### `entries() -> {Generator<[string, FormDataValue]>}`
 
-Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** key/value pairs
+Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through key/value pairs contained in this `FormData` object.
+The key of each pair is a string; the value is a [`FormDataValue`](https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue).
 
-##### `[Symbol.iterator]() -> {Generator<[string, string | File]>}`
+##### `[Symbol.iterator]() -> {Generator<[string, FormDataValue]>}`
 
 An alias for [`FormData#entries()`](#entries---iterator)
 
@@ -329,8 +331,10 @@ Check if given value is a File, Blob or file-look-a-like object.
 - [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) documentation on MDN
 - [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File) documentation on MDN
 - [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) documentation on MDN
+- [`FormDataValue`](https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue) documentation on MDN.
 - [`formdata-polyfill`](https://github.com/jimmywarting/FormData) HTML5 `FormData` for Browsers & NodeJS.
-- [`fetch-blob`](https://github.com/node-fetch/fetch-blob) a Blob implementation on node.js, originally from node-fetch.
-- [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) - Encoder for multipart/form-data
+- [`node-fetch`](https://github.com/node-fetch/node-fetch) a light-weight module that brings the Fetch API to Node.js
+- [`fetch-blob`](https://github.com/node-fetch/fetch-blob) a Blob implementation on node.js, originally from `node-fetch`.
+- [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) spec-compliant `multipart/form-data` encoder implementation.
 - [`then-busboy`](https://github.com/octet-stream/then-busboy) a promise-based wrapper around Busboy. Process multipart/form-data content and returns it as a single object. Will be helpful to handle your data on the server-side applications.
 - [`@octetstream/object-to-form-data`](https://github.com/octet-stream/object-to-form-data) converts JavaScript object to FormData.
