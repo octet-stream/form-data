@@ -3,12 +3,12 @@ import {inspect} from "util"
 import {File} from "./File"
 import {isFile} from "./isFile"
 
-export type FormDataFieldValue = string | File
+export type FormDataEntryValue = string | File
 
-type FormDataFieldValues = [FormDataFieldValue, ...FormDataFieldValue[]]
+type FormDataEntryValues = [FormDataEntryValue, ...FormDataEntryValue[]]
 
 /**
- * Private options for FormData#setField() method
+ * Private options for FormData#setEntry() method
  */
 interface FormDataSetFieldOptions {
   name: string
@@ -37,7 +37,7 @@ export class FormData {
   /**
    * Stores internal data for every entry
    */
-  readonly #entries = new Map<string, FormDataFieldValues>()
+  readonly #entries = new Map<string, FormDataEntryValues>()
 
   constructor(entries?: FormDataConstructorEntries) {
     if (entries) {
@@ -47,7 +47,7 @@ export class FormData {
     }
   }
 
-  #setField({
+  #setEntry({
     name,
     value,
     append,
@@ -79,23 +79,23 @@ export class FormData {
           + "parameter 2 is not of type 'Blob'."
       )
     } else {
-      // A non-file fields must be converted to string
+      // A non-file entries must be converted to string
       value = String(value)
     }
 
     const values = this.#entries.get(name)
 
     if (!values) {
-      return void this.#entries.set(name, [value as FormDataFieldValue])
+      return void this.#entries.set(name, [value as FormDataEntryValue])
     }
 
-    // Replace a value of the existing field if "set" called
+    // Replace a value of the existing entry if "set" called
     if (!append) {
-      return void this.#entries.set(name, [value as FormDataFieldValue])
+      return void this.#entries.set(name, [value as FormDataEntryValue])
     }
 
-    // Append a new value to the existing field
-    values.push(value as FormDataFieldValue)
+    // Append a new value to the existing entry
+    values.push(value as FormDataEntryValue)
   }
 
   /**
@@ -111,7 +111,7 @@ export class FormData {
    * @param options Additional field options.
    */
   append(name: string, value: unknown, filename?: string): void {
-    return this.#setField({
+    return this.#setEntry({
       name,
       value,
       filename,
@@ -134,7 +134,7 @@ export class FormData {
    *
    */
   set(name: string, value: unknown, filename?: string): void {
-    return this.#setField({
+    return this.#setEntry({
       name,
       value,
       filename,
@@ -149,7 +149,7 @@ export class FormData {
    *
    * @param {string} name A name of the value you want to retrieve.
    */
-  get(name: string): FormDataFieldValue | null {
+  get(name: string): FormDataEntryValue | null {
     const field = this.#entries.get(String(name))
 
     if (!field) {
@@ -165,7 +165,7 @@ export class FormData {
    *
    * @param {string} name A name of the value you want to retrieve.
    */
-  getAll(name: string): FormDataFieldValue[] {
+  getAll(name: string): FormDataEntryValue[] {
     const field = this.#entries.get(String(name))
 
     if (!field) {
@@ -207,7 +207,7 @@ export class FormData {
   /**
    * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** key/value pairs
    */
-  * entries(): Generator<[string, FormDataFieldValue]> {
+  * entries(): Generator<[string, FormDataEntryValue]> {
     for (const name of this.keys()) {
       const values = this.getAll(name)
 
@@ -221,7 +221,7 @@ export class FormData {
   /**
    * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the **FormData** values
    */
-  * values(): Generator<FormDataFieldValue> {
+  * values(): Generator<FormDataEntryValue> {
     for (const [, value] of this) {
       yield value
     }
@@ -238,7 +238,7 @@ export class FormData {
    * Executes given callback function for each field of the FormData instance
    */
   forEach(
-    fn: (value: FormDataFieldValue, key: string, fd: FormData) => void,
+    fn: (value: FormDataEntryValue, key: string, fd: FormData) => void,
 
     ctx?: unknown
   ): void {
