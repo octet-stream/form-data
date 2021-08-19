@@ -28,7 +28,7 @@ jobs:
   ci:
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu-latest, macOS-latest, windows-latest]
         node: [12.x, 14.x, 16.x]
     runs-on: ${{ matrix.os }}
     steps:
@@ -44,11 +44,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.node }}-
 
-      - uses: actions/setup-node@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
 
-      - name: pnpm setup
+      - name: Setup pnpm
         uses: pnpm/action-setup@v2.0.1
         with:
           version: 6.2.1
@@ -56,7 +57,7 @@ jobs:
 
       - run: pnpm run ci
 
-      - name: Codecov
+      - name: Upload codecov report
         uses: codecov/codecov-action@v1
         if: matrix.node == '16.x' && matrix.os == 'ubuntu-latest'
         with:
