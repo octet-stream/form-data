@@ -51,7 +51,7 @@ export class File extends Blob implements FileLike {
   /**
    * The last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
    */
-  readonly #lastModified: number
+  readonly #lastModified: number = 0
 
   /**
    * Creates a new File instance.
@@ -63,7 +63,7 @@ export class File extends Blob implements FileLike {
   constructor(
     fileBits: unknown[],
     name: string,
-    options: FileOptions = {}
+    options: FileOptions = {lastModified: Date.now()}
   ) {
     super(fileBits as any[], options)
 
@@ -75,7 +75,11 @@ export class File extends Blob implements FileLike {
     }
 
     this.#name = String(name)
-    this.#lastModified = options.lastModified || Date.now()
+
+    const lastModified = Number(options.lastModified)
+    if (!Number.isNaN(lastModified)) {
+      this.#lastModified = lastModified
+    }
   }
 
   get name() {

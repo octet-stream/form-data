@@ -47,6 +47,27 @@ test("Takes the lastModified value from options", t => {
   t.is(file.lastModified, expected)
 })
 
+test("Interpretes null value in lastModified option as 0", t => {
+  const file = new File(["Some content"], "file.txt", {lastModified: null})
+
+  t.is(file.lastModified, 0)
+})
+
+test("Interpretes NaN value in lastModified option as 0", t => {
+  t.plan(3)
+
+  const values = ["Not a Number", [], {}]
+
+  // I can't really see anything about this in the spec,
+  // but this is how browsers handle type casting for this option...
+  values.forEach(lastModified => {
+    // @ts-expect-error
+    const file = new File(["Some content"], "file.txt", {lastModified})
+
+    t.is(file.lastModified, 0)
+  })
+})
+
 test("Throws TypeError when constructed with less than 2 arguments", t => {
   // @ts-expect-error
   const trap = () => new File(["Some content"])
