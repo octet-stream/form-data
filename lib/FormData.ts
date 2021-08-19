@@ -3,6 +3,8 @@ import {inspect} from "util"
 import {File} from "./File"
 import {isFile} from "./isFile"
 
+import normalizeFilename from "./normalizeFilename"
+
 export type FormDataEntryValue = string | File
 
 type FormDataEntryValues = [FormDataEntryValue, ...FormDataEntryValue[]]
@@ -68,8 +70,12 @@ export class FormData {
 
     // Normalize field's value
     if (isFile(value)) {
+      filename = normalizeFilename(
+        filename === undefined ? value.name : filename
+      )
+
       // Take params from the previous File or Blob instance
-      value = new File([value], filename || value.name || "blob", {
+      value = new File([value], filename, {
         type: value.type,
         lastModified: value.lastModified
       })

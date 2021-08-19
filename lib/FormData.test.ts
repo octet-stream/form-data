@@ -68,6 +68,15 @@ test("User-defined filename has higher precedence", t => {
   t.is((fd.get("file") as File).name, expected)
 })
 
+test("Third argument overrides File.name even if it was set to null", t => {
+  const file = new File(["Some content"], "file.txt")
+  const fd = new FormData()
+
+  fd.set("file", file, null)
+
+  t.is((fd.get("file") as File).name, "null")
+})
+
 test(".set() appends a string field", t => {
   const fd = new FormData()
 
