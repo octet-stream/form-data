@@ -5,6 +5,9 @@ import {isFile} from "./isFile"
 
 import normalizeFilename from "./normalizeFilename"
 
+/**
+ * A `string` or `File` that represents a single value from a set of `FormData` key-value pairs.
+ */
 export type FormDataEntryValue = string | File
 
 type FormDataEntryValues = [FormDataEntryValue, ...FormDataEntryValue[]]
