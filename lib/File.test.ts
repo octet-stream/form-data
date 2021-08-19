@@ -41,7 +41,7 @@ test("The lastModified property keeps its value after being reassigned", t => {
 })
 
 test("Takes the lastModified value from options", t => {
-  const expected = Date.now()
+  const expected = Date.now() + 3000
   const file = new File(["Some content"], "file.txt", {lastModified: expected})
 
   t.is(file.lastModified, expected)
