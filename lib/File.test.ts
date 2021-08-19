@@ -9,10 +9,31 @@ test("Takes a filename as the second argument", t => {
   t.is(file.name, expected)
 })
 
+test("The name property keeps its value after being reassigned", t => {
+  const expected = "file.txt"
+  const file = new File(["Some content"], expected)
+
+  // @ts-expect-error
+  t.notThrows(() => { file.name = "another-file.txt" })
+
+  t.is(file.name, expected)
+})
+
 test("Has the lastModified field", t => {
   const file = new File(["Some content"], "file.txt")
 
   t.is(typeof file.lastModified, "number")
+})
+
+test("The lastModified property keeps its value after being reassigned", t => {
+  const file = new File(["Some content"], "file.txt")
+
+  const {lastModified: expected} = file
+
+  // @ts-expect-error
+  t.notThrows(() => { file.lastModified = Date.now() + 3000 })
+
+  t.is(file.lastModified, expected)
 })
 
 test("Takes the lastModified value from options", t => {
