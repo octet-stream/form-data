@@ -35,7 +35,7 @@ export type FormDataConstructorEntries = Array<{
 /**
  * Provides a way to easily construct a set of key/value pairs representing form fields and their values, which can then be easily sent using fetch().
  *
- * Note that this object is not a part of Node.js, so you might need to check is an HTTP client of your choice support spec-compliant FormData.
+ * Note that this object is not a part of Node.js, so you might need to check if an HTTP client of your choice support spec-compliant FormData.
  * However, if your HTTP client does not support FormData, you can use [`form-data-encoder`](https://npmjs.com/package/form-data-encoder) package to handle "multipart/form-data" encoding.
  */
 export class FormData {
