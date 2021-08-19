@@ -13,8 +13,12 @@ test("The name property keeps its value after being reassigned", t => {
   const expected = "file.txt"
   const file = new File(["Some content"], expected)
 
+  // Browsers don't throw errors in this case,
+  // event though the seem to use the same approach with only getter
+  // to make the property read-only. But in not reassignment will cause an error.
+  // Maybe it's platform specific behaviour?
   // @ts-expect-error
-  t.notThrows(() => { file.name = "another-file.txt" })
+  t.throws(() => { file.name = "another-file.txt" })
 
   t.is(file.name, expected)
 })
@@ -31,7 +35,7 @@ test("The lastModified property keeps its value after being reassigned", t => {
   const {lastModified: expected} = file
 
   // @ts-expect-error
-  t.notThrows(() => { file.lastModified = Date.now() + 3000 })
+  t.throws(() => { file.lastModified = Date.now() + 3000 })
 
   t.is(file.lastModified, expected)
 })
