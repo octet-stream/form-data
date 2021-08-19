@@ -2,11 +2,18 @@ import test from "ava"
 
 import {File} from "./File"
 
-test("Takes a filename as the second argument", t => {
+test("Takes a name as the second argument", t => {
   const expected = "file.txt"
   const file = new File(["Some content"], expected)
 
   t.is(file.name, expected)
+})
+
+test("Casts the name argument to string", t => {
+  // @ts-expect-error
+  const file = new File(["Some content"], 42)
+
+  t.is(file.name, "42")
 })
 
 test("The name property keeps its value after being reassigned", t => {
