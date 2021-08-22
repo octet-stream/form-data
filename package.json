@@ -6,11 +6,10 @@
   "keywords": [
     "form-data",
     "node",
-    "async-iterator",
-    "stream",
     "form",
     "upload",
-    "files-upload"
+    "files-upload",
+    "ponyfill"
   ],
   "author": "Nick K. <io@octetstream.me>",
   "license": "MIT",
