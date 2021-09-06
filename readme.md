@@ -40,9 +40,9 @@ const form = new FormData()
 
 form.set("greeting", "Hello, World!")
 
-got.post("https://httpbin.org/post", {body: form})
-  .then(res => console.log("Res: ", res.body))
-  .catch(err => console.error("Error: ", err))
+const data = await got.post("https://httpbin.org/post", {body: form}).json()
+
+console.log(data.form.greeting) // => Hello, World!
 ```
 
 2. If your HTTP client does not support spec-compliant FomrData, you can use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode entries:
