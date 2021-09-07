@@ -3,7 +3,9 @@ import {ReadableStream} from "web-streams-polyfill"
 import type {BlobPart} from "./BlobPart"
 
 import {isFunction} from "./isFunction"
-import {consumeBlobParts} from "./consumeBlobParts"
+import {consumeBlobParts, sliceBlob} from "./blobHelpers"
+
+export type BlobParts = unknown[] | Iterable<unknown>
 
 export interface BlobPropertyBag {
   type?: string
@@ -30,7 +32,7 @@ export class Blob {
     )
   }
 
-  constructor(blobParts: unknown[], options: BlobPropertyBag = {}) {
+  constructor(blobParts: BlobParts, options: BlobPropertyBag = {}) {
     options ??= {}
 
     const encoder = new TextEncoder()
@@ -54,29 +56,40 @@ export class Blob {
 
     const type = options.type === undefined ? "" : String(options.type)
 
-    // TODO: Normalize options
     this.#type = /^[\x20-\x7E]*$/.test(type) ? type : ""
-
-    Object.defineProperties(this, {
-      size: {enumerable: true},
-      type: {enumerable: true},
-      slice: {enumerable: true}
-    })
   }
 
+  /**
+   * Returns the [`MIME type`](https://developer.mozilla.org/en-US/docs/Glossary/MIME_type) of the Blob or File.
+   */
   get type(): string {
     return this.#type
   }
 
+  /**
+   * Returns the size of the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File) in bytes.
+   */
   get size(): number {
     return this.#size
   }
 
+  /**
+   * Creates and returns a new [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) object which contains data from a subset of the blob on which it's called.
+   *
+   * @param start An index into the Blob indicating the first byte to include in the new Blob. If you specify a negative value, it's treated as an offset from the end of the Blob toward the beginning. For example, -10 would be the 10th from last byte in the Blob. The default value is 0. If you specify a value for start that is larger than the size of the source Blob, the returned Blob has size 0 and contains no data.
+   * @param end An index into the Blob indicating the first byte that will *not* be included in the new Blob (i.e. the byte exactly at this index is not included). If you specify a negative value, it's treated as an offset from the end of the Blob toward the beginning. For example, -10 would be the 10th from last byte in the Blob. The default value is size.
+   * @param contentType The content type to assign to the new Blob; this will be the value of its type property. The default value is an empty string.
+   */
   // eslint-disable-next-line
-  slice(start: number = 0, end?: number, contentType?: string): Blob {
-    return new Blob([], {type: contentType})
+  slice(start?: number, end?: number, contentType?: string): Blob {
+    return new Blob(sliceBlob(this.#parts, this.size, start, end), {
+      type: contentType
+    })
   }
 
+  /**
+   * Returns a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with a string containing the contents of the blob, interpreted as UTF-8.
+   */
   async text(): Promise<string> {
     const decoder = new TextDecoder()
 
@@ -90,6 +103,9 @@ export class Blob {
     return result
   }
 
+  /**
+   * Returns a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the contents of the blob as binary data contained in an [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+   */
   async arrayBuffer(): Promise<ArrayBuffer> {
     const view = new Uint8Array(this.size)
 
@@ -102,8 +118,11 @@ export class Blob {
     return view.buffer
   }
 
+  /**
+   * Returns a [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) which upon reading returns the data contained within the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
+   */
   stream(): ReadableStream<Uint8Array> {
-    const iterator = consumeBlobParts(this.#parts)
+    const iterator = consumeBlobParts(this.#parts, true)
 
     return new ReadableStream<Uint8Array>({
       async pull(controller) {
