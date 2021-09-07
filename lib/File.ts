@@ -1,6 +1,6 @@
-import Blob from "fetch-blob"
+import type {ReadableStream} from "web-streams-polyfill"
 
-export {Blob}
+import {Blob, BlobPropertyBag} from "./Blob"
 
 export interface FileLike {
   /**
@@ -25,17 +25,12 @@ export interface FileLike {
 
   [Symbol.toStringTag]: string
 
-  stream(): {
+  stream(): ReadableStream | {
     [Symbol.asyncIterator](): AsyncIterableIterator<Uint8Array>
   }
 }
 
-export interface FileOptions {
-  /**
-   * Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
-   */
-  type?: string
-
+export interface FileOptions extends BlobPropertyBag {
   /**
    * The last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
    */

@@ -2,8 +2,9 @@ import test from "ava"
 
 import {createReadStream} from "fs"
 
-import {File, Blob, FileLike} from "./File"
+import {Blob} from "./Blob"
 import {isFile} from "./isFile"
+import {File, FileLike} from "./File"
 
 test("Returns true for a File", t => {
   const file = new File(["Some content"], "file.txt")

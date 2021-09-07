@@ -16,7 +16,6 @@ specifiers:
   eslint-plugin-ava: 12.0.0
   eslint-plugin-jsx-a11y: 6.4.1
   eslint-plugin-react: 7.25.1
-  fetch-blob: 2.1.2
   husky: 7.0.2
   lint-staged: 11.1.2
   node-domexception: 1.0.0
@@ -28,7 +27,6 @@ specifiers:
   web-streams-polyfill: 4.0.0-beta.1
 
 dependencies:
-  fetch-blob: 2.1.2
   node-domexception: 1.0.0
   web-streams-polyfill: 4.0.0-beta.1
 
@@ -1890,16 +1888,6 @@ packages:
     dependencies:
       reusify: 1.0.4
     dev: true
-
-  /fetch-blob/2.1.2:
-    resolution: {integrity: sha512-YKqtUDwqLyfyMnmbw8XD6Q8j9i/HggKtPEI+pZ1+8bvheBu78biSmNaXWusx1TauGqtUUGx/cBb1mKdq2rLYow==}
-    engines: {node: ^10.17.0 || >=12.3.0}
-    peerDependencies:
-      domexception: '*'
-    peerDependenciesMeta:
-      domexception:
-        optional: true
-    dev: false
 
   /figures/3.2.0:
     resolution: {integrity: sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==}

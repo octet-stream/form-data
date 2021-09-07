@@ -4,8 +4,7 @@ import sinon from "sinon"
 
 import {inspect} from "util"
 
-import Blob from "fetch-blob"
-
+import {Blob} from "./Blob"
 import {File} from "./File"
 import {FormData, FormDataConstructorEntries} from "./FormData"
 
