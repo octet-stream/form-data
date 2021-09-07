@@ -127,7 +127,6 @@ export class Blob {
    * @param end An index into the Blob indicating the first byte that will *not* be included in the new Blob (i.e. the byte exactly at this index is not included). If you specify a negative value, it's treated as an offset from the end of the Blob toward the beginning. For example, -10 would be the 10th from last byte in the Blob. The default value is size.
    * @param contentType The content type to assign to the new Blob; this will be the value of its type property. The default value is an empty string.
    */
-  // eslint-disable-next-line
   slice(start?: number, end?: number, contentType?: string): Blob {
     return new Blob(sliceBlob(this.#parts, this.size, start, end), {
       type: contentType
