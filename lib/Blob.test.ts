@@ -184,8 +184,14 @@ test("null value has no affect on property bag argument", t => {
   t.is(blob.type, "")
 })
 
+test("Invalid type in property bag will result in an empty string", t => {
+  const blob = new Blob([], {type: "\u001Ftext/plain"})
+
+  t.is(blob.type, "")
+})
+
 test(
-  "Throws an error if invalid property bad passed",
+  "Throws an error if invalid property bag passed",
 
   t => {
     const rounds = [
@@ -266,5 +272,68 @@ test(
     }
 
     t.true(blobAlike instanceof Blob)
+  }
+)
+
+test(".slice() a new blob when called without arguments", async t => {
+  const blob = new Blob(["a", "b", "c"])
+  const sliced = blob.slice()
+
+  t.is(sliced.size, blob.size)
+  t.is(await sliced.text(), await blob.text())
+})
+
+test(".slice() an empty blob with the start and the end set to 0", async t => {
+  const blob = new Blob(["a", "b", "c"])
+  const sliced = blob.slice(0, 0)
+
+  t.is(sliced.size, 0)
+  t.is(await sliced.text(), "")
+})
+
+test(".slice() slices the Blob within given range", async t => {
+  const text = "The MIT License"
+  const blob = new Blob([text]).slice(0, 3)
+
+  t.is(await blob.text(), "The")
+})
+
+test(".slice() slices the Blob from arbitary start", async t => {
+  const text = "The MIT License"
+  const blob = new Blob([text]).slice(4, 15)
+
+  t.is(await blob.text(), "MIT License")
+})
+
+test(".slice() takes type as the 3rd argument", t => {
+  const expected = "text/plain"
+  const blob = new Blob([], {type: "text/html"}).slice(0, 0, expected)
+
+  t.is(blob.type, expected)
+})
+
+test(
+  ".text() returns a the Blob content as string when awaited",
+
+  async t => {
+    const blob = new Blob([
+      "a",
+      new TextEncoder().encode("b"),
+      new Blob(["c"]),
+      new TextEncoder().encode("d").buffer,
+    ])
+
+    t.is(await blob.text(), "abcd")
+  }
+)
+
+test(
+  ".arrayBuffer() returns the Blob content as ArrayBuffer when awaited",
+
+  async t => {
+    const source = new TextEncoder().encode("abc")
+    const blob = new Blob([source])
+
+    t.true(Buffer.from(await blob.arrayBuffer()).equals(source))
   }
 )
