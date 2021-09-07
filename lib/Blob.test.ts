@@ -64,3 +64,29 @@ test("Creates a new Blob from an array of strings", async t => {
 
   t.is(await blob.text(), source.join(""))
 })
+
+test("Creates a new Blob from an array of Uint8Array", async t => {
+  const encoder = new TextEncoder()
+  const source = ["one", "two", "three"]
+
+  const blob = new Blob(source.map(part => encoder.encode(part)))
+
+  t.is(await blob.text(), source.join(""))
+})
+
+test("Creates a new Blob from an array of ArrayBuffer", async t => {
+  const encoder = new TextEncoder()
+  const source = ["one", "two", "three"]
+
+  const blob = new Blob(source.map(part => encoder.encode(part).buffer))
+
+  t.is(await blob.text(), source.join(""))
+})
+
+test("Creates a new Blob from an array of Blob", async t => {
+  const source = ["one", "two", "three"]
+
+  const blob = new Blob(source.map(part => new Blob([part])))
+
+  t.is(await blob.text(), source.join(""))
+})

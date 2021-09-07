@@ -10,7 +10,7 @@ const CHUNK_SIZE = 65536 // 64 KiB (same size chrome slice theirs blob into Uint
 async function* clonePart(part: Uint8Array): AsyncGenerator<Uint8Array, void> {
   const end = part.byteOffset + part.byteLength
   let position = part.byteOffset
-  while (position <= end) {
+  while (position !== end) {
     const size = Math.min(end - position, CHUNK_SIZE)
     const chunk = part.buffer.slice(position, position + size)
 
@@ -25,7 +25,7 @@ async function* clonePart(part: Uint8Array): AsyncGenerator<Uint8Array, void> {
  */
 async function* consumeNodeBlob(blob: Blob): AsyncGenerator<Uint8Array, void> {
   let position = 0
-  while (position <= blob.size) {
+  while (position !== blob.size) {
     const chunk = blob.slice(
       position,
 
