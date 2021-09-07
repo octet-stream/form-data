@@ -187,3 +187,14 @@ export class Blob {
     return "Blob"
   }
 }
+
+// Not sure why, but these properties are enumerable.
+// Also fetch-blob defines "size", "type" and "slice" as such
+Object.defineProperties(Blob.prototype, {
+  type: {enumerable: true},
+  size: {enumerable: true},
+  slice: {enumerable: true},
+  stream: {enumerable: true},
+  text: {enumerable: true},
+  arrayBuffer: {enumerable: true}
+})
