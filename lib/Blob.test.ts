@@ -327,6 +327,13 @@ test(
   }
 )
 
+test(".slice() slices Blob in blob parts", async t => {
+  const text = "The MIT License"
+  const blob = new Blob([new Blob([text]), new Blob([text])]).slice(8, 18)
+
+  t.is(await blob.text(), "LicenseThe")
+})
+
 test(".slice() takes type as the 3rd argument", t => {
   const expected = "text/plain"
   const blob = new Blob([], {type: "text/html"}).slice(0, 0, expected)
