@@ -170,6 +170,18 @@ test("Casts elements of the blobPart array to a string", async t => {
   t.is(await blob.text(), expected)
 })
 
+test("undefined value has no affect on property bag argument", t => {
+  const blob = new Blob([], undefined)
+
+  t.is(blob.type, "")
+})
+
+test("null value has no affect on property bag argument", t => {
+  const blob = new Blob([], null)
+
+  t.is(blob.type, "")
+})
+
 test(
   "Throws an error if invalid property bad passed",
 
