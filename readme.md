@@ -339,7 +339,7 @@ Returns a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Re
 
 ### `class File extends Blob`
 
-The `File` class provides information about files. The `File` object inherits `Blob` from [`fetch-blob`](https://github.com/bitinn/fetch-blob) package.
+The `File` class provides information about files. The `File` class inherits `Blob`.
 
 ##### `constructor(fileBits, filename[, options]) -> {File}`
 
