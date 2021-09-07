@@ -7,6 +7,21 @@ import type {BlobPart} from "./BlobPart"
 import {isFunction} from "./isFunction"
 import {consumeBlobParts, sliceBlob} from "./blobHelpers"
 
+/**
+ * Reflects minimal valid Blob for BlobParts.
+ */
+export interface BlobLike {
+  type: string
+
+  size: number
+
+  slice(start?: number, end?: number, contentType?: string): BlobLike
+
+  arrayBuffer(): Promise<ArrayBuffer>
+
+  [Symbol.toStringTag]: string
+}
+
 export type BlobParts = unknown[] | Iterable<unknown>
 
 export interface BlobPropertyBag {

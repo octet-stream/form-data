@@ -1,7 +1,7 @@
 /*! Based on fetch-blob. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> & David Frank */
 
 import type {BlobPart} from "./BlobPart"
-import type {Blob} from "./Blob"
+import type {Blob, BlobLike} from "./Blob"
 
 import {isFunction} from "./isFunction"
 
@@ -23,7 +23,10 @@ async function* clonePart(part: Uint8Array): AsyncGenerator<Uint8Array, void> {
 /**
  * Consumes builtin Node.js Blob that does not have stream method.
  */
-async function* consumeNodeBlob(blob: Blob): AsyncGenerator<Uint8Array, void> {
+/* c8 ignore start */
+async function* consumeNodeBlob(
+  blob: BlobLike
+): AsyncGenerator<Uint8Array, void> {
   let position = 0
   while (position !== blob.size) {
     const chunk = blob.slice(
@@ -39,6 +42,7 @@ async function* consumeNodeBlob(blob: Blob): AsyncGenerator<Uint8Array, void> {
     yield new Uint8Array(buffer)
   }
 }
+/* c8 ignore stop */
 
 /**
  * Creates an iterator allowing to go through blob parts and consume their content
@@ -56,11 +60,14 @@ export async function* consumeBlobParts(
       } else {
         yield part
       }
-    } else if (isFunction(part.stream)) {
-      yield* part.stream()
+    } else if (isFunction((part as Blob).stream)) {
+      yield* (part as Blob).stream()
+    /* c8 ignore start */
     } else {
-      yield* consumeNodeBlob(part)
+      // Special case for an old Node.js Blob that have no stream() method.
+      yield* consumeNodeBlob(part as BlobLike)
     }
+    /* c8 ignore stop */
   }
 }
 

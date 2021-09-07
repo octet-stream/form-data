@@ -1,3 +1,3 @@
-import type {Blob} from "./Blob"
+import type {Blob, BlobLike} from "./Blob"
 
-export type BlobPart = Blob | Uint8Array
+export type BlobPart = BlobLike | Blob | Uint8Array
