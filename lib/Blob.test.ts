@@ -305,6 +305,28 @@ test(".slice() slices the Blob from arbitary start", async t => {
   t.is(await blob.text(), "MIT License")
 })
 
+test(
+  ".slice() slices the Blob from the end when start argument is negative",
+
+  async t => {
+    const text = "The MIT License"
+    const blob = new Blob([text]).slice(-7)
+
+    t.is(await blob.text(), "License")
+  }
+)
+
+test(
+  ".slice() slices the Blob from the start when end argument is negative",
+
+  async t => {
+    const text = "The MIT License"
+    const blob = new Blob([text]).slice(0, -8)
+
+    t.is(await blob.text(), "The MIT")
+  }
+)
+
 test(".slice() takes type as the 3rd argument", t => {
   const expected = "text/plain"
   const blob = new Blob([], {type: "text/html"}).slice(0, 0, expected)
