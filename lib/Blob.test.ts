@@ -144,3 +144,43 @@ test("Accepts type for Blob as an option in the second argument", t => {
 
   t.is(blob.type, expected)
 })
+
+test("Casts elements of the blobPart array to a string", async t => {
+  const source: unknown[] = [
+    null,
+    undefined,
+    true,
+    false,
+    0,
+    1,
+
+    // eslint-disable-next-line no-new-wrappers
+    new String("string object"),
+
+    [],
+    {0: "FAIL", length: 1},
+    {toString() { return "stringA" }},
+    {toString: undefined, valueOf() { return "stringB" }},
+  ]
+
+  const expected = source.map(element => String(element)).join("")
+
+  const blob = new Blob(source)
+
+  t.is(await blob.text(), expected)
+})
+
+test(
+  "Throws an error if the second argument of the constrctor is not an object",
+
+  t => {
+    // @ts-expect-error
+    const trap = () => new Blob([], 42)
+
+    t.throws(trap, {
+      instanceOf: TypeError,
+      message: "Failed to construct 'Blob': "
+        + "parameter 2 cannot convert to dictionary."
+    })
+  }
+)
