@@ -25,8 +25,14 @@ export interface BlobPropertyBag {
 export class Blob {
   #parts: BlobPart[] = []
 
+  /**
+   * Returns the [`MIME type`](https://developer.mozilla.org/en-US/docs/Glossary/MIME_type) of the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
+   */
   #type: string = ""
 
+  /**
+   * Returns the size of the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File) in bytes.
+   */
   #size: number = 0
 
   static [Symbol.hasInstance](value: unknown): value is Blob {
@@ -72,6 +78,7 @@ export class Blob {
       )
     }
 
+    // Normalize blobParts first
     const encoder = new TextEncoder()
     for (const raw of blobParts) {
       let part: BlobPart
