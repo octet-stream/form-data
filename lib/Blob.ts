@@ -52,6 +52,26 @@ export class Blob {
   constructor(blobParts: BlobParts = [], options: BlobPropertyBag = {}) {
     options ??= {}
 
+    if (typeof blobParts !== "object" || blobParts === null) {
+      throw new TypeError(
+        "Failed to construct 'Blob': "
+          + "The provided value cannot be converted to a sequence."
+      )
+    }
+
+    if (!isFunction(blobParts[Symbol.iterator])) {
+      throw new TypeError(
+        "Failed to construct 'Blob': "
+          + "The object must have a callable @@iterator property."
+      )
+    }
+
+    if (typeof options !== "object" && !isFunction(options)) {
+      throw new TypeError(
+        "Failed to construct 'Blob': parameter 2 cannot convert to dictionary."
+      )
+    }
+
     const encoder = new TextEncoder()
     for (const raw of blobParts) {
       let part: BlobPart
