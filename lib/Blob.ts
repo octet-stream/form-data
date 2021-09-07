@@ -23,6 +23,9 @@ export interface BlobPropertyBag {
  * so its methods can be used for processing the data.
  */
 export class Blob {
+  /**
+   * An `Array` of [`ArrayBufferView`](https://developer.mozilla.org/en-US/docs/Web/API/ArrayBufferView) or [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) objects, or a mix of any of such objects, that will be put inside the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
+   */
   #parts: BlobPart[] = []
 
   /**
@@ -52,7 +55,7 @@ export class Blob {
    * Returns a new [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) object.
    * The content of the blob consists of the concatenation of the values given in the parameter array.
    *
-   * @param blobParts An `Array` strings, or [`Buffer`](https://nodejs.org/dist/latest/docs/api/buffer.html#buffer_class_buffer), [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [`ArrayBufferView`](https://developer.mozilla.org/en-US/docs/Web/API/ArrayBufferView), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) objects, or a mix of any of such objects, that will be put inside the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
+   * @param blobParts An `Array` strings, or [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [`ArrayBufferView`](https://developer.mozilla.org/en-US/docs/Web/API/ArrayBufferView), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) objects, or a mix of any of such objects, that will be put inside the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
    * @param options An optional object of type `BlobPropertyBag`.
    */
   constructor(blobParts: BlobParts = [], options: BlobPropertyBag = {}) {
