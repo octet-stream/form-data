@@ -25,10 +25,12 @@ specifiers:
   ts-node: 10.2.1
   ttypescript: 1.5.12
   typescript: 4.4.2
+  web-streams-polyfill: 4.0.0-beta.1
 
 dependencies:
   fetch-blob: 2.1.2
   node-domexception: 1.0.0
+  web-streams-polyfill: 4.0.0-beta.1
 
 devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@7.32.0
@@ -4100,6 +4102,11 @@ packages:
     dependencies:
       defaults: 1.0.3
     dev: true
+
+  /web-streams-polyfill/4.0.0-beta.1:
+    resolution: {integrity: sha512-3ux37gEX670UUphBF9AMCq8XM6iQ8Ac6A+DSRRjDoRBm1ufCkaCDdNVbaqq60PsEkdNlLKrGtv/YBP4EJXqNtQ==}
+    engines: {node: '>= 12'}
+    dev: false
 
   /well-known-symbols/2.0.0:
     resolution: {integrity: sha512-ZMjC3ho+KXo0BfJb7JgtQ5IBuvnShdlACNkKkdsqBmYw3bPAaJfPeYUo6tLUaT5tG/Gkh7xkpBhKRQ9e7pyg9Q==}
