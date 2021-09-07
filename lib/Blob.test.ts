@@ -334,6 +334,18 @@ test(".slice() slices Blob in blob parts", async t => {
   t.is(await blob.text(), "LicenseThe")
 })
 
+test(".slice() sliced within multiple parts", async t => {
+  const blob = new Blob(["Hello", "world"]).slice(4, 7)
+
+  t.is(await blob.text(), "owo")
+})
+
+test(".slice() throws away unwanted parts", async t => {
+  const blob = new Blob(["a", "b", "c"]).slice(1, 2)
+
+  t.is(await blob.text(), "b")
+})
+
 test(".slice() takes type as the 3rd argument", t => {
   const expected = "text/plain"
   const blob = new Blob([], {type: "text/html"}).slice(0, 0, expected)
