@@ -171,16 +171,26 @@ test("Casts elements of the blobPart array to a string", async t => {
 })
 
 test(
-  "Throws an error if the second argument of the constrctor is not an object",
+  "Throws an error if invalid property bad passed",
 
   t => {
-    // @ts-expect-error
-    const trap = () => new Blob([], 42)
+    const rounds = [
+      123,
+      123.4,
+      true,
+      false,
+      "FAIL"
+    ]
 
-    t.throws(trap, {
-      instanceOf: TypeError,
-      message: "Failed to construct 'Blob': "
-        + "parameter 2 cannot convert to dictionary."
+    rounds.forEach(round => {
+      // @ts-expect-error
+      const trap = () => new Blob([], round)
+
+      t.throws(trap, {
+        instanceOf: TypeError,
+        message: "Failed to construct 'Blob': "
+          + "parameter 2 cannot convert to dictionary."
+      })
     })
   }
 )
