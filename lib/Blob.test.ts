@@ -90,3 +90,57 @@ test("Creates a new Blob from an array of Blob", async t => {
 
   t.is(await blob.text(), source.join(""))
 })
+
+test("Accepts a String object as a sequence", async t => {
+  const expected = "abc"
+
+  // eslint-disable-next-line no-new-wrappers
+  const blob = new Blob(new String(expected))
+
+  t.is(await blob.text(), expected)
+})
+
+test("Accepts Uint8Array as a sequence", async t => {
+  const expected = [1, 2, 3]
+  const blob = new Blob(new Uint8Array(expected))
+
+  t.is(await blob.text(), expected.join(""))
+})
+
+test("Accepts iterable object as a sequence", async t => {
+  const blob = new Blob({[Symbol.iterator]: Array.prototype[Symbol.iterator]})
+
+  t.is(blob.size, 0)
+  t.is(await blob.text(), "")
+})
+
+test("Constructor reads blobParts from iterable object", async t => {
+  const source = ["one", "two", "three"]
+  const expected = source.join("")
+
+  const blob = new Blob({
+    * [Symbol.iterator]() {
+      yield* source
+    }
+  })
+
+  t.is(blob.size, new TextEncoder().encode(expected).byteLength)
+  t.is(await blob.text(), expected)
+})
+
+test("Blob has the size measured from the blobParts", t => {
+  const source = ["one", "two", "three"]
+  const expected = new TextEncoder().encode(source.join("")).byteLength
+
+  const blob = new Blob(source)
+
+  t.is(blob.size, expected)
+})
+
+test("Accepts type for Blob as an option in the second argument", t => {
+  const expected = "text/markdown"
+
+  const blob = new Blob(["Some *Markdown* content"], {type: expected})
+
+  t.is(blob.type, expected)
+})
