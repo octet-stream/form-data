@@ -334,7 +334,7 @@ test(".slice() slices Blob in blob parts", async t => {
   t.is(await blob.text(), "LicenseThe")
 })
 
-test(".slice() sliced within multiple parts", async t => {
+test(".slice() slices within multiple parts", async t => {
   const blob = new Blob(["Hello", "world"]).slice(4, 7)
 
   t.is(await blob.text(), "owo")
