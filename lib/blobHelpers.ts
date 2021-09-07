@@ -1,3 +1,5 @@
+/*! Based on fetch-blob. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
+
 import type {BlobPart} from "./BlobPart"
 import type {Blob} from "./Blob"
 

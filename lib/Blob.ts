@@ -1,3 +1,5 @@
+/*! Based on fetch-blob. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
+
 import {ReadableStream} from "web-streams-polyfill"
 
 import type {BlobPart} from "./BlobPart"
@@ -8,10 +10,18 @@ import {consumeBlobParts, sliceBlob} from "./blobHelpers"
 export type BlobParts = unknown[] | Iterable<unknown>
 
 export interface BlobPropertyBag {
+  /**
+   * The [`MIME type`](https://developer.mozilla.org/en-US/docs/Glossary/MIME_type) of the data that will be stored into the blob.
+   * The default value is the empty string, (`""`).
+   */
   type?: string
 }
 
-// Based on fetch-blob implementation.
+/**
+ * The **Blob** object represents a blob, which is a file-like object of immutable, raw data;
+ * they can be read as text or binary data, or converted into a ReadableStream
+ * so its methods can be used for processing the data.
+ */
 export class Blob {
   #parts: BlobPart[] = []
 
@@ -32,7 +42,14 @@ export class Blob {
     )
   }
 
-  constructor(blobParts: BlobParts, options: BlobPropertyBag = {}) {
+  /**
+   * Returns a new [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) object.
+   * The content of the blob consists of the concatenation of the values given in the parameter array.
+   *
+   * @param blobParts An `Array` strings, or [`Buffer`](https://nodejs.org/dist/latest/docs/api/buffer.html#buffer_class_buffer), [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [`ArrayBufferView`](https://developer.mozilla.org/en-US/docs/Web/API/ArrayBufferView), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) objects, or a mix of any of such objects, that will be put inside the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
+   * @param options An optional object of type `BlobPropertyBag`.
+   */
+  constructor(blobParts: BlobParts = [], options: BlobPropertyBag = {}) {
     options ??= {}
 
     const encoder = new TextEncoder()
@@ -60,7 +77,7 @@ export class Blob {
   }
 
   /**
-   * Returns the [`MIME type`](https://developer.mozilla.org/en-US/docs/Glossary/MIME_type) of the Blob or File.
+   * Returns the [`MIME type`](https://developer.mozilla.org/en-US/docs/Glossary/MIME_type) of the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
    */
   get type(): string {
     return this.#type
