@@ -289,13 +289,63 @@ The key of each pair is a string; the value is a [`FormDataValue`](https://devel
 
 An alias for [`FormData#entries()`](#entries---iterator)
 
-### `class File extends Blob`
+### `class Blob`
 
-##### `constructor(blobParts, filename[, options]) -> {File}`
+The `Blob` object represents a blob, which is a file-like object of immutable, raw data;
+they can be read as text or binary data, or converted into a ReadableStream
+so its methods can be used for processing the data.
+
+##### `constructor(blobParts[, options]) -> {Blob}`
+
+Creates a new `Blob` instance. The `Blob` constructor accepts following arguments:
+
+  - **{(ArrayBufferLike | ArrayBufferView | File | Blob | string)[]}** blobParts
+  - **{object}** [options = {}] - An options object containing optional attributes for the file. Available options are as follows
+  - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the blob represented by a `Blob` object.
+
+#### Instance properties
+
+##### `type -> {string}`
+
+Returns the [`MIME type`](https://developer.mozilla.org/en-US/docs/Glossary/MIME_type) of the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
+
+##### `size -> {number}`
+
+Returns the size of the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File) in bytes.
+
+#### Instance methods
+
+##### `slice([start, end, contentType]) -> {Blob}`
+
+Creates and returns a new [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) object which contains data from a subset of the blob on which it's called.
+
+- **{number}** [start = 0] An index into the `Blob` indicating the first byte to include in the new `Blob`. If you specify a negative value, it's treated as an offset from the end of the `Blob` toward the beginning. For example, -10 would be the 10th from last byte in the `Blob`. The default value is 0. If you specify a value for start that is larger than the size of the source `Blob`, the returned `Blob` has size 0 and contains no data.
+
+- **{number}** [end = `blob`.size] An index into the `Blob` indicating the first byte that will *not* be included in the new `Blob` (i.e. the byte exactly at this index is not included). If you specify a negative value, it's treated as an offset from the end of the `Blob` toward the beginning. For example, -10 would be the 10th from last byte in the `Blob`. The default value is size.
+
+- **{string}** [contentType = ""] The content type to assign to the new ``Blob``; this will be the value of its type property. The default value is an empty string.
+
+##### `stream() -> {ReadableStream<Uint8Array>}`
+
+Returns a [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) which upon reading returns the data contained within the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
+
+##### `arrayBuffer() -> {Promise<ArrayBuffer>}`
+
+Returns a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the contents of the blob as binary data contained in an [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+
+##### `text() -> {Promise<string>}`
+
+Returns a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with a string containing the contents of the blob, interpreted as UTF-8.
+
+### `class File extends Blob`
 
 The `File` class provides information about files. The `File` object inherits `Blob` from [`fetch-blob`](https://github.com/bitinn/fetch-blob) package.
 
-  - **{(ArrayBufferLike | ArrayBufferView | Blob | string)[]}** blobParts
+##### `constructor(fileBits, filename[, options]) -> {File}`
+
+Creates a new `File` instance. The `File` constructor accepts following arguments:
+
+  - **{(ArrayBufferLike | ArrayBufferView | File | Blob | string)[]}** fileBits
   - **{string}** filename – Representing the file name.
   - **{object}** [options = {}] - An options object containing optional attributes for the file. Available options are as follows
   - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
