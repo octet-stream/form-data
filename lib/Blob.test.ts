@@ -16,10 +16,47 @@ test("Empty Blob returned by Blob constructor has the size of 0", t => {
   t.is(blob.size, 0)
 })
 
+test("The size property is read-only", t => {
+  const blob = new Blob()
+
+  // @ts-expect-error
+  try { blob.size = 42 } catch { /* noop */ }
+
+  t.is(blob.size, 0)
+})
+
+test("The size property cannot be removed", t => {
+  const blob = new Blob()
+
+  // @ts-expect-error
+  try { delete blob.size } catch { /* noop */ }
+
+  t.true("size" in blob)
+})
+
 test("Blob type is an empty string by default", t => {
   const blob = new Blob()
 
   t.is(blob.type, "")
+})
+
+test("The type property is read-only", t => {
+  const expected = "text/plain"
+  const blob = new Blob([], {type: expected})
+
+  // @ts-expect-error
+  try { blob.type = "application/json" } catch { /* noop */ }
+
+  t.is(blob.type, expected)
+})
+
+test("The type property cannot be removed", t => {
+  const blob = new Blob()
+
+  // @ts-expect-error
+  try { delete blob.type } catch { /* noop */ }
+
+  t.true("type" in blob)
 })
 
 test(
