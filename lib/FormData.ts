@@ -18,7 +18,7 @@ type FormDataEntryValues = [FormDataEntryValue, ...FormDataEntryValue[]]
 interface FormDataSetFieldOptions {
   name: string
   value: unknown
-  filename?: string
+  fileName?: string
   append: boolean
   argsLength: number
 }
@@ -29,7 +29,7 @@ interface FormDataSetFieldOptions {
 export type FormDataConstructorEntries = Array<{
   name: string,
   value: unknown,
-  filename?: string
+  fileName?: string
 }>
 
 /**
@@ -46,8 +46,8 @@ export class FormData {
 
   constructor(entries?: FormDataConstructorEntries) {
     if (entries) {
-      entries.forEach(({name, value, filename}) => this.append(
-        name, value, filename
+      entries.forEach(({name, value, fileName}) => this.append(
+        name, value, fileName
       ))
     }
   }
@@ -56,7 +56,7 @@ export class FormData {
     name,
     value,
     append,
-    filename,
+    fileName,
     argsLength
   }: FormDataSetFieldOptions): void {
     const methodName = append ? "append" : "set"
@@ -72,39 +72,40 @@ export class FormData {
     }
 
     // Normalize field's value
+    let normalizedValue: FormDataEntryValue
     if (isFile(value)) {
-      filename = normalizeFilename(
-        filename === undefined ? value.name : filename
+      fileName = normalizeFilename(
+        fileName === undefined ? value.name : fileName
       )
 
       // Take params from the previous File or Blob instance
-      value = new File([value], filename, {
+      normalizedValue = new File([value], fileName, {
         type: value.type,
         lastModified: value.lastModified
       })
-    } else if (filename) { // If a value is not a file-like, but the filename is present, then throw the error
+    } else if (fileName) { // If a value is not a file-like, but the filename is present, then throw the error
       throw new TypeError(
         `Failed to execute '${methodName}' on 'FormData': `
           + "parameter 2 is not of type 'Blob'."
       )
     } else {
       // A non-file entries must be converted to string
-      value = String(value)
+      normalizedValue = String(value)
     }
 
     const values = this.#entries.get(name)
 
     if (!values) {
-      return void this.#entries.set(name, [value as FormDataEntryValue])
+      return void this.#entries.set(name, [normalizedValue])
     }
 
     // Replace a value of the existing entry if "set" called
     if (!append) {
-      return void this.#entries.set(name, [value as FormDataEntryValue])
+      return void this.#entries.set(name, [normalizedValue])
     }
 
     // Append a new value to the existing entry
-    values.push(value as FormDataEntryValue)
+    values.push(normalizedValue)
   }
 
   /**
@@ -116,13 +117,13 @@ export class FormData {
    * @param name The name of the field whose data is contained in `value`.
    * @param value The field's value. This can be [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File). If none of these are specified the value is converted to a string.
-   * @param filename The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
+   * @param fileName The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
    */
-  append(name: string, value: unknown, filename?: string): void {
+  append(name: string, value: unknown, fileName?: string): void {
     return this.#setEntry({
       name,
       value,
-      filename,
+      fileName,
       append: true,
       argsLength: arguments.length
     })
@@ -135,14 +136,14 @@ export class FormData {
    * @param name The name of the field whose data is contained in `value`.
    * @param value The field's value. This can be [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File). If none of these are specified the value is converted to a string.
-   * @param filename The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
+   * @param fileName The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
    *
    */
-  set(name: string, value: unknown, filename?: string): void {
+  set(name: string, value: unknown, fileName?: string): void {
     return this.#setEntry({
       name,
       value,
-      filename,
+      fileName,
       append: false,
       argsLength: arguments.length
     })
