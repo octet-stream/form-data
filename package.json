@@ -14,16 +14,8 @@
   "author": "Nick K. <io@octetstream.me>",
   "license": "MIT",
   "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
+  "module": "./lib/esm/browser.js",
   "browser": "./lib/cjs/browser.js",
-  "types": "./@type/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "file-from-path": [
-        "@type/fileFromPath.d.ts"
-      ]
-    }
-  },
   "exports": {
     ".": {
       "node": {
@@ -39,6 +31,14 @@
     "./file-from-path": {
       "import": "./lib/esm/fileFromPath.js",
       "require": "./lib/cjs/fileFromPath.js"
+    }
+  },
+  "types": "./@type/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "file-from-path": [
+        "@type/fileFromPath.d.ts"
+      ]
     }
   },
   "engines": {
