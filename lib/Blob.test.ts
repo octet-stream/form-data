@@ -63,7 +63,7 @@ test(
   "Constructor throws an error when first argument is not an object",
 
   t => {
-    const rounds = [null, true, false, 0, 1, 1.5, "FAIL"]
+    const rounds: unknown[] = [null, true, false, 0, 1, 1.5, "FAIL"]
 
     rounds.forEach(round => {
       // @ts-expect-error
