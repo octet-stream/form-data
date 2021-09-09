@@ -41,17 +41,17 @@ export class Blob {
   /**
    * An `Array` of [`ArrayBufferView`](https://developer.mozilla.org/en-US/docs/Web/API/ArrayBufferView) or [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) objects, or a mix of any of such objects, that will be put inside the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
    */
-  #parts: BlobPart[] = []
+  readonly #parts: BlobPart[] = []
 
   /**
    * Returns the [`MIME type`](https://developer.mozilla.org/en-US/docs/Glossary/MIME_type) of the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
    */
-  #type: string = ""
+  readonly #type: string = ""
 
   /**
    * Returns the size of the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File) in bytes.
    */
-  #size: number = 0
+  readonly #size: number = 0
 
   static [Symbol.hasInstance](value: unknown): value is Blob {
     return Boolean(
