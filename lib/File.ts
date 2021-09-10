@@ -1,5 +1,3 @@
-import type {ReadableStream} from "web-streams-polyfill"
-
 import {Blob, BlobPropertyBag} from "./Blob"
 
 export interface FileLike {
@@ -25,9 +23,10 @@ export interface FileLike {
 
   [Symbol.toStringTag]: string
 
-  stream(): ReadableStream | {
-    [Symbol.asyncIterator](): AsyncIterableIterator<Uint8Array>
-  }
+  /**
+   * Returns a [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) which upon reading returns the data contained within the [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File).
+   */
+  stream(): AsyncIterable<Uint8Array>
 }
 
 export interface FileOptions extends BlobPropertyBag {
