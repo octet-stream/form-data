@@ -59,7 +59,7 @@ export class File extends Blob implements FileLike {
     name: string,
     options: FileOptions = {lastModified: Date.now()}
   ) {
-    super(fileBits as any[], options)
+    super(fileBits, options)
 
     if (arguments.length < 2) {
       throw new TypeError(
@@ -70,6 +70,7 @@ export class File extends Blob implements FileLike {
 
     this.#name = String(name)
 
+    // Simulate WebIDL type casting for NaN value in lastModified option.
     const lastModified = Number(options.lastModified)
     if (!Number.isNaN(lastModified)) {
       this.#lastModified = lastModified
