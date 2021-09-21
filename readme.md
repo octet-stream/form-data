@@ -28,7 +28,7 @@ pnpm add formdata-node
 
 ## ESM/CJS support
 
-This package is delivered for both ESM and CJS targets for backwards compatibility reasons and smoothen transition period while you convert your projects to ESM only. Note that CJS support will be removed as [Node.js v12 will reach its EOL](https://github.com/nodejs/release#release-schedule). This change will be released as major version update, so you won't miss it.
+This package is targeting ESM and CJS for backwards compatibility reasons and smoothen transition period while you convert your projects to ESM only. Note that CJS support will be removed as [Node.js v12 will reach its EOL](https://github.com/nodejs/release#release-schedule). This change will be released as major version update, so you won't miss it.
 
 ## Usage
 
