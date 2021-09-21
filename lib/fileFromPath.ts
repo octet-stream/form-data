@@ -3,7 +3,7 @@ import {basename} from "path"
 
 import DOMException from "node-domexception"
 
-import {File, FileLike, FileOptions} from "./File"
+import {File, FileLike, FilePropertyBag} from "./File"
 
 import isPlainObject from "./isPlainObject"
 
@@ -13,7 +13,7 @@ const MESSAGE = "The requested file could not be read, "
   + "typically due to permission problems that have occurred after a reference "
   + "to a file was acquired."
 
-export type FileFromPathOptions = Omit<FileOptions, "lastModified">
+export type FileFromPathOptions = Omit<FilePropertyBag, "lastModified">
 
 interface FileFromPathInput {
   path: string

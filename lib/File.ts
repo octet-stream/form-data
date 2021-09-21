@@ -29,12 +29,17 @@ export interface FileLike {
   stream(): AsyncIterable<Uint8Array>
 }
 
-export interface FileOptions extends BlobPropertyBag {
+export interface FilePropertyBag extends BlobPropertyBag {
   /**
    * The last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
    */
   lastModified?: number
 }
+
+/**
+ * @deprecated Use FilePropertyBag instead.
+ */
+export type FileOptions = FilePropertyBag
 
 export class File extends Blob implements FileLike {
   /**
