@@ -1,6 +1,6 @@
 {
   "name": "formdata-node",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "Spec-compliant FormData implementation for Node.js",
   "repository": "octet-stream/form-data",
   "keywords": [
