@@ -303,8 +303,8 @@ so its methods can be used for processing the data.
 
 Creates a new `Blob` instance. The `Blob` constructor accepts following arguments:
 
-  - **{(ArrayBufferLike | ArrayBufferView | File | Blob | string)[]}** blobParts
-  - **{object}** [options = {}] - An options object containing optional attributes for the file. Available options are as follows
+  - **{(ArrayBufferLike | ArrayBufferView | File | Blob | string)[]}** blobParts – An `Array` strings, or [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [`ArrayBufferView`](https://developer.mozilla.org/en-US/docs/Web/API/ArrayBufferView), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) objects, or a mix of any of such objects, that will be put inside the [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob);
+  - **{object}** [options = {}] - An options object containing optional attributes for the file. Available options are as follows;
   - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the blob represented by a `Blob` object.
 
 #### Instance properties
@@ -349,10 +349,10 @@ The `File` class provides information about files. The `File` class inherits `Bl
 
 Creates a new `File` instance. The `File` constructor accepts following arguments:
 
-  - **{(ArrayBufferLike | ArrayBufferView | File | Blob | string)[]}** fileBits
+  - **{(ArrayBufferLike | ArrayBufferView | File | Blob | string)[]}** fileBits – An `Array` strings, or [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [`ArrayBufferView`](https://developer.mozilla.org/en-US/docs/Web/API/ArrayBufferView), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) objects, or a mix of any of such objects, that will be put inside the [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File);
   - **{string}** filename – Representing the file name.
-  - **{object}** [options = {}] - An options object containing optional attributes for the file. Available options are as follows
-  - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
+  - **{object}** [options = {}] - An options object containing optional attributes for the file. Available options are as follows;
+  - **{number}** [options.lastModified = Date.now()] – provides the last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date;
   - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
 
 ### `fileFromPath(path[, filename, options]) -> {Promise<File>}`
