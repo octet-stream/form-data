@@ -211,6 +211,32 @@ const options = {
 await fetch("https://httpbin.org/post", {method: "post", body: form})
 ```
 
+## Comparison
+
+|                  | formdata-node | formdata-polyfill | form-data |
+| ---------------- | ------------- | ----------------- | --------- |
+| .append()        | ✔️             | ✔️                 | ✔️*        |
+| .set()           | ✔️             | ✔️                 | ❌        |
+| .get()           | ✔️             | ✔️                 | ❌        |
+| .getAll()        | ✔️             | ✔️                 | ❌        |
+| .forEach()       | ✔️             | ✔️                 | ❌        |
+| .keys()          | ✔️             | ✔️                 | ❌        |
+| .values()        | ✔️             | ✔️                 | ❌        |
+| .entries()       | ✔️             | ✔️                 | ❌        |
+| .forEach()       | ✔️             | ✔️                 | ❌        |
+| Symbol.iterator  | ✔️             | ✔️                 | ❌        |
+| CommonJS         | ✔️             | ❌                | ✔️         |
+| ESM              | ✔️             | ✔️                 |           |
+| Blob             | ✔️**           | ✔️***              | ❌        |
+| browser polyfill | ❌            | ✔️                 | ❌        |
+
+\* Does not support Blob and File in entry value, but allows streams and Buffer (which is not spec-compiant, however);
+** Have builtin implementations of Blob and File, allows native Blob and File as entry value.
+*** Support Blob and File via fetch-blob package, allows native Blob and File as entry value.
+
+✔️ - For FormData methods, indicates that the method is present and spec-compliant. For features, shows its presence.
+❌ - Indicates that method or feature is not implemented.
+
 ## API
 
 ### `class FormData`
