@@ -264,15 +264,15 @@ Deletes a key and its value(s) from a `FormData` object.
 
   - **{string}** name – The name of the key you want to delete.
 
-##### `forEach(callback[, ctx]) -> {void}`
+##### `forEach(callback[, thisArg]) -> {void}`
 
 Executes a given **callback** for each field of the FormData instance
 
   - **{function}** callback – Function to execute for each element, taking three arguments:
     + **{FormDataValue}** value – A value(s) of the current field.
     + **{string}** name – Name of the current field.
-    + **{FormData}** fd – The FormData instance that **forEach** is being applied to
-  - **{unknown}** [ctx = null] – Value to use as **this** context when executing the given **callback**
+    + **{FormData}** form – The FormData instance that **forEach** is being applied to
+  - **{unknown}** [thisArg = null] – Value to use as **this** context when executing the given **callback**
 
 ##### `keys() -> {Generator<string>}`
 
