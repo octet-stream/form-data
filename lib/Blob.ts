@@ -190,10 +190,14 @@ export class Blob {
         const {value, done} = await iterator.next()
 
         if (done) {
-          return controller.close()
+          return queueMicrotask(() => controller.close())
         }
 
         controller.enqueue(value!)
+      },
+
+      async cancel() {
+        await iterator.return()
       }
     })
   }

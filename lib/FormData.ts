@@ -250,12 +250,12 @@ export class FormData {
    * Executes given callback function for each field of the FormData instance
    */
   forEach(
-    fn: (value: FormDataEntryValue, key: string, fd: FormData) => void,
+    callback: (value: FormDataEntryValue, key: string, form: FormData) => void,
 
-    ctx?: unknown
+    thisArg?: unknown
   ): void {
     for (const [name, value] of this) {
-      fn.call(ctx, value, name, this)
+      callback.call(thisArg, value, name, this)
     }
   }
 

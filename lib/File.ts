@@ -62,7 +62,7 @@ export class File extends Blob implements FileLike {
   constructor(
     fileBits: unknown[],
     name: string,
-    options: FileOptions = {lastModified: Date.now()}
+    options: FilePropertyBag = {lastModified: Date.now()}
   ) {
     super(fileBits, options)
 

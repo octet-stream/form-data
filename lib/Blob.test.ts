@@ -415,3 +415,37 @@ test(
     t.true(Buffer.from(await blob.arrayBuffer()).equals(source))
   }
 )
+
+test(".stream() returns ReadableStream", t => {
+  const stream = new Blob().stream()
+
+  t.true(stream instanceof ReadableStream)
+})
+
+test(".stream() allows to read Blob as a stream", async t => {
+  const source = Buffer.from("Some content")
+
+  const stream = new Blob([source]).stream()
+
+  const chunks: Uint8Array[] = []
+  for await (const chunk of stream) {
+    chunks.push(chunk)
+  }
+
+  t.true(Buffer.concat(chunks).equals(source))
+})
+
+test(".stream() returned ReadableStream can be cancelled", async t => {
+  const source = Buffer.from("Some content")
+  const stream = new Blob(source).stream()
+
+  // Cancel the stream before start reading, or this will throw an error
+  await stream.cancel()
+
+  const iterator = stream[Symbol.asyncIterator]()
+
+  const {done, value: chunk} = await iterator.next()
+
+  t.true(done)
+  t.is(chunk, undefined)
+})
