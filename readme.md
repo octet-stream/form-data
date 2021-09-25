@@ -6,6 +6,15 @@ Spec-compliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/For
 [![CI](https://github.com/octet-stream/form-data/workflows/CI/badge.svg)](https://github.com/octet-stream/form-data/actions/workflows/ci.yml)
 [![ESLint](https://github.com/octet-stream/form-data/workflows/ESLint/badge.svg)](https://github.com/octet-stream/form-data/actions/workflows/eslint.yml)
 
+## Highlights
+
+1. Spec-compliant: implements every method of the [`FormData interface`]((https://developer.mozilla.org/en-US/docs/Web/API/FormData)).
+2. Supports Blobs and Files sourced from anywhere: you can use builtin [`fileFromPath`](#filefrompathpath-filename-options---promisefile) and [`fileFromPathSync`](#filefrompathsyncpath-filename-options---file) helpers to create a File from FS, or you can implement your `BlobDataItem` object to use a different source of data.
+3. Supports both ESM and CJS targets. See [`ESM/CJS support`](#esmcjs-support) section for details.
+4. Written on TypeScript and ships with TS typings.
+5. Isomorphic, but only re-exports native FormData object for browsers. If you need a polyfill for browsers, use [`formdata-polyfill`](https://github.com/jimmywarting/FormData)
+6. It's a [`ponyfill`](https://ponyfill.com/)! Which means, no affect has been caused on `globalThis` or native `FormData` implementation.
+
 ## Installation
 
 You can install this package with npm:
@@ -201,6 +210,34 @@ const options = {
 
 await fetch("https://httpbin.org/post", {method: "post", body: form})
 ```
+
+## Comparison
+
+|                  | formdata-node | formdata-polyfill | form-data            |
+| ---------------- | ------------- | ----------------- | -------------------- |
+| .append()        | ✔️             | ✔️                 | ✔️<sup>1</sup>        |
+| .set()           | ✔️             | ✔️                 | ❌                   |
+| .get()           | ✔️             | ✔️                 | ❌                   |
+| .getAll()        | ✔️             | ✔️                 | ❌                   |
+| .forEach()       | ✔️             | ✔️                 | ❌                   |
+| .keys()          | ✔️             | ✔️                 | ❌                   |
+| .values()        | ✔️             | ✔️                 | ❌                   |
+| .entries()       | ✔️             | ✔️                 | ❌                   |
+| .forEach()       | ✔️             | ✔️                 | ❌                   |
+| Symbol.iterator  | ✔️             | ✔️                 | ❌                   |
+| CommonJS         | ✔️             | ❌                | ✔️                    |
+| ESM              | ✔️             | ✔️                 | ✔️<sup>2</sup>        |
+| Blob             | ✔️<sup>3</sup> | ✔️<sup>4</sup>     | ❌                   |
+| Browser polyfill | ❌            | ✔️                 | ❌                   |
+| Builtin encoder  | ❌            | ❌                | ✔️                    |
+
+<sup>1</sup> Does not support Blob and File in entry value, but allows streams and Buffer (which is not spec-compiant, however);
+<sup>2</sup> Can be imported in ESM, because Node.js support for CJS modules in ESM context, but it does not have ESM entry point.
+<sup>3</sup> Have builtin implementations of Blob and File, allows native Blob and File as entry value.
+<sup>4</sup> Support Blob and File via fetch-blob package, allows native Blob and File as entry value.
+
+✔️ - For FormData methods, indicates that the method is present and spec-compliant. For features, shows its presence.
+❌ - Indicates that method or feature is not implemented.
 
 ## API
 
