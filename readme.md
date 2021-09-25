@@ -13,7 +13,7 @@ Spec-compliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/For
 3. Supports both ESM and CJS targets. See [`ESM/CJS support`](#esmcjs-support) section for details.
 4. Written on TypeScript and ships with TS typings.
 5. Isomorphic, but only re-exports native FormData object for browsers. If you need a polyfill for browsers, use [`formdata-polyfill`](https://github.com/jimmywarting/FormData)
-6. It's a [`ponyfill`](https://ponyfill.com/)! Which means, no affect has been caused on `globalThis` or native `FormData` implementation.
+6. It's a [`ponyfill`](https://ponyfill.com/)! Which means, no effect has been caused on `globalThis` or native `FormData` implementation.
 
 ## Installation
 
