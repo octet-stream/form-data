@@ -8,7 +8,7 @@ Spec-compliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/For
 
 ## Highlights
 
-1. Spec-compliant: implements every method of the [`FormData interface`]((https://developer.mozilla.org/en-US/docs/Web/API/FormData)).
+1. Spec-compliant: implements every method of the [`FormData interface`](https://developer.mozilla.org/en-US/docs/Web/API/FormData).
 2. Supports Blobs and Files sourced from anywhere: you can use builtin [`fileFromPath`](#filefrompathpath-filename-options---promisefile) and [`fileFromPathSync`](#filefrompathsyncpath-filename-options---file) helpers to create a File from FS, or you can implement your `BlobDataItem` object to use a different source of data.
 3. Supports both ESM and CJS targets. See [`ESM/CJS support`](#esmcjs-support) section for details.
 4. Written on TypeScript and ships with TS typings.
