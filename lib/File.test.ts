@@ -54,6 +54,14 @@ test("Takes the lastModified value from options", t => {
   t.is(file.lastModified, expected)
 })
 
+test("Interpretes undefined value in lastModified option as Date.now()", t => {
+  const lastModified = new File(["Some content"], "file.txt", {
+    lastModified: undefined
+  }).lastModified - Date.now()
+
+  t.true(lastModified <= 0 && lastModified >= -20)
+})
+
 test("Interpretes null value in lastModified option as 0", t => {
   const file = new File(["Some content"], "file.txt", {lastModified: null})
 
