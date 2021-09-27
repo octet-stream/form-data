@@ -62,6 +62,13 @@ test("Interpretes undefined value in lastModified option as Date.now()", t => {
   t.true(lastModified <= 0 && lastModified >= -20)
 })
 
+test("Interpretes true value in lastModified option as 1", t => {
+  // @ts-expect-error
+  const file = new File(["Some content"], "file.txt", {lastModified: true})
+
+  t.is(file.lastModified, 1)
+})
+
 test("Interpretes null value in lastModified option as 0", t => {
   const file = new File(["Some content"], "file.txt", {lastModified: null})
 
