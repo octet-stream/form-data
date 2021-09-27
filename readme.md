@@ -58,7 +58,7 @@ const data = await got.post("https://httpbin.org/post", {body: form}).json()
 console.log(data.form.greeting) // => Hello, World!
 ```
 
-2. If your HTTP client does not support spec-compliant FomrData, you can use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode entries:
+2. If your HTTP client does not support spec-compliant FormData, you can use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) to encode entries:
 
 ```js
 import {Readable} from "stream"
