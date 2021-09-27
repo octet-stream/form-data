@@ -242,6 +242,7 @@ await fetch("https://httpbin.org/post", {method: "post", body: form})
 <sup>5</sup> Have `multipart/form-data` encoder as part of their `fetch` implementation.
 
 ✔️ - For FormData methods, indicates that the method is present and spec-compliant. For features, shows its presence.
+
 ❌ - Indicates that method or feature is not implemented.
 
 ## API
