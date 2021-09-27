@@ -213,28 +213,29 @@ await fetch("https://httpbin.org/post", {method: "post", body: form})
 
 ## Comparison
 
-|                  | formdata-node | formdata-polyfill | form-data            |
-| ---------------- | ------------- | ----------------- | -------------------- |
-| .append()        | ✔️             | ✔️                 | ✔️<sup>1</sup>        |
-| .set()           | ✔️             | ✔️                 | ❌                   |
-| .get()           | ✔️             | ✔️                 | ❌                   |
-| .getAll()        | ✔️             | ✔️                 | ❌                   |
-| .forEach()       | ✔️             | ✔️                 | ❌                   |
-| .keys()          | ✔️             | ✔️                 | ❌                   |
-| .values()        | ✔️             | ✔️                 | ❌                   |
-| .entries()       | ✔️             | ✔️                 | ❌                   |
-| .forEach()       | ✔️             | ✔️                 | ❌                   |
-| Symbol.iterator  | ✔️             | ✔️                 | ❌                   |
-| CommonJS         | ✔️             | ❌                | ✔️                    |
-| ESM              | ✔️             | ✔️                 | ✔️<sup>2</sup>        |
-| Blob             | ✔️<sup>3</sup> | ✔️<sup>4</sup>     | ❌                   |
-| Browser polyfill | ❌            | ✔️                 | ❌                   |
-| Builtin encoder  | ❌            | ✔️                 | ✔️                    |
+|                  | formdata-node | formdata-polyfill | undici FormData | form-data            |
+| ---------------- | ------------- | ----------------- | --------------- | -------------------- |
+| .append()        | ✔️             | ✔️                 | ✔️               | ✔️<sup>1</sup>        |
+| .set()           | ✔️             | ✔️                 | ✔️               | ❌                   |
+| .get()           | ✔️             | ✔️                 | ✔️               | ❌                   |
+| .getAll()        | ✔️             | ✔️                 | ✔️               | ❌                   |
+| .forEach()       | ✔️             | ✔️                 | ✔️               | ❌                   |
+| .keys()          | ✔️             | ✔️                 | ✔️               | ❌                   |
+| .values()        | ✔️             | ✔️                 | ✔️               | ❌                   |
+| .entries()       | ✔️             | ✔️                 | ✔️               | ❌                   |
+| .forEach()       | ✔️             | ✔️                 | ✔️               | ❌                   |
+| Symbol.iterator  | ✔️             | ✔️                 | ✔️               | ❌                   |
+| CommonJS         | ✔️             | ❌                | ✔️               | ✔️                    |
+| ESM              | ✔️             | ✔️                 | ✔️<sup>2</sup>   | ✔️<sup>2</sup>        |
+| Blob             | ✔️<sup>3</sup> | ✔️<sup>4</sup>     | ✔️<sup>3</sup>   | ❌                   |
+| Browser polyfill | ❌            | ✔️                 | ✔️               | ❌                   |
+| Builtin encoder  | ❌            | ✔️                 | ✔️<sup>5</sup>   | ✔️                    |
 
 <sup>1</sup> Does not support Blob and File in entry value, but allows streams and Buffer (which is not spec-compiant, however);
 <sup>2</sup> Can be imported in ESM, because Node.js support for CJS modules in ESM context, but it does not have ESM entry point.
-<sup>3</sup> Have builtin implementations of Blob and File, allows native Blob and File as entry value.
+<sup>3</sup> Have builtin implementations of Blob and/or File, allows native Blob and File as entry value.
 <sup>4</sup> Support Blob and File via fetch-blob package, allows native Blob and File as entry value.
+<sup>5</sup> Have `multipart/form-data` encoder as part of their `fetch` implementation.
 
 ✔️ - For FormData methods, indicates that the method is present and spec-compliant. For features, shows its presence.
 ❌ - Indicates that method or feature is not implemented.
