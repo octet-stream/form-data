@@ -76,7 +76,10 @@ export class File extends Blob implements FileLike {
     this.#name = String(name)
 
     // Simulate WebIDL type casting for NaN value in lastModified option.
-    const lastModified = Number(options.lastModified)
+    const lastModified = options.lastModified === undefined
+      ? Date.now()
+      : Number(options.lastModified)
+
     if (!Number.isNaN(lastModified)) {
       this.#lastModified = lastModified
     }
