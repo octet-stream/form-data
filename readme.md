@@ -229,7 +229,7 @@ await fetch("https://httpbin.org/post", {method: "post", body: form})
 | ESM              | ✔️             | ✔️                 | ✔️<sup>2</sup>        |
 | Blob             | ✔️<sup>3</sup> | ✔️<sup>4</sup>     | ❌                   |
 | Browser polyfill | ❌            | ✔️                 | ❌                   |
-| Builtin encoder  | ❌            | ❌                | ✔️                    |
+| Builtin encoder  | ❌            | ✔️                 | ✔️                    |
 
 <sup>1</sup> Does not support Blob and File in entry value, but allows streams and Buffer (which is not spec-compiant, however);
 <sup>2</sup> Can be imported in ESM, because Node.js support for CJS modules in ESM context, but it does not have ESM entry point.
