@@ -2,6 +2,7 @@ import {inspect} from "util"
 
 import {File} from "./File"
 import {isFile} from "./isFile"
+import {isFunction} from "./isFunction"
 
 import normalizeFilename from "./normalizeFilename"
 
@@ -43,6 +44,25 @@ export class FormData {
    * Stores internal data for every entry
    */
   readonly #entries = new Map<string, FormDataEntryValues>()
+
+  static [Symbol.hasInstance](value: unknown): value is FormData {
+    return Boolean(
+      value
+        && isFunction((value as FormData).constructor)
+        && (value as FormData)[Symbol.toStringTag] === "FormData"
+        && isFunction((value as FormData).append)
+        && isFunction((value as FormData).set)
+        && isFunction((value as FormData).get)
+        && isFunction((value as FormData).getAll)
+        && isFunction((value as FormData).has)
+        && isFunction((value as FormData).delete)
+        && isFunction((value as FormData).entries)
+        && isFunction((value as FormData).values)
+        && isFunction((value as FormData).keys)
+        && isFunction((value as FormData)[Symbol.iterator])
+        && isFunction((value as FormData).forEach)
+    )
+  }
 
   constructor(entries?: FormDataConstructorEntries) {
     if (entries) {

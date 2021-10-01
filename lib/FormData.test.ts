@@ -10,6 +10,40 @@ import {FormData, FormDataConstructorEntries} from "./FormData"
 
 const {spy} = sinon
 
+test("Recognizes FormData instances", t => {
+  t.true(new FormData() instanceof FormData)
+})
+
+test("Recognizes custom FormData implementation as FormData instance", t => {
+  class MyFormData {
+    append() { }
+
+    set() { }
+
+    get() { }
+
+    getAll() { }
+
+    has() { }
+
+    delete() { }
+
+    entries() { }
+
+    values() { }
+
+    keys() { }
+
+    forEach() { }
+
+    [Symbol.iterator]() { }
+
+    get [Symbol.toStringTag]() { return "FormData" }
+  }
+
+  t.true(new MyFormData() instanceof FormData)
+})
+
 test("Allows to append fields from constructor", t => {
   const expected: FormDataConstructorEntries = [
     {
