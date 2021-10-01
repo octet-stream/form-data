@@ -3,6 +3,7 @@ import {inspect} from "util"
 import {File} from "./File"
 import {isFile} from "./isFile"
 import {isFunction} from "./isFunction"
+import {deprecateConstructorEntries} from "./deprecateConstructorEntries"
 
 import normalizeFilename from "./normalizeFilename"
 
@@ -66,6 +67,8 @@ export class FormData {
 
   constructor(entries?: FormDataConstructorEntries) {
     if (entries) {
+      deprecateConstructorEntries()
+
       entries.forEach(({name, value, fileName}) => this.append(
         name, value, fileName
       ))
