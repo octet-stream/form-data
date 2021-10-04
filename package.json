@@ -18,6 +18,7 @@
   "module": "./lib/esm/browser.js",
   "browser": "./lib/cjs/browser.js",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "node": {
         "import": "./lib/esm/index.js",
