@@ -10,16 +10,43 @@ import {deprecateConstructorEntries} from "./deprecateConstructorEntries"
  */
 export type FormDataEntryValue = string | File
 
+/**
+ * The list of entry values. Must be a non-empty array.
+ */
 type FormDataEntryValues = [FormDataEntryValue, ...FormDataEntryValue[]]
 
 /**
  * Private options for FormData#setEntry() method
  */
 interface FormDataSetFieldOptions {
+  /**
+   * The name of the field whose data is contained in `value`.
+   */
   name: string
-  value: unknown
+
+  /**
+   * The field's value. This can be [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+    or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File). If none of these are specified the value is converted to a string.
+   */
+  rawValue: unknown
+
+  /**
+   * The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
+   */
   fileName?: string
+
+  /**
+   * Indicates how the existent entry must be modified:
+   *
+   * 1. If the `FormData#set()` is called, the value should be `false` and existent entry values list will be replaced.
+   * 2. If the `FormData#append()` is called, the value should be `true` and the new entry value will be added at the end of the existent entry values list.
+   */
   append: boolean
+
+  /**
+   * An amout of arguments, passed to `FormData#set()` or `FormData#append()` methods.
+   * This value is only necessary for dynamic error messages.
+   */
   argsLength: number
 }
 
@@ -75,14 +102,12 @@ export class FormData {
 
   #setEntry({
     name,
-    value: rawValue,
+    rawValue,
     append,
     fileName,
     argsLength
   }: FormDataSetFieldOptions): void {
     const methodName = append ? "append" : "set"
-
-    name = String(name)
 
     // FormData required at least 2 arguments to be set.
     if (argsLength < 2) {
@@ -92,7 +117,10 @@ export class FormData {
       )
     }
 
-    // Normalize field's value
+    // Make sure the name of the entry is always a string.
+    name = String(name)
+
+    // Normalize value to a string or File
     let value: FormDataEntryValue
     if (isFile(rawValue)) {
       // If fileName is set, use it as file name
@@ -117,18 +145,21 @@ export class FormData {
       value = String(rawValue)
     }
 
+    // Get an entry associated with given name
     const values = this.#entries.get(name)
 
+    // If there's no such entry, create a new set of values with the name.
     if (!values) {
       return void this.#entries.set(name, [value])
     }
 
-    // Replace a value of the existing entry if "set" called
+    // If the entry exists:
+    // Replace a value of the existing entry when the "set" method is called.
     if (!append) {
       return void this.#entries.set(name, [value])
     }
 
-    // Append a new value to the existing entry
+    // Otherwise append a new value to the existing entry.
     values.push(value)
   }
 
@@ -146,9 +177,9 @@ export class FormData {
   append(name: string, value: unknown, fileName?: string): void {
     this.#setEntry({
       name,
-      value,
       fileName,
       append: true,
+      rawValue: value,
       argsLength: arguments.length
     })
   }
@@ -166,9 +197,9 @@ export class FormData {
   set(name: string, value: unknown, fileName?: string): void {
     this.#setEntry({
       name,
-      value,
       fileName,
       append: false,
+      rawValue: value,
       argsLength: arguments.length
     })
   }
