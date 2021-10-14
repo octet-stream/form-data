@@ -143,7 +143,7 @@ export class FormData {
    * @param fileName The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
    */
   append(name: string, value: unknown, fileName?: string): void {
-    return this.#setEntry({
+    this.#setEntry({
       name,
       value,
       fileName,
@@ -163,7 +163,7 @@ export class FormData {
    *
    */
   set(name: string, value: unknown, fileName?: string): void {
-    return this.#setEntry({
+    this.#setEntry({
       name,
       value,
       fileName,
@@ -224,7 +224,7 @@ export class FormData {
    * @param name The name of the key you want to delete.
    */
   delete(name: string): void {
-    return void this.#entries.delete(String(name))
+    this.#entries.delete(String(name))
   }
 
   /**
