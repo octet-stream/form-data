@@ -5,8 +5,6 @@ import {isFile} from "./isFile"
 import {isFunction} from "./isFunction"
 import {deprecateConstructorEntries} from "./deprecateConstructorEntries"
 
-import normalizeFilename from "./normalizeFilename"
-
 /**
  * A `string` or `File` that represents a single value from a set of `FormData` key-value pairs.
  */
@@ -77,7 +75,7 @@ export class FormData {
 
   #setEntry({
     name,
-    value,
+    value: rawValue,
     append,
     fileName,
     argsLength
@@ -95,40 +93,43 @@ export class FormData {
     }
 
     // Normalize field's value
-    let normalizedValue: FormDataEntryValue
-    if (isFile(value)) {
-      fileName = normalizeFilename(
-        fileName === undefined ? value.name : fileName
-      )
+    let value: FormDataEntryValue
+    if (isFile(rawValue)) {
+      // If fileName is set, use it as file name
+      if (fileName === undefined) {
+        // Otherwise check if the rawValue.name exists and let the fileName be the value of the rawValue.name
+        // If rawValue.name is not exists, use "blob" as default file name
+        fileName = rawValue.name === undefined ? "blob" : rawValue.name
+      }
 
       // Take params from the previous File or Blob instance
-      normalizedValue = new File([value], fileName, {
-        type: value.type,
-        lastModified: value.lastModified
+      value = new File([rawValue], String(fileName), {
+        type: rawValue.type,
+        lastModified: rawValue.lastModified
       })
-    } else if (fileName) { // If a value is not a file-like, but the filename is present, then throw the error
+    } else if (fileName) { // If value is not a File or Blob, but the filename is present, throw following error:
       throw new TypeError(
         `Failed to execute '${methodName}' on 'FormData': `
           + "parameter 2 is not of type 'Blob'."
       )
     } else {
       // A non-file entries must be converted to string
-      normalizedValue = String(value)
+      value = String(rawValue)
     }
 
     const values = this.#entries.get(name)
 
     if (!values) {
-      return void this.#entries.set(name, [normalizedValue])
+      return void this.#entries.set(name, [value])
     }
 
     // Replace a value of the existing entry if "set" called
     if (!append) {
-      return void this.#entries.set(name, [normalizedValue])
+      return void this.#entries.set(name, [value])
     }
 
     // Append a new value to the existing entry
-    values.push(normalizedValue)
+    values.push(value)
   }
 
   /**
