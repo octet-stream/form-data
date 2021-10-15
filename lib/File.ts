@@ -88,7 +88,7 @@ export class File extends Blob implements FileLike {
     }
   }
 
-  get name() {
+  get name(): string {
     return this.#name
   }
 
