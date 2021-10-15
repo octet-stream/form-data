@@ -62,11 +62,7 @@ export class File extends Blob implements FileLike {
    * @param name The name of the file.
    * @param options An options object containing optional attributes for the file.
    */
-  constructor(
-    fileBits: FileBits,
-    name: string,
-    options: FilePropertyBag = {}
-  ) {
+  constructor(fileBits: FileBits, name: string, options: FilePropertyBag = {}) {
     super(fileBits, options)
 
     if (arguments.length < 2) {
