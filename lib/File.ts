@@ -1,4 +1,4 @@
-import {Blob, BlobPropertyBag} from "./Blob"
+import {Blob, BlobParts as FileBits, BlobPropertyBag} from "./Blob"
 
 export interface FileLike {
   /**
@@ -41,6 +41,9 @@ export interface FilePropertyBag extends BlobPropertyBag {
  */
 export type FileOptions = FilePropertyBag
 
+/**
+ * The **File** interface provides information about files and allows JavaScript to access their content.
+ */
 export class File extends Blob implements FileLike {
   /**
    * Returns the name of the file referenced by the File object.
@@ -60,7 +63,7 @@ export class File extends Blob implements FileLike {
    * @param options An options object containing optional attributes for the file.
    */
   constructor(
-    fileBits: unknown[],
+    fileBits: FileBits,
     name: string,
     options: FilePropertyBag = {}
   ) {
