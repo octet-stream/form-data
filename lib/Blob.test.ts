@@ -436,8 +436,7 @@ test(".stream() allows to read Blob as a stream", async t => {
 })
 
 test(".stream() returned ReadableStream can be cancelled", async t => {
-  const source = Buffer.from("Some content")
-  const stream = new Blob([source]).stream()
+  const stream = new Blob(["Some content"]).stream()
 
   // Cancel the stream before start reading, or this will throw an error
   await stream.cancel()
