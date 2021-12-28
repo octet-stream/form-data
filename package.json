@@ -21,16 +21,19 @@
     "./package.json": "./package.json",
     ".": {
       "node": {
+        "types": "./@type/index.d.ts",
         "import": "./lib/esm/index.js",
         "require": "./lib/cjs/index.js"
       },
       "browser": {
+        "types": "./@type/browser.d.ts",
         "import": "./lib/esm/browser.js",
         "require": "./lib/cjs/browser.js"
       },
       "default": "./lib/esm/index.js"
     },
     "./file-from-path": {
+      "types": "./@type/fileFromPath.d.ts",
       "import": "./lib/esm/fileFromPath.js",
       "require": "./lib/cjs/fileFromPath.js"
     }
