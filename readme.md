@@ -405,8 +405,8 @@ Available from `formdata-node/file-from-path` subpath.
 Creates a `File` referencing the one on a disk by given path.
 
   - **{string}** path - Path to a file
-  - **{string}** [filename] - Name of the file. Will be passed as second argument in `File` constructor. If not presented, the file path will be used to get it.
-  - **{object}** [options = {}] - File options.
+  - **{string}** [filename] - Optional name of the file. Will be passed as the second argument in `File` constructor. If not presented, the name will be taken from the file's path.
+  - **{object}** [options = {}] - Additional `File` options, except for `lastModified`.
   - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
 
 ### `fileFromPathSync(path[, filename, options]) -> {File}`
@@ -414,10 +414,9 @@ Creates a `File` referencing the one on a disk by given path.
 Available from `formdata-node/file-from-path` subpath.
 
 Creates a `File` referencing the one on a disk by given path. Synchronous version of the `fileFromPath`.
-
   - **{string}** path - Path to a file
-  - **{string}** [filename] - Name of the file. Will be passed as second argument in `File` constructor. If not presented, the file path will be used to get it.
-  - **{object}** [options = {}] - File options.
+  - **{string}** [filename] - Optional name of the file. Will be passed as the second argument in `File` constructor. If not presented, the name will be taken from the file's path.
+  - **{object}** [options = {}] - Additional `File` options, except for `lastModified`.
   - **{string}** [options.type = ""] - Returns the media type ([`MIME`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)) of the file represented by a `File` object.
 
 ### `isFile(value) -> {boolean}`

@@ -107,9 +107,24 @@ function createFileFromPath(
 /**
  * Creates a `File` referencing the one on a disk by given path. Synchronous version of the `fileFromPath`
  *
- * @param path Path to read a file from
- * @param filename Optional file name. If not presented, the path will be used to get it
- * @param options File options
+ * @param path Path to a file
+ * @param filename Optional name of the file. Will be passed as the second argument in `File` constructor. If not presented, the name will be taken from the file's path.
+ * @param options Additional `File` options, except for `lastModified`.
+ *
+ * @example
+ *
+ * ```js
+ * import {FormData, File} from "formdata-node"
+ * import {fileFromPathSync} from "formdata-node/file-from-path"
+ *
+ * const form = new FormData()
+ *
+ * const file = fileFromPathSync("/path/to/some/file.txt")
+ *
+ * form.set("file", file)
+ *
+ * form.get("file") // -> Your `File` object
+ * ```
  */
 export function fileFromPathSync(path: string): File
 export function fileFromPathSync(path: string, filename?: string): File
@@ -127,15 +142,32 @@ export function fileFromPathSync(
   filenameOrOptions?: string | FileFromPathOptions,
   options: FileFromPathOptions = {}
 ): File {
-  return createFileFromPath(path, statSync(path), filenameOrOptions, options)
+  const stats = statSync(path)
+
+  return createFileFromPath(path, stats, filenameOrOptions, options)
 }
 
 /**
  * Creates a `File` referencing the one on a disk by given path.
  *
- * @param path Path to read a file from
- * @param filename Optional file name. If not presented, the path will be used to get it
- * @param options File options
+ * @param path Path to a file
+ * @param filename Optional name of the file. Will be passed as the second argument in `File` constructor. If not presented, the name will be taken from the file's path.
+ * @param options Additional `File` options, except for `lastModified`.
+ *
+ * @example
+ *
+ * ```js
+ * import {FormData, File} from "formdata-node"
+ * import {fileFromPath} from "formdata-node/file-from-path"
+ *
+ * const form = new FormData()
+ *
+ * const file = await fileFromPath("/path/to/some/file.txt")
+ *
+ * form.set("file", file)
+ *
+ * form.get("file") // -> Your `File` object
+ * ```
  */
 export async function fileFromPath(path: string): Promise<File>
 export async function fileFromPath(
