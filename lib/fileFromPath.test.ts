@@ -44,13 +44,13 @@ test("sync: Creates a file from path", async t => {
 test("Has name taken from file path", async t => {
   const file = await fileFromPath(filePath)
 
-  t.is<string>(file.name, basename(filePath))
+  t.is<string, string>(file.name, basename(filePath))
 })
 
 test("Has an empty string as file type by default", async t => {
   const file = await fileFromPath("readme.md")
 
-  t.is<string>(file.type, "")
+  t.is<string, string>(file.type, "")
 })
 
 test("Has lastModified field taken from file stats", async t => {
@@ -58,7 +58,7 @@ test("Has lastModified field taken from file stats", async t => {
 
   const file = await fileFromPath(filePath)
 
-  t.is<number>(file.lastModified, mtimeMs)
+  t.is<number, number>(file.lastModified, mtimeMs)
 })
 
 test("Has the size property reflecting the one of the actual file", async t => {
@@ -66,7 +66,7 @@ test("Has the size property reflecting the one of the actual file", async t => {
 
   const file = await fileFromPath(filePath)
 
-  t.is<number>(file.size, size)
+  t.is<number, number>(file.size, size)
 })
 
 test("Allows to set file name as the second argument", async t => {
@@ -74,14 +74,14 @@ test("Allows to set file name as the second argument", async t => {
 
   const file = await fileFromPath(filePath, expected)
 
-  t.is<string>(file.name, expected)
+  t.is<string, string>(file.name, expected)
 })
 
 test("sync: Allows to set file name as the second argument", t => {
   const expected = "some-file.txt"
   const file = fileFromPathSync(filePath, expected)
 
-  t.is<string>(file.name, expected)
+  t.is<string, string>(file.name, expected)
 })
 
 test("Allows to set file options from second argument", async t => {
@@ -89,7 +89,9 @@ test("Allows to set file options from second argument", async t => {
 
   const file = await fileFromPath(filePath, expected)
 
-  t.deepEqual<FileFromPathOptions>({type: file.type}, expected)
+  t.deepEqual<FileFromPathOptions, FileFromPathOptions>({
+    type: file.type
+  }, expected)
 })
 
 test("sync: Allows to set file options from second argument", t => {
@@ -97,7 +99,9 @@ test("sync: Allows to set file options from second argument", t => {
 
   const file = fileFromPathSync(filePath, expected)
 
-  t.deepEqual<FileFromPathOptions>({type: file.type}, expected)
+  t.deepEqual<FileFromPathOptions, FileFromPathOptions>({
+    type: file.type
+  }, expected)
 })
 
 test("Can be read as text", async t => {
@@ -106,7 +110,7 @@ test("Can be read as text", async t => {
 
   const actual = await file.text()
 
-  t.is<string>(actual, expected)
+  t.is<string, string>(actual, expected)
 })
 
 test("Can be read as ArrayBuffer", async t => {
@@ -124,7 +128,7 @@ test("Can be sliced", async t => {
 
   const actual = await file.slice(0, 15).text()
 
-  t.is<string>(actual, "The MIT License")
+  t.is<string, string>(actual, "The MIT License")
 })
 
 test("Can be sliced from the arbitrary start", async t => {
@@ -132,7 +136,7 @@ test("Can be sliced from the arbitrary start", async t => {
 
   const actual = await file.slice(4, 15).text()
 
-  t.is<string>(actual, "MIT License")
+  t.is<string, string>(actual, "MIT License")
 })
 
 test("Reads from empty file", async t => {
@@ -140,8 +144,8 @@ test("Reads from empty file", async t => {
 
   const sliced = file.slice(0, 0)
 
-  t.is<number>(sliced.size, 0, "Must have 0 size")
-  t.is<string>(await sliced.text(), "", "Must return empty string")
+  t.is<number, number>(sliced.size, 0, "Must have 0 size")
+  t.is<string, string>(await sliced.text(), "", "Must return empty string")
 })
 
 test("Fails attempt to read modified file", async t => {

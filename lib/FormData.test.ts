@@ -392,7 +392,7 @@ test(".toString() returns a proper string", t => {
 })
 
 test("util.inspect() returns a proper string", t => {
-  t.is<string>(inspect(new FormData()), "FormData")
+  t.is(inspect(new FormData()), "FormData")
 })
 
 test(".set() throws TypeError when called with less than 2 arguments", t => {
