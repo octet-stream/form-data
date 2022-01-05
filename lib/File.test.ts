@@ -20,9 +20,9 @@ test("The name property keeps its value after being reassigned", t => {
   const expected = "file.txt"
   const file = new File(["Some content"], expected)
 
-  // Browsers don't throw errors in this case,
-  // event though the seem to use the same approach with only getter
-  // to make the property read-only. But in not reassignment will cause an error.
+  // Browsers won't throw errors in this case,
+  // even though they seem to use the same approach with getters
+  // to make the property read-only. But in Node.js the reassignment will cause an error.
   // Maybe it's platform specific behaviour?
   // @ts-expect-error
   try { file.name = "another-file.txt" } catch { /* noop */ }
@@ -52,6 +52,15 @@ test("Takes the lastModified value from options", t => {
   const file = new File(["Some content"], "file.txt", {lastModified: expected})
 
   t.is(file.lastModified, expected)
+})
+
+test("Converts Date object in lastModified option to a number", t => {
+  const now = new Date()
+
+  // @ts-expect-error
+  const file = new File(["Some content"], "file.txt", {lastModified: now})
+
+  t.is(file.lastModified, Number(now))
 })
 
 test("Interpretes undefined value in lastModified option as Date.now()", t => {
