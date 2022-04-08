@@ -38,7 +38,7 @@
       "error",
       {
         "ignore": [
-          "dinky.js"
+          "formdata-node"
         ]
       }
     ],

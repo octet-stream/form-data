@@ -16,15 +16,13 @@ pnpm-lock.yaml
 /.editorconfig
 /.eslintrc.json
 /.lintstagedrc
-/ava.config.cjs
+/ava.config.js
 /yarn.lock
 /test.mjs
 /tsconfig.json
-/tsconfig.esm.json
-/tsconfig.cjs.json
 /tsconfig.eslint.json
 /tsconfig.d.ts.json
 /tsconfig.ava.json
-/lib/**/*.ts
+/src/**/*.ts
 
-!/lib/node-domexception.d.ts
+!/src/node-domexception.d.ts
