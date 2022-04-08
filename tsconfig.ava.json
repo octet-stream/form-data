@@ -2,7 +2,6 @@
   "extends": "./tsconfig.json",
   "ts-node": {
     "preferTsExts": true,
-    "transpileOnly": true,
-    "compiler": "ttypescript"
+    "transpileOnly": true
   }
 }
