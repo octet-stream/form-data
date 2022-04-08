@@ -3,11 +3,11 @@ import {basename} from "path"
 
 import DOMException from "node-domexception"
 
-import {File, FileLike, FilePropertyBag} from "./File"
+import {File, FileLike, FilePropertyBag} from "./File.js"
 
-import isPlainObject from "./isPlainObject"
+import isPlainObject from "./isPlainObject.js"
 
-export * from "./isFile"
+export * from "./isFile.js"
 
 const MESSAGE = "The requested file could not be read, "
   + "typically due to permission problems that have occurred after a reference "

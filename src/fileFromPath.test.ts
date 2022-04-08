@@ -3,14 +3,14 @@ import test from "ava"
 import {promises as fs} from "fs"
 import {resolve, basename} from "path"
 
-import {File} from "./File"
+import {File} from "./File.js"
 import {
   fileFromPathSync,
   fileFromPath,
   FileFromPathOptions
-} from "./fileFromPath"
+} from "./fileFromPath.js"
 
-import sleep from "./__helper__/sleep"
+import sleep from "./__helper__/sleep.js"
 
 const filePath = resolve("license")
 

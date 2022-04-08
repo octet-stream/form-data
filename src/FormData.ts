@@ -1,9 +1,9 @@
 import {inspect} from "util"
 
-import {File} from "./File"
-import {isFile} from "./isFile"
-import {isFunction} from "./isFunction"
-import {deprecateConstructorEntries} from "./deprecateConstructorEntries"
+import {File} from "./File.js"
+import {isFile} from "./isFile.js"
+import {isFunction} from "./isFunction.js"
+import {deprecateConstructorEntries} from "./deprecateConstructorEntries.js"
 
 /**
  * A `string` or `File` that represents a single value from a set of `FormData` key-value pairs.

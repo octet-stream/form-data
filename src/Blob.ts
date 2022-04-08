@@ -2,10 +2,10 @@
 
 import {ReadableStream} from "web-streams-polyfill"
 
-import type {BlobPart} from "./BlobPart"
+import type {BlobPart} from "./BlobPart.js"
 
-import {isFunction} from "./isFunction"
-import {consumeBlobParts, sliceBlob} from "./blobHelpers"
+import {isFunction} from "./isFunction.js"
+import {consumeBlobParts, sliceBlob} from "./blobHelpers.js"
 
 /**
  * Reflects minimal valid Blob for BlobParts.

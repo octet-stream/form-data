@@ -1,9 +1,9 @@
 /*! Based on fetch-blob. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> & David Frank */
 
-import type {BlobPart} from "./BlobPart"
-import type {Blob, BlobLike} from "./Blob"
+import type {BlobPart} from "./BlobPart.js"
+import type {Blob, BlobLike} from "./Blob.js"
 
-import {isFunction} from "./isFunction"
+import {isFunction} from "./isFunction.js"
 
 const CHUNK_SIZE = 65536 // 64 KiB (same size chrome slice theirs blob into Uint8array's)
 

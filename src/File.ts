@@ -1,4 +1,4 @@
-import {Blob, BlobParts as FileBits, BlobPropertyBag} from "./Blob"
+import {Blob, BlobParts as FileBits, BlobPropertyBag} from "./Blob.js"
 
 export interface FileLike {
   /**

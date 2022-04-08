@@ -6,7 +6,6 @@ specifiers:
   '@types/sinon': 10.0.11
   '@typescript-eslint/eslint-plugin': 4.32.0
   '@typescript-eslint/parser': 4.32.0
-  '@zoltu/typescript-transformer-append-js-extension': 1.0.1
   ava: 4.0.1
   c8: 7.11.0
   eslint: 7.32.0
@@ -21,7 +20,6 @@ specifiers:
   pinst: 3.0.0
   sinon: 13.0.1
   ts-node: 10.5.0
-  ttypescript: 1.5.13
   typescript: 4.5.5
   web-streams-polyfill: 4.0.0-beta.1
 
@@ -35,7 +33,6 @@ devDependencies:
   '@types/sinon': 10.0.11
   '@typescript-eslint/eslint-plugin': 4.32.0_7e4e649ab384e855d5a7161bdee9d7e0
   '@typescript-eslint/parser': 4.32.0_eslint@7.32.0+typescript@4.5.5
-  '@zoltu/typescript-transformer-append-js-extension': 1.0.1
   ava: 4.0.1
   c8: 7.11.0
   eslint: 7.32.0
@@ -49,7 +46,6 @@ devDependencies:
   pinst: 3.0.0
   sinon: 13.0.1
   ts-node: 10.5.0_003c8a6da24af261bf8b8ce51aec1adf
-  ttypescript: 1.5.13_ts-node@10.5.0+typescript@4.5.5
   typescript: 4.5.5
 
 packages:
@@ -497,10 +493,6 @@ packages:
     dependencies:
       '@typescript-eslint/types': 4.32.0
       eslint-visitor-keys: 2.1.0
-    dev: true
-
-  /@zoltu/typescript-transformer-append-js-extension/1.0.1:
-    resolution: {integrity: sha512-7Lp30MtJO7YHZW19yJWhkuJrf+Y78COHopeZli7fiWrbIRvodsSXZIa7cFX/c4PFwFJt55N/7Pp/t6VH0fwBVQ==}
     dev: true
 
   /acorn-jsx/5.3.1_acorn@7.4.1:
@@ -3466,18 +3458,6 @@ packages:
       typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
     dependencies:
       tslib: 1.14.1
-      typescript: 4.5.5
-    dev: true
-
-  /ttypescript/1.5.13_ts-node@10.5.0+typescript@4.5.5:
-    resolution: {integrity: sha512-KT/RBfGGlVJFqEI8cVvI3nMsmYcFvPSZh8bU0qX+pAwbi7/ABmYkzn7l/K8skw0xmYjVCoyaV6WLsBQxdadybQ==}
-    hasBin: true
-    peerDependencies:
-      ts-node: '>=8.0.2'
-      typescript: '>=3.2.2'
-    dependencies:
-      resolve: 1.20.0
-      ts-node: 10.5.0_003c8a6da24af261bf8b8ce51aec1adf
       typescript: 4.5.5
     dev: true
 

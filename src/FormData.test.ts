@@ -4,9 +4,9 @@ import sinon from "sinon"
 
 import {inspect} from "util"
 
-import {Blob} from "./Blob"
-import {File} from "./File"
-import {FormData, FormDataConstructorEntries} from "./FormData"
+import {Blob} from "./Blob.js"
+import {File} from "./File.js"
+import {FormData, FormDataConstructorEntries} from "./FormData.js"
 
 const {spy} = sinon
 

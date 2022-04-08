@@ -1,4 +1,4 @@
-import {File} from "./File"
+import {File} from "./File.js"
 
 /**
  * Checks if given value is a File, Blob or file-look-a-like object.
