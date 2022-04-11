@@ -6,7 +6,7 @@ specifiers:
   '@types/sinon': 10.0.11
   '@typescript-eslint/eslint-plugin': 5.18.0
   '@typescript-eslint/parser': 5.18.0
-  ava: 4.1.0
+  ava: 4.2.0
   c8: 7.11.0
   eslint: 8.13.0
   eslint-config-airbnb-typescript: 12.3.1
@@ -21,11 +21,11 @@ specifiers:
   sinon: 13.0.1
   ts-node: 10.7.0
   typescript: 4.6.3
-  web-streams-polyfill: 4.0.0-beta.1
+  web-streams-polyfill: 4.0.0-beta.2
 
 dependencies:
   node-domexception: 1.0.0
-  web-streams-polyfill: 4.0.0-beta.1
+  web-streams-polyfill: 4.0.0-beta.2
 
 devDependencies:
   '@octetstream/eslint-config': 5.0.0_eslint@8.13.0
@@ -33,7 +33,7 @@ devDependencies:
   '@types/sinon': 10.0.11
   '@typescript-eslint/eslint-plugin': 5.18.0_0dd9be2ba5ed9805045f3fec8be848f5
   '@typescript-eslint/parser': 5.18.0_eslint@8.13.0+typescript@4.6.3
-  ava: 4.1.0
+  ava: 4.2.0
   c8: 7.11.0
   eslint: 8.13.0
   eslint-config-airbnb-typescript: 12.3.1_289354d13b13010832aff5779e174cdd
@@ -680,8 +680,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /ava/4.1.0:
-    resolution: {integrity: sha512-QD6MBWHzagAwb9vxduXzVWx6Q77DUHLxvIebSY6+enL+Ri6KzSZYj0IBOFifA26wfpJPZnWKLUh3vwx1LyVh/g==}
+  /ava/4.2.0:
+    resolution: {integrity: sha512-96N/rH2ZlBjoh18CsjH3zfo/rzukkRoqNK7R/Z3MLRrqu6cRRf+i4Zwna7ZRYEIl55yF1BKh/nSPCZWqoXfPJA==}
     engines: {node: '>=12.22 <13 || >=14.17 <15 || >=16.4 <17 || >=17'}
     hasBin: true
     peerDependencies:
@@ -734,7 +734,7 @@ packages:
       supertap: 3.0.1
       temp-dir: 2.0.0
       write-file-atomic: 4.0.1
-      yargs: 17.4.0
+      yargs: 17.4.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -3154,9 +3154,9 @@ packages:
       source-map: 0.7.3
     dev: true
 
-  /web-streams-polyfill/4.0.0-beta.1:
-    resolution: {integrity: sha512-3ux37gEX670UUphBF9AMCq8XM6iQ8Ac6A+DSRRjDoRBm1ufCkaCDdNVbaqq60PsEkdNlLKrGtv/YBP4EJXqNtQ==}
-    engines: {node: '>= 12'}
+  /web-streams-polyfill/4.0.0-beta.2:
+    resolution: {integrity: sha512-UHhhnoe2M40uh2r0KVdJTN7qjFytm6o0Yp3VcjwV3bfo6rz8uqvxNoE5yNmGF0y3eFfXaFeb6M09MDSwwLmq4w==}
+    engines: {node: '>= 14'}
     dev: false
 
   /well-known-symbols/2.0.0:
@@ -3255,8 +3255,8 @@ packages:
       yargs-parser: 20.2.7
     dev: true
 
-  /yargs/17.4.0:
-    resolution: {integrity: sha512-WJudfrk81yWFSOkZYpAZx4Nt7V4xp7S/uJkX0CnxovMCt1wCE8LNftPpNuF9X/u9gN5nsD7ycYtRcDf2pL3UiA==}
+  /yargs/17.4.1:
+    resolution: {integrity: sha512-WSZD9jgobAg3ZKuCQZSa3g9QOJeCCqLoLAykiWgmXnDo9EPnn4RPf5qVTtzgOx66o6/oqhcA5tHtJXpG8pMt3g==}
     engines: {node: '>=12'}
     dependencies:
       cliui: 7.0.4
