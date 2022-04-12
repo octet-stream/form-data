@@ -3,7 +3,6 @@ import {inspect} from "util"
 import {File} from "./File.js"
 import {isFile} from "./isFile.js"
 import {isFunction} from "./isFunction.js"
-import {deprecateConstructorEntries} from "./deprecateConstructorEntries.js"
 
 /**
  * A `string` or `File` that represents a single value from a set of `FormData` key-value pairs.
@@ -88,16 +87,6 @@ export class FormData {
         && isFunction((value as FormData)[Symbol.iterator])
         && isFunction((value as FormData).forEach)
     )
-  }
-
-  constructor(entries?: FormDataConstructorEntries) {
-    if (entries) {
-      deprecateConstructorEntries()
-
-      entries.forEach(({name, value, fileName}) => this.append(
-        name, value, fileName
-      ))
-    }
   }
 
   #setEntry({
