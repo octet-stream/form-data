@@ -249,14 +249,9 @@ await fetch("https://httpbin.org/post", {method: "post", body: form})
 
 ### `class FormData`
 
-##### `constructor([entries]) -> {FormData}`
+##### `constructor() -> {FormData}`
 
-Creates a new FormData instance
-
-  - **{array}** [entries = null] – an optional FormData initial entries.
-    Each initial field should be passed as a collection of the objects
-    with "name", "value" and "filename" props.
-    See the [FormData#append()](#appendname-value-filename---void) for more info about the available format.
+Creates a new FormData instance.
 
 #### Instance methods
 
