@@ -6,7 +6,7 @@ import {inspect} from "util"
 
 import {Blob} from "./Blob.js"
 import {File} from "./File.js"
-import {FormData, FormDataConstructorEntries} from "./FormData.js"
+import {FormData} from "./FormData.js"
 
 const {spy} = sinon
 
@@ -42,24 +42,6 @@ test("Recognizes custom FormData implementation as FormData instance", t => {
   }
 
   t.true(new MyFormData() instanceof FormData)
-})
-
-test("Allows to append fields from constructor", t => {
-  const expected: FormDataConstructorEntries = [
-    {
-      name: "field",
-      value: "On Soviet Moon, landscape see binoculars through YOU"
-    },
-    {
-      name: "file",
-      value: new File(["My hovercraft is full of eels"], "hovercraft.txt")
-    }
-  ]
-
-  const fd = new FormData(expected)
-
-  t.true(fd.has("field"))
-  t.true(fd.has("file"))
 })
 
 test("Creates a new File instance for given File", t => {
