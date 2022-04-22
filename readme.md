@@ -219,7 +219,6 @@ await fetch("https://httpbin.org/post", {method: "post", body: form})
 | .set()           | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .get()           | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .getAll()        | ✔️             | ✔️                 | ✔️               | ❌                   |
-| .forEach()       | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .keys()          | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .values()        | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .entries()       | ✔️             | ✔️                 | ✔️               | ❌                   |
