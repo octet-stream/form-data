@@ -219,10 +219,10 @@ await fetch("https://httpbin.org/post", {method: "post", body: form})
 | .set()           | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .get()           | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .getAll()        | ✔️             | ✔️                 | ✔️               | ❌                   |
+| .forEach()       | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .keys()          | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .values()        | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .entries()       | ✔️             | ✔️                 | ✔️               | ❌                   |
-| .forEach()       | ✔️             | ✔️                 | ✔️               | ❌                   |
 | Symbol.iterator  | ✔️             | ✔️                 | ✔️               | ❌                   |
 | CommonJS         | ✔️             | ❌                | ✔️               | ✔️                    |
 | ESM              | ✔️             | ✔️                 | ✔️<sup>2</sup>   | ✔️<sup>2</sup>        |
