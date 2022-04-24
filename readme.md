@@ -10,10 +10,9 @@ Spec-compliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/For
 
 1. Spec-compliant: implements every method of the [`FormData interface`](https://developer.mozilla.org/en-US/docs/Web/API/FormData).
 2. Supports Blobs and Files sourced from anywhere: you can use builtin [`fileFromPath`](#filefrompathpath-filename-options---promisefile) and [`fileFromPathSync`](#filefrompathsyncpath-filename-options---file) helpers to create a File from FS, or you can implement your `BlobDataItem` object to use a different source of data.
-3. Supports both ESM and CJS targets. See [`ESM/CJS support`](#esmcjs-support) section for details.
-4. Written on TypeScript and ships with TS typings.
-5. Isomorphic, but only re-exports native FormData object for browsers. If you need a polyfill for browsers, use [`formdata-polyfill`](https://github.com/jimmywarting/FormData)
-6. It's a [`ponyfill`](https://ponyfill.com/)! Which means, no effect has been caused on `globalThis` or native `FormData` implementation.
+3. Written on TypeScript and ships with TS typings.
+4. Isomorphic, but only re-exports native FormData object for browsers. If you need a polyfill for browsers, use [`formdata-polyfill`](https://github.com/jimmywarting/FormData)
+5. It's a [`ponyfill`](https://ponyfill.com/)! Which means, no effect has been caused on `globalThis` or native `FormData` implementation.
 
 ## Installation
 
@@ -34,10 +33,6 @@ Or pnpm
 ```
 pnpm add formdata-node
 ```
-
-## ESM/CJS support
-
-This package is targeting ESM and CJS for backwards compatibility reasons and smoothen transition period while you convert your projects to ESM only. Note that CJS support will be removed as [Node.js v12 will reach its EOL](https://github.com/nodejs/release#release-schedule). This change will be released as major version update, so you won't miss it.
 
 ## Usage
 
@@ -224,7 +219,6 @@ await fetch("https://httpbin.org/post", {method: "post", body: form})
 | .values()        | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .entries()       | ✔️             | ✔️                 | ✔️               | ❌                   |
 | Symbol.iterator  | ✔️             | ✔️                 | ✔️               | ❌                   |
-| CommonJS         | ✔️             | ❌                | ✔️               | ✔️                    |
 | ESM              | ✔️             | ✔️                 | ✔️<sup>2</sup>   | ✔️<sup>2</sup>        |
 | Blob             | ✔️<sup>3</sup> | ✔️<sup>4</sup>     | ✔️<sup>3</sup>   | ❌                   |
 | Browser polyfill | ❌            | ✔️                 | ✔️               | ❌                   |
