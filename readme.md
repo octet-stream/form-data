@@ -223,7 +223,6 @@ await fetch("https://httpbin.org/post", {method: "post", body: form})
 | .keys()          | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .values()        | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .entries()       | ✔️             | ✔️                 | ✔️               | ❌                   |
-| .forEach()       | ✔️             | ✔️                 | ✔️               | ❌                   |
 | Symbol.iterator  | ✔️             | ✔️                 | ✔️               | ❌                   |
 | CommonJS         | ✔️             | ❌                | ✔️               | ✔️                    |
 | ESM              | ✔️             | ✔️                 | ✔️<sup>2</sup>   | ✔️<sup>2</sup>        |
