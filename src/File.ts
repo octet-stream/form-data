@@ -84,10 +84,16 @@ export class File extends Blob implements FileLike {
     }
   }
 
+  /**
+   * Name of the file referenced by the File object.
+   */
   get name(): string {
     return this.#name
   }
 
+  /**
+   * The last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
+   */
   get lastModified(): number {
     return this.#lastModified
   }
