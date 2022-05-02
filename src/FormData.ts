@@ -2,6 +2,7 @@ import {inspect} from "util"
 
 import {File} from "./File.js"
 import {isFile} from "./isFile.js"
+import type {Blob} from "./Blob.js"
 import {isFunction} from "./isFunction.js"
 
 /**
@@ -27,7 +28,7 @@ interface FormDataSetFieldOptions {
    * The field's value. This can be [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File). If none of these are specified the value is converted to a string.
    */
-  rawValue: unknown
+  rawValue: string | Blob
 
   /**
    * The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
@@ -154,7 +155,7 @@ export class FormData {
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File). If none of these are specified the value is converted to a string.
    * @param fileName The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
    */
-  append(name: string, value: unknown, fileName?: string): void {
+  append(name: string, value: string | Blob, fileName?: string): void {
     this.#setEntry({
       name,
       fileName,
@@ -174,7 +175,7 @@ export class FormData {
    * @param fileName The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
    *
    */
-  set(name: string, value: unknown, fileName?: string): void {
+  set(name: string, value: string | Blob, fileName?: string): void {
     this.#setEntry({
       name,
       fileName,

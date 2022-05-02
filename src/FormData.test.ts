@@ -182,6 +182,7 @@ test(".get() returns null for non-existent field", t => {
 test(".get() returns number values as string", t => {
   const fd = new FormData()
 
+  // @ts-expect-error FormData will convert everything to a string, except for string | Blob | File. But TS typings will show error here anyway.
   fd.set("field", 42)
 
   t.is(fd.get("field"), "42")
@@ -289,7 +290,11 @@ test(".forEach() callback should be called once on each filed", t => {
   const fd = new FormData()
 
   fd.set("first", "value")
+
+  // @ts-expect-error FormData will convert everything to a string, except for string | Blob | File. But TS typings will show error here anyway.
   fd.set("second", 42)
+
+  // @ts-expect-error FormData will convert everything to a string, except for string | Blob | File. But TS typings will show error here anyway.
   fd.set("third", [1, 2, 3])
 
   fd.forEach(cb)
@@ -312,7 +317,11 @@ test(".values() Returns the first value on the first call", t => {
   const fd = new FormData()
 
   fd.set("first", "value")
+
+  // @ts-expect-error FormData will convert everything to a string, except for string | Blob | File. But TS typings will show error here anyway.
   fd.set("second", 42)
+
+  // @ts-expect-error FormData will convert everything to a string, except for string | Blob | File. But TS typings will show error here anyway.
   fd.set("third", [1, 2, 3])
 
   const curr = fd.values().next()
@@ -327,7 +336,11 @@ test(".value() yields every value from FormData", t => {
   const fd = new FormData()
 
   fd.set("first", "value")
+
+  // @ts-expect-error FormData will convert everything to a string, except for string | Blob | File. But TS typings will show error here anyway.
   fd.set("second", 42)
+
+  // @ts-expect-error FormData will convert everything to a string, except for string | Blob | File. But TS typings will show error here anyway.
   fd.set("third", [1, 2, 3])
 
   t.deepEqual([...fd.values()], ["value", "42", "1,2,3"])
@@ -348,7 +361,11 @@ test(".keys() Returns the first value on the first call", t => {
   const fd = new FormData()
 
   fd.set("first", "value")
+
+  // @ts-expect-error FormData will convert everything to a string, except for string | Blob | File. But TS typings will show error here anyway.
   fd.set("second", 42)
+
+  // @ts-expect-error FormData will convert everything to a string, except for string | Blob | File. But TS typings will show error here anyway.
   fd.set("third", [1, 2, 3])
 
   const curr = fd.keys().next()
@@ -363,7 +380,11 @@ test(".keys() yields every key from FormData", t => {
   const fd = new FormData()
 
   fd.set("first", "value")
+
+  // @ts-expect-error FormData will convert everything to a string, except for string | Blob | File. But TS typings will show error here anyway.
   fd.set("second", 42)
+
+  // @ts-expect-error FormData will convert everything to a string, except for string | Blob | File. But TS typings will show error here anyway.
   fd.set("third", [1, 2, 3])
 
   t.deepEqual([...fd.keys()], ["first", "second", "third"])
