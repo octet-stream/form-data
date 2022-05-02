@@ -57,8 +57,8 @@ class FileFromPath implements Omit<FileLike, "type"> {
     return new FileFromPath({
       path: this.#path,
       lastModified: this.lastModified,
-      size: end - start,
-      start
+      start: this.#start + start,
+      size: end - start
     })
   }
 

@@ -139,6 +139,16 @@ test("Can be sliced from the arbitrary start", async t => {
   t.is<string, string>(actual, "MIT License")
 })
 
+test("Can be sliced from Blob returned from .slice() method", async t => {
+  const license = new File([await readFile(filePath)], "license")
+  const file = await fileFromPath(filePath)
+
+  const expected = license.slice(4, 11).slice(2, 5)
+  const actual = file.slice(4, 11).slice(2, 5)
+
+  t.is<string, string>(await actual.text(), await expected.text())
+})
+
 test("Reads from empty file", async t => {
   const file = await fileFromPath(filePath)
 
