@@ -2,8 +2,6 @@ import test from "ava"
 
 import sinon from "sinon"
 
-import {inspect} from "util"
-
 import {Blob} from "./Blob.js"
 import {File} from "./File.js"
 import {FormData} from "./FormData.js"
@@ -392,10 +390,6 @@ test(".keys() yields every key from FormData", t => {
 
 test(".toString() returns a proper string", t => {
   t.is(new FormData().toString(), "[object FormData]")
-})
-
-test("util.inspect() returns a proper string", t => {
-  t.is(inspect(new FormData()), "FormData")
 })
 
 test(".set() throws TypeError when called with less than 2 arguments", t => {

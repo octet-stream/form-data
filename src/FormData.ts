@@ -1,9 +1,7 @@
-import {inspect} from "util"
-
-import {File} from "./File.js"
-import {isFile} from "./isFile.js"
-import type {Blob} from "./Blob.js"
 import {isFunction} from "./isFunction.js"
+import type {Blob} from "./Blob.js"
+import {isFile} from "./isFile.js"
+import {File} from "./File.js"
 
 /**
  * A `string` or `File` that represents a single value from a set of `FormData` key-value pairs.
@@ -297,9 +295,5 @@ export class FormData {
 
   get [Symbol.toStringTag](): string {
     return "FormData"
-  }
-
-  [inspect.custom](): string {
-    return this[Symbol.toStringTag]
   }
 }
