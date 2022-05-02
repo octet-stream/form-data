@@ -1,6 +1,6 @@
-import test from "ava"
+import {createReadStream} from "node:fs"
 
-import {createReadStream} from "fs"
+import test from "ava"
 
 import {Blob} from "./Blob.js"
 import {isFile} from "./isFile.js"
