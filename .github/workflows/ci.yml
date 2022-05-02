@@ -50,7 +50,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2.2.1
+        uses: pnpm/action-setup@v2
         with:
           version: 6.2.1
           run_install: true
@@ -58,7 +58,7 @@ jobs:
       - run: pnpm run ci
 
       - name: Upload codecov report
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         if: matrix.node == '16.x' && matrix.os == 'ubuntu-latest'
         with:
           file: ./coverage/coverage-final.json
