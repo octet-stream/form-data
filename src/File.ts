@@ -38,11 +38,6 @@ export interface FilePropertyBag extends BlobPropertyBag {
 }
 
 /**
- * @deprecated Use FilePropertyBag instead.
- */
-export type FileOptions = FilePropertyBag
-
-/**
  * The **File** interface provides information about files and allows JavaScript to access their content.
  */
 export class File extends Blob implements FileLike {
