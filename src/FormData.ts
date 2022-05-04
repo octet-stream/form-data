@@ -61,21 +61,26 @@ export class FormData {
   readonly #entries = new Map<string, FormDataEntryValues>()
 
   static [Symbol.hasInstance](value: unknown): value is FormData {
+    if (!value) {
+      return false
+    }
+
+    const v = value as FormData
+
     return Boolean(
-      value
-        && isFunction((value as FormData).constructor)
-        && (value as FormData)[Symbol.toStringTag] === "FormData"
-        && isFunction((value as FormData).append)
-        && isFunction((value as FormData).set)
-        && isFunction((value as FormData).get)
-        && isFunction((value as FormData).getAll)
-        && isFunction((value as FormData).has)
-        && isFunction((value as FormData).delete)
-        && isFunction((value as FormData).entries)
-        && isFunction((value as FormData).values)
-        && isFunction((value as FormData).keys)
-        && isFunction((value as FormData)[Symbol.iterator])
-        && isFunction((value as FormData).forEach)
+      isFunction(v.constructor)
+        && v[Symbol.toStringTag] === "FormData"
+        && isFunction(v.append)
+        && isFunction(v.set)
+        && isFunction(v.get)
+        && isFunction(v.getAll)
+        && isFunction(v.has)
+        && isFunction(v.delete)
+        && isFunction(v.entries)
+        && isFunction(v.values)
+        && isFunction(v.keys)
+        && isFunction(v[Symbol.iterator])
+        && isFunction(v.forEach)
     )
   }
 

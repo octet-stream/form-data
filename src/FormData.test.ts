@@ -42,6 +42,16 @@ test("Recognizes custom FormData implementation as FormData instance", t => {
   t.true(new MyFormData() instanceof FormData)
 })
 
+test("Returns false for instanceof checks with null", t => {
+  // @ts-expect-error
+  t.false(null instanceof FormData)
+})
+
+test("Returns false for instanceof checks with undefined", t => {
+  // @ts-expect-error
+  t.false(undefined instanceof FormData)
+})
+
 test("Creates a new File instance for given File", t => {
   const file = new File(["Some content"], "file.txt")
   const fd = new FormData()
