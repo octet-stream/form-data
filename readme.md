@@ -118,7 +118,50 @@ file = form.get("file")
 console.log(file.name) // -> some-file.txt
 ```
 
-5. You can also append files using `fileFromPath` or `fileFromPathSync` helpers. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
+5. You can use 3rd party Blob as FormData value, as vell as for BlobParts in out Blob implementation:
+
+```js
+import {FormData, Blob} from "formdata-node"
+import {Blob as FetchBlob} from "fetch-blob"
+
+const input = new FetchBlob(["a", "b", "c"])
+
+const blob = new Blob([input]) // Accepts 3rd party blobs as BlobParts
+
+await blob.text() // -> abc
+
+const form = new FormData()
+
+form.set("file", input)
+
+const file = form.get("file") // -> File
+
+await file.text() // -> abc
+```
+
+6. You can also use Node.js' Blob implementation in these scenarios:
+
+```js
+import {Blob as NodeBlob} from "node:buffer"
+
+import {FormData, Blob} from "formdata-node"
+
+const input = new NodeBlob(["a", "b", "c"])
+
+const blob = new Blob([input]) // Accepts 3rd party blobs as BlobParts
+
+await blob.text() // -> abc
+
+const form = new FormData()
+
+form.set("file", input)
+
+const file = form.get("file") // -> File
+
+await file.text() // -> abc
+```
+
+6. You can also append files using `fileFromPath` or `fileFromPathSync` helpers. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
 
 ```js
 import {fileFromPath} from "formdata-node/file-from-path"
@@ -133,7 +176,7 @@ form.set("file", await fileFromPath("/path/to/a/file"))
 await fetch("https://httpbin.org/post", {method: "post", body: form})
 ```
 
-6. You can still use files sourced from any stream, but unlike in v2 you'll need some extra work to achieve that:
+7. You can still use files sourced from any stream, but unlike in v2 you'll need some extra work to achieve that:
 
 ```js
 import {Readable} from "stream"
@@ -173,7 +216,7 @@ form.set("stream", new BlobFromStream(stream, content.length), "file.txt")
 await fetch("https://httpbin.org/post", {method: "post", body: form})
 ```
 
-7. Note that if you don't know the length of that stream, you'll also need to handle form-data encoding manually or use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) package. This is necessary to control which headers will be sent with your HTTP request:
+8. Note that if you don't know the length of that stream, you'll also need to handle form-data encoding manually or use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) package. This is necessary to control which headers will be sent with your HTTP request:
 
 ```js
 import {Readable} from "stream"
