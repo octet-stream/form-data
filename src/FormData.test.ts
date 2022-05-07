@@ -229,6 +229,20 @@ test(".getAll() returns an empty array for non-existent field", t => {
   t.deepEqual(fd.getAll("field"), [])
 })
 
+test(".getAll() returns all values associated with given key", t => {
+  const expected = ["one", "two", "three"]
+  const fd = new FormData()
+
+  fd.append("field", expected[0])
+  fd.append("field", expected[1])
+  fd.append("field", expected[2])
+
+  const actual = fd.getAll("field")
+
+  t.is(actual.length, 3)
+  t.deepEqual(actual, expected)
+})
+
 test(
   ".forEach() callback should not be called when FormData has no fields",
 
