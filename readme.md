@@ -148,7 +148,7 @@ import {FormData, Blob} from "formdata-node"
 
 const input = new NodeBlob(["a", "b", "c"])
 
-const blob = new Blob([input]) // Accepts 3rd party blobs as BlobParts
+const blob = new Blob([input]) // Accepts Node.js' Blob implementation as BlobParts
 
 await blob.text() // -> abc
 
