@@ -14,6 +14,10 @@ Spec-compliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/For
 4. Isomorphic, but only re-exports native FormData object for browsers. If you need a polyfill for browsers, use [`formdata-polyfill`](https://github.com/jimmywarting/FormData)
 5. It's a [`ponyfill`](https://ponyfill.com/)! Which means, no effect has been caused on `globalThis` or native `FormData` implementation.
 
+## Blob/File support
+
+While `formdata-node` ships with its own `File` and `Blob` implementations, then might eventually removed in favour of Node.js' [`Blob`](https://nodejs.org/dist/latest-v18.x/docs/api/buffer.html#class-blob) (introduced in v14.18) and File (when it will be introduced). In order to help you smoothen that transition period, our own `Blob` and `File`, as well as FormData itself, proved support `Blob` objects created by Node.js' implementation.
+
 ## Installation
 
 You can install this package with npm:
