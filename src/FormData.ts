@@ -65,22 +65,22 @@ export class FormData {
       return false
     }
 
-    const v = value as FormData
+    const val = value as FormData
 
     return Boolean(
-      isFunction(v.constructor)
-        && v[Symbol.toStringTag] === "FormData"
-        && isFunction(v.append)
-        && isFunction(v.set)
-        && isFunction(v.get)
-        && isFunction(v.getAll)
-        && isFunction(v.has)
-        && isFunction(v.delete)
-        && isFunction(v.entries)
-        && isFunction(v.values)
-        && isFunction(v.keys)
-        && isFunction(v[Symbol.iterator])
-        && isFunction(v.forEach)
+      isFunction(val.constructor)
+        && val[Symbol.toStringTag] === "FormData"
+        && isFunction(val.append)
+        && isFunction(val.set)
+        && isFunction(val.get)
+        && isFunction(val.getAll)
+        && isFunction(val.has)
+        && isFunction(val.delete)
+        && isFunction(val.entries)
+        && isFunction(val.values)
+        && isFunction(val.keys)
+        && isFunction(val[Symbol.iterator])
+        && isFunction(val.forEach)
     )
   }
 
