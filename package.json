@@ -45,7 +45,7 @@
     }
   },
   "engines": {
-    "node": ">= 14.18"
+    "node": ">= 14.17"
   },
   "scripts": {
     "eslint": "eslint src/**/*.ts",

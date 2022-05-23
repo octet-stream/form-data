@@ -1,5 +1,3 @@
-import {Blob as NodeBlob} from "node:buffer"
-
 import test from "ava"
 
 import {ReadableStream} from "web-streams-polyfill"
@@ -130,14 +128,6 @@ test("Creates a new Blob from an array of Blob", async t => {
   const blob = new Blob(source.map(part => new Blob([part])))
 
   t.is(await blob.text(), source.join(""))
-})
-
-test("Accepts Node.js Blob in BlobParts", async t => {
-  const input = new NodeBlob(["abc"])
-  const blob = new Blob([input])
-
-  t.is(blob.size, input.size)
-  t.is(await blob.text(), await blob.text())
 })
 
 test("Accepts a String object as a sequence", async t => {
@@ -321,12 +311,6 @@ test(
     t.true(blobAlike instanceof Blob)
   }
 )
-
-test("Node.js Blob object is recognized as instance of Blob", t => {
-  const blob = new NodeBlob([])
-
-  t.true(blob instanceof Blob)
-})
 
 test(".slice() a new blob when called without arguments", async t => {
   const blob = new Blob(["a", "b", "c"])
