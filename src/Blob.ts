@@ -102,7 +102,9 @@ export class Blob {
       let part: BlobPart
       if (ArrayBuffer.isView(raw)) {
         part = new Uint8Array(raw.buffer.slice(
-          raw.byteOffset, raw.byteOffset + raw.byteLength
+          raw.byteOffset,
+
+          raw.byteOffset + raw.byteLength
         ))
       } else if (raw instanceof ArrayBuffer) {
         part = new Uint8Array(raw.slice(0))

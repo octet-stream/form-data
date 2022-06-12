@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable no-undef, no-restricted-globals */
 
 const globalObject = (function (): typeof globalThis {

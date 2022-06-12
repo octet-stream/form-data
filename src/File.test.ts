@@ -79,6 +79,7 @@ test("Interpretes true value in lastModified option as 1", t => {
 })
 
 test("Interpretes null value in lastModified option as 0", t => {
+  // @ts-expect-error
   const file = new File(["Some content"], "file.txt", {lastModified: null})
 
   t.is(file.lastModified, 0)
