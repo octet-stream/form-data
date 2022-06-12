@@ -14,8 +14,8 @@
   ],
   "extends": [
     "airbnb-typescript",
-    "@octetstream",
-    "plugin:ava/recommended"
+    "plugin:ava/recommended",
+    "@octetstream/eslint-config/esm/typescript"
   ],
   "settings": {
     "import/resolver": {
@@ -52,14 +52,9 @@
 
     "@typescript-eslint/semi": 0,
     "@typescript-eslint/no-shadow": 0,
-    "@typescript-eslint/quotes": [
-      "error",
-      "double"
-    ],
-    "@typescript-eslint/object-curly-spacing": [
-      "error",
-      "never"
-    ],
-    "@typescript-eslint/comma-dangle": 0
+    "@typescript-eslint/quotes": ["error", "double"],
+    "@typescript-eslint/object-curly-spacing": ["error", "never"],
+    "@typescript-eslint/comma-dangle": 0,
+    "react/jsx-filename-extension": 0
   }
 }
