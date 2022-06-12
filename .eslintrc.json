@@ -23,17 +23,7 @@
     }
   },
   "rules": {
-    "no-void": 0,
-    "func-names": 0,
-    "no-shadow": 0,
     "no-use-before-define": 0,
-    "max-len": [
-      "error",
-      {
-        "code": 80,
-        "ignoreComments": true
-      }
-    ],
     "import/no-unresolved": [
       "error",
       {
@@ -43,18 +33,9 @@
       }
     ],
 
-    "no-plusplus": 0,
-
     // These two rules are false-positive and have no solution for TS
     "no-redeclare": 0,
     "no-dupe-class-members": 0,
-    "lines-between-class-members": 0,
-
-    "@typescript-eslint/semi": 0,
-    "@typescript-eslint/no-shadow": 0,
-    "@typescript-eslint/quotes": ["error", "double"],
-    "@typescript-eslint/object-curly-spacing": ["error", "never"],
-    "@typescript-eslint/comma-dangle": 0,
-    "react/jsx-filename-extension": 0
+    "lines-between-class-members": 0
   }
 }
