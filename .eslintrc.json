@@ -16,17 +16,7 @@
     }
   },
   "rules": {
-    "no-use-before-define": 0,
-    "import/no-unresolved": [
-      "error",
-      {
-        "ignore": [
-          "formdata-node"
-        ]
-      }
-    ],
-
-    // These two rules are false-positive and have no solution for TS
+    // These three rules are false-positive and have no solution for TS
     "no-redeclare": 0,
     "no-dupe-class-members": 0,
     "lines-between-class-members": 0

@@ -63,7 +63,7 @@
     "postpublish": "pinst --enable"
   },
   "devDependencies": {
-    "@octetstream/eslint-config": "6.2.1",
+    "@octetstream/eslint-config": "6.2.2",
     "@types/node": "17.0.42",
     "@types/sinon": "10.0.11",
     "@typescript-eslint/eslint-plugin": "5.27.1",
