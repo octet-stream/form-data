@@ -1,16 +1,18 @@
 {
   "include": [
-    "lib/**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "lib/__helper__/**",
-    "lib/**/*.test.ts"
+    "src/__helper__/**",
+    "src/**/*.test.ts"
   ],
   "compilerOptions": {
+    "outDir": "lib",
     "target": "es2018",
+    "module": "es2020",
     "noImplicitAny": true,
-    "baseUrl": "lib",
+    "baseUrl": "src",
     "checkJs": false,
     "allowJs": false,
     "skipLibCheck": false,
@@ -20,12 +22,6 @@
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
-    "removeComments": true,
-    "plugins": [
-      {
-        "transform": "@zoltu/typescript-transformer-append-js-extension/output/index.js",
-        "after": true
-      }
-    ]
+    "removeComments": true
   }
 }

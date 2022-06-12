@@ -1,16 +1,16 @@
+import {stat, readFile, utimes} from "node:fs/promises"
+import {resolve, basename} from "node:path"
+
 import test from "ava"
 
-import {promises as fs} from "fs"
-import {resolve, basename} from "path"
-
-import {File} from "./File"
+import {File} from "./File.js"
 import {
   fileFromPathSync,
   fileFromPath,
   FileFromPathOptions
-} from "./fileFromPath"
+} from "./fileFromPath.js"
 
-import sleep from "./__helper__/sleep"
+import sleep from "./__helper__/sleep.js"
 
 const filePath = resolve("license")
 
@@ -23,7 +23,7 @@ test("sync: Returns File instance", t => {
 })
 
 test("Creates a file from path", async t => {
-  const expected: Buffer = await fs.readFile(filePath)
+  const expected: Buffer = await readFile(filePath)
 
   const file = await fileFromPath(filePath)
 
@@ -33,7 +33,7 @@ test("Creates a file from path", async t => {
 })
 
 test("sync: Creates a file from path", async t => {
-  const expected: Buffer = await fs.readFile(filePath)
+  const expected: Buffer = await readFile(filePath)
   const file = fileFromPathSync(filePath)
 
   const actual = Buffer.from(await file.arrayBuffer())
@@ -54,7 +54,7 @@ test("Has an empty string as file type by default", async t => {
 })
 
 test("Has lastModified field taken from file stats", async t => {
-  const {mtimeMs} = await fs.stat(filePath)
+  const {mtimeMs} = await stat(filePath)
 
   const file = await fileFromPath(filePath)
 
@@ -62,7 +62,7 @@ test("Has lastModified field taken from file stats", async t => {
 })
 
 test("Has the size property reflecting the one of the actual file", async t => {
-  const {size} = await fs.stat(filePath)
+  const {size} = await stat(filePath)
 
   const file = await fileFromPath(filePath)
 
@@ -105,7 +105,7 @@ test("sync: Allows to set file options from second argument", t => {
 })
 
 test("Can be read as text", async t => {
-  const expected = await fs.readFile(filePath, "utf-8")
+  const expected = await readFile(filePath, "utf-8")
   const file = await fileFromPath(filePath)
 
   const actual = await file.text()
@@ -114,7 +114,7 @@ test("Can be read as text", async t => {
 })
 
 test("Can be read as ArrayBuffer", async t => {
-  const expected = await fs.readFile(filePath)
+  const expected = await readFile(filePath)
   const file = await fileFromPath(filePath)
 
   const actual = await file.arrayBuffer()
@@ -139,6 +139,16 @@ test("Can be sliced from the arbitrary start", async t => {
   t.is<string, string>(actual, "MIT License")
 })
 
+test("Can be sliced from Blob returned from .slice() method", async t => {
+  const license = new File([await readFile(filePath)], "license")
+  const file = await fileFromPath(filePath)
+
+  const expected = license.slice(4, 11).slice(2, 5)
+  const actual = file.slice(4, 11).slice(2, 5)
+
+  t.is<string, string>(await actual.text(), await expected.text())
+})
+
 test("Reads from empty file", async t => {
   const file = await fileFromPath(filePath)
 
@@ -156,7 +166,7 @@ test("Fails attempt to read modified file", async t => {
 
   const now = new Date()
 
-  await fs.utimes(path, now, now)
+  await utimes(path, now, now)
 
   await t.throwsAsync(() => file.text(), {
     name: "NotReadableError",

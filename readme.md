@@ -10,10 +10,13 @@ Spec-compliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/For
 
 1. Spec-compliant: implements every method of the [`FormData interface`](https://developer.mozilla.org/en-US/docs/Web/API/FormData).
 2. Supports Blobs and Files sourced from anywhere: you can use builtin [`fileFromPath`](#filefrompathpath-filename-options---promisefile) and [`fileFromPathSync`](#filefrompathsyncpath-filename-options---file) helpers to create a File from FS, or you can implement your `BlobDataItem` object to use a different source of data.
-3. Supports both ESM and CJS targets. See [`ESM/CJS support`](#esmcjs-support) section for details.
-4. Written on TypeScript and ships with TS typings.
-5. Isomorphic, but only re-exports native FormData object for browsers. If you need a polyfill for browsers, use [`formdata-polyfill`](https://github.com/jimmywarting/FormData)
-6. It's a [`ponyfill`](https://ponyfill.com/)! Which means, no effect has been caused on `globalThis` or native `FormData` implementation.
+3. Written on TypeScript and ships with TS typings.
+4. Isomorphic, but only re-exports native FormData object for browsers. If you need a polyfill for browsers, use [`formdata-polyfill`](https://github.com/jimmywarting/FormData)
+5. It's a [`ponyfill`](https://ponyfill.com/)! Which means, no effect has been caused on `globalThis` or native `FormData` implementation.
+
+## Blob/File support
+
+While `formdata-node` ships with its own `File` and `Blob` implementations, these might eventually be removed in favour of Node.js' [`Blob`](https://nodejs.org/dist/latest-v18.x/docs/api/buffer.html#class-blob) (introduced in v14.18) and File (when it will be introduced). In order to help you smoothen that transition period, our own `Blob` and `File`, as well as FormData itself, proved support `Blob` objects created by Node.js' implementation.
 
 ## Installation
 
@@ -37,7 +40,7 @@ pnpm add formdata-node
 
 ## ESM/CJS support
 
-This package is targeting ESM and CJS for backwards compatibility reasons and smoothen transition period while you convert your projects to ESM only. Note that CJS support will be removed as [Node.js v12 will reach its EOL](https://github.com/nodejs/release#release-schedule). This change will be released as major version update, so you won't miss it.
+This package is native [ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) and no longer provides CommonJS exports. Use `4.x` version if you still need to use this package with CommonJS, or use [dynamic `import()`](https://v8.dev/features/dynamic-import) syntax.
 
 ## Usage
 
@@ -123,7 +126,50 @@ file = form.get("file")
 console.log(file.name) // -> some-file.txt
 ```
 
-5. You can also append files using `fileFromPath` or `fileFromPathSync` helpers. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
+5. You can use 3rd party Blob as FormData value, as vell as for BlobParts in out Blob implementation:
+
+```js
+import {FormData, Blob} from "formdata-node"
+import {Blob as FetchBlob} from "fetch-blob"
+
+const input = new FetchBlob(["a", "b", "c"])
+
+const blob = new Blob([input]) // Accepts 3rd party blobs as BlobParts
+
+await blob.text() // -> abc
+
+const form = new FormData()
+
+form.set("file", input)
+
+const file = form.get("file") // -> File
+
+await file.text() // -> abc
+```
+
+6. You can also use Node.js' Blob implementation in these scenarios:
+
+```js
+import {Blob as NodeBlob} from "node:buffer"
+
+import {FormData, Blob} from "formdata-node"
+
+const input = new NodeBlob(["a", "b", "c"])
+
+const blob = new Blob([input]) // Accepts Node.js' Blob implementation as BlobParts
+
+await blob.text() // -> abc
+
+const form = new FormData()
+
+form.set("file", input)
+
+const file = form.get("file") // -> File
+
+await file.text() // -> abc
+```
+
+7. You can also append files using `fileFromPath` or `fileFromPathSync` helpers. It does the same thing as [`fetch-blob/from`](https://github.com/node-fetch/fetch-blob#blob-part-backed-up-by-filesystem), but returns a `File` instead of `Blob`:
 
 ```js
 import {fileFromPath} from "formdata-node/file-from-path"
@@ -138,7 +184,7 @@ form.set("file", await fileFromPath("/path/to/a/file"))
 await fetch("https://httpbin.org/post", {method: "post", body: form})
 ```
 
-6. You can still use files sourced from any stream, but unlike in v2 you'll need some extra work to achieve that:
+8. You can still use files sourced from any stream, but unlike in v2 you'll need some extra work to achieve that:
 
 ```js
 import {Readable} from "stream"
@@ -178,7 +224,7 @@ form.set("stream", new BlobFromStream(stream, content.length), "file.txt")
 await fetch("https://httpbin.org/post", {method: "post", body: form})
 ```
 
-7. Note that if you don't know the length of that stream, you'll also need to handle form-data encoding manually or use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) package. This is necessary to control which headers will be sent with your HTTP request:
+9. Note that if you don't know the length of that stream, you'll also need to handle form-data encoding manually or use [`form-data-encoder`](https://github.com/octet-stream/form-data-encoder) package. This is necessary to control which headers will be sent with your HTTP request:
 
 ```js
 import {Readable} from "stream"
@@ -224,7 +270,6 @@ await fetch("https://httpbin.org/post", {method: "post", body: form})
 | .values()        | ✔️             | ✔️                 | ✔️               | ❌                   |
 | .entries()       | ✔️             | ✔️                 | ✔️               | ❌                   |
 | Symbol.iterator  | ✔️             | ✔️                 | ✔️               | ❌                   |
-| CommonJS         | ✔️             | ❌                | ✔️               | ✔️                    |
 | ESM              | ✔️             | ✔️                 | ✔️<sup>2</sup>   | ✔️<sup>2</sup>        |
 | Blob             | ✔️<sup>3</sup> | ✔️<sup>4</sup>     | ✔️<sup>3</sup>   | ❌                   |
 | Browser polyfill | ❌            | ✔️                 | ✔️               | ❌                   |
@@ -248,14 +293,9 @@ await fetch("https://httpbin.org/post", {method: "post", body: form})
 
 ### `class FormData`
 
-##### `constructor([entries]) -> {FormData}`
+##### `constructor() -> {FormData}`
 
-Creates a new FormData instance
-
-  - **{array}** [entries = null] – an optional FormData initial entries.
-    Each initial field should be passed as a collection of the objects
-    with "name", "value" and "filename" props.
-    See the [FormData#append()](#appendname-value-filename---void) for more info about the available format.
+Creates a new FormData instance.
 
 #### Instance methods
 

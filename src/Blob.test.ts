@@ -2,7 +2,7 @@ import test from "ava"
 
 import {ReadableStream} from "web-streams-polyfill"
 
-import {Blob} from "./Blob"
+import {Blob} from "./Blob.js"
 
 test("Constructor creates a new Blob when called without arguments", t => {
   const blob = new Blob()

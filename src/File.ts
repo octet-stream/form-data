@@ -1,4 +1,5 @@
-import {Blob, BlobParts as FileBits, BlobPropertyBag} from "./Blob"
+import type {BlobPropertyBag, BlobParts as FileBits} from "./Blob.js"
+import {Blob} from "./Blob.js"
 
 export interface FileLike {
   /**
@@ -35,11 +36,6 @@ export interface FilePropertyBag extends BlobPropertyBag {
    */
   lastModified?: number
 }
-
-/**
- * @deprecated Use FilePropertyBag instead.
- */
-export type FileOptions = FilePropertyBag
 
 /**
  * The **File** interface provides information about files and allows JavaScript to access their content.
@@ -84,10 +80,16 @@ export class File extends Blob implements FileLike {
     }
   }
 
+  /**
+   * Name of the file referenced by the File object.
+   */
   get name(): string {
     return this.#name
   }
 
+  /**
+   * The last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
+   */
   get lastModified(): number {
     return this.#lastModified
   }

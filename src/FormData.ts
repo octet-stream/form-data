@@ -1,9 +1,7 @@
-import {inspect} from "util"
-
-import {File} from "./File"
-import {isFile} from "./isFile"
-import {isFunction} from "./isFunction"
-import {deprecateConstructorEntries} from "./deprecateConstructorEntries"
+import {isFunction} from "./isFunction.js"
+import type {Blob} from "./Blob.js"
+import {isFile} from "./isFile.js"
+import {File} from "./File.js"
 
 /**
  * A `string` or `File` that represents a single value from a set of `FormData` key-value pairs.
@@ -28,7 +26,7 @@ interface FormDataSetFieldOptions {
    * The field's value. This can be [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File). If none of these are specified the value is converted to a string.
    */
-  rawValue: unknown
+  rawValue: string | Blob
 
   /**
    * The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
@@ -51,15 +49,6 @@ interface FormDataSetFieldOptions {
 }
 
 /**
- * Constructor entries for FormData
- */
-export type FormDataConstructorEntries = Array<{
-  name: string,
-  value: unknown,
-  fileName?: string
-}>
-
-/**
  * Provides a way to easily construct a set of key/value pairs representing form fields and their values, which can then be easily sent using fetch().
  *
  * Note that this object is not a part of Node.js, so you might need to check if an HTTP client of your choice support spec-compliant FormData.
@@ -72,32 +61,27 @@ export class FormData {
   readonly #entries = new Map<string, FormDataEntryValues>()
 
   static [Symbol.hasInstance](value: unknown): value is FormData {
-    return Boolean(
-      value
-        && isFunction((value as FormData).constructor)
-        && (value as FormData)[Symbol.toStringTag] === "FormData"
-        && isFunction((value as FormData).append)
-        && isFunction((value as FormData).set)
-        && isFunction((value as FormData).get)
-        && isFunction((value as FormData).getAll)
-        && isFunction((value as FormData).has)
-        && isFunction((value as FormData).delete)
-        && isFunction((value as FormData).entries)
-        && isFunction((value as FormData).values)
-        && isFunction((value as FormData).keys)
-        && isFunction((value as FormData)[Symbol.iterator])
-        && isFunction((value as FormData).forEach)
-    )
-  }
-
-  constructor(entries?: FormDataConstructorEntries) {
-    if (entries) {
-      deprecateConstructorEntries()
-
-      entries.forEach(({name, value, fileName}) => this.append(
-        name, value, fileName
-      ))
+    if (!value) {
+      return false
     }
+
+    const val = value as FormData
+
+    return Boolean(
+      isFunction(val.constructor)
+        && val[Symbol.toStringTag] === "FormData"
+        && isFunction(val.append)
+        && isFunction(val.set)
+        && isFunction(val.get)
+        && isFunction(val.getAll)
+        && isFunction(val.has)
+        && isFunction(val.delete)
+        && isFunction(val.entries)
+        && isFunction(val.values)
+        && isFunction(val.keys)
+        && isFunction(val[Symbol.iterator])
+        && isFunction(val.forEach)
+    )
   }
 
   #setEntry({
@@ -174,7 +158,7 @@ export class FormData {
     or [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File). If none of these are specified the value is converted to a string.
    * @param fileName The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
    */
-  append(name: string, value: unknown, fileName?: string): void {
+  append(name: string, value: string | Blob, fileName?: string): void {
     this.#setEntry({
       name,
       fileName,
@@ -194,7 +178,7 @@ export class FormData {
    * @param fileName The filename reported to the server, when a Blob or File is passed as the second parameter. The default filename for Blob objects is "blob". The default filename for File objects is the file's filename.
    *
    */
-  set(name: string, value: unknown, fileName?: string): void {
+  set(name: string, value: string | Blob, fileName?: string): void {
     this.#setEntry({
       name,
       fileName,
@@ -316,9 +300,5 @@ export class FormData {
 
   get [Symbol.toStringTag](): string {
     return "FormData"
-  }
-
-  [inspect.custom](): string {
-    return this[Symbol.toStringTag]
   }
 }

@@ -1,13 +1,16 @@
-import {statSync, createReadStream, Stats, promises as fs} from "fs"
-import {basename} from "path"
+import {statSync, createReadStream} from "node:fs"
+import {stat} from "node:fs/promises"
+import type {Stats} from "node:fs"
+import {basename} from "node:path"
 
 import DOMException from "node-domexception"
 
-import {File, FileLike, FilePropertyBag} from "./File"
+import type {FileLike, FilePropertyBag} from "./File.js"
+import {File} from "./File.js"
 
-import isPlainObject from "./isPlainObject"
+import isPlainObject from "./isPlainObject.js"
 
-export * from "./isFile"
+export * from "./isFile.js"
 
 const MESSAGE = "The requested file could not be read, "
   + "typically due to permission problems that have occurred after a reference "
@@ -54,13 +57,13 @@ class FileFromPath implements Omit<FileLike, "type"> {
     return new FileFromPath({
       path: this.#path,
       lastModified: this.lastModified,
-      size: end - start,
-      start
+      start: this.#start + start,
+      size: end - start
     })
   }
 
   async* stream(): AsyncGenerator<Buffer, void, undefined> {
-    const {mtimeMs} = await fs.stat(this.#path)
+    const {mtimeMs} = await stat(this.#path)
 
     if (mtimeMs > this.lastModified) {
       // eslint-disable-next-line @typescript-eslint/no-throw-literal
@@ -188,7 +191,7 @@ export async function fileFromPath(
   filenameOrOptions?: string | FileFromPathOptions,
   options?: FileFromPathOptions
 ): Promise<File> {
-  const stats = await fs.stat(path)
+  const stats = await stat(path)
 
   return createFileFromPath(path, stats, filenameOrOptions, options)
 }
