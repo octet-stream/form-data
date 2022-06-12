@@ -38,6 +38,10 @@ Or pnpm
 pnpm add formdata-node
 ```
 
+## ESM/CJS support
+
+This package is native [ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) and no longer provides CommonJS exports. Use `4.x` version if you still need to use this package with CommonJS, or use [dynamic `import()`](https://v8.dev/features/dynamic-import) syntax.
+
 ## Usage
 
 1. Let's take a look at minimal example with [got](https://github.com/sindresorhus/got):
