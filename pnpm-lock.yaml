@@ -19,6 +19,7 @@ specifiers:
   lint-staged: 12.3.4
   node-domexception: 1.0.0
   pinst: 3.0.0
+  rimraf: ^3.0.2
   sinon: 13.0.1
   ts-node: 10.5.0
   ttypescript: 1.5.13
@@ -47,6 +48,7 @@ devDependencies:
   husky: 7.0.4
   lint-staged: 12.3.4
   pinst: 3.0.0
+  rimraf: 3.0.2
   sinon: 13.0.1
   ts-node: 10.5.0_aa6iu3ncjlzgdp4lrtsrv3a234
   ttypescript: 1.5.13_a3wpukurwew37akiuez6njzgji
