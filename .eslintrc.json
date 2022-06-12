@@ -8,7 +8,6 @@
     "ava"
   ],
   "extends": [
-    "airbnb-typescript",
     "plugin:ava/recommended",
     "@octetstream/eslint-config/esm/typescript"
   ],
