@@ -87,6 +87,7 @@ export class File extends Blob implements FileLike {
     return this.#name
   }
 
+  /* c8 ignore next 3 */
   get webkitRelativePath(): string {
     return ""
   }
