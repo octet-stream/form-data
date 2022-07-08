@@ -87,6 +87,10 @@ export class File extends Blob implements FileLike {
     return this.#name
   }
 
+  get webkitRelativePath(): string {
+    return ""
+  }
+
   /**
    * The last modified date of the file as the number of milliseconds since the Unix epoch (January 1, 1970 at midnight). Files without a known last modified date return the current date.
    */
