@@ -1,4 +1,5 @@
 import {isFunction} from "./isFunction.js"
+import {isBlob} from "./isBlob.js"
 import {isFile} from "./isFile.js"
 import {File} from "./File.js"
 
@@ -105,19 +106,19 @@ export class FormData {
 
     // Normalize value to a string or File
     let value: FormDataEntryValue
-    if (isFile(rawValue)) {
-      // If fileName is set, use it as file name
-      if (fileName === undefined) {
-        // Otherwise check if the rawValue.name exists and let the fileName be the value of the rawValue.name
-        // If rawValue.name is not exists, use "blob" as default file name
-        fileName = rawValue.name === undefined ? "blob" : rawValue.name
-      }
-
-      // Take params from the previous File or Blob instance
-      value = new File([rawValue], String(fileName), {
-        type: rawValue.type,
-        lastModified: rawValue.lastModified
+    if (isBlob(rawValue)) {
+      // Use "blob" as default filename if the 3rd argument is not present
+      value = new File([rawValue], fileName === undefined ? "blob" : fileName, {
+        type: rawValue.type
       })
+    } else if (isFile(rawValue)) {
+      // Check if fileName argument is present
+      value = fileName === undefined
+        ? rawValue // if there's no fileName, return let the value be rawValue
+        : new File([rawValue], fileName, { // otherwise, create new file with given fileName
+          type: rawValue.type,
+          lastModified: rawValue.lastModified
+        })
     } else if (fileName) { // If value is not a File or Blob, but the filename is present, throw following error:
       throw new TypeError(
         `Failed to execute '${methodName}' on 'FormData': `
