@@ -52,11 +52,11 @@ test("Returns false for instanceof checks with undefined", t => {
   t.false(undefined instanceof FormData)
 })
 
-test("Creates a new File instance for given File", t => {
+test(".set() creates a new File if 3rd argument is present", t => {
   const file = new File(["Some content"], "file.txt")
   const form = new FormData()
 
-  form.set("file", file)
+  form.set("file", file, "renamed-file.txt")
 
   t.not(form.get("file"), file)
 })
@@ -221,6 +221,15 @@ test(".get() returns File as-is", t => {
   form.set("file", file)
 
   t.true(form.get("file") instanceof File)
+})
+
+test(".get() returns the same File that was added to FormData", t => {
+  const file = new File(["Some text"], "file.txt")
+  const form = new FormData()
+
+  form.set("file", file)
+
+  t.is(form.get("file"), file)
 })
 
 test(".getAll() returns an empty array for non-existent field", t => {

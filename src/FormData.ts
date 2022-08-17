@@ -106,12 +106,7 @@ export class FormData {
 
     // Normalize value to a string or File
     let value: FormDataEntryValue
-    if (isBlob(rawValue)) {
-      // Use "blob" as default filename if the 3rd argument is not present
-      value = new File([rawValue], fileName === undefined ? "blob" : fileName, {
-        type: rawValue.type
-      })
-    } else if (isFile(rawValue)) {
+    if (isFile(rawValue)) {
       // Check if fileName argument is present
       value = fileName === undefined
         ? rawValue // if there's no fileName, return let the value be rawValue
@@ -119,6 +114,11 @@ export class FormData {
           type: rawValue.type,
           lastModified: rawValue.lastModified
         })
+    } else if (isBlob(rawValue)) {
+      // Use "blob" as default filename if the 3rd argument is not present
+      value = new File([rawValue], fileName === undefined ? "blob" : fileName, {
+        type: rawValue.type
+      })
     } else if (fileName) { // If value is not a File or Blob, but the filename is present, throw following error:
       throw new TypeError(
         `Failed to execute '${methodName}' on 'FormData': `
