@@ -54,190 +54,190 @@ test("Returns false for instanceof checks with undefined", t => {
 
 test("Creates a new File instance for given File", t => {
   const file = new File(["Some content"], "file.txt")
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("file", file)
+  form.set("file", file)
 
-  t.not(fd.get("file"), file)
+  t.not(form.get("file"), file)
 })
 
 test("File created from Blob has proper default name", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("file", new Blob(["Some content"]))
+  form.set("file", new Blob(["Some content"]))
 
-  t.is((fd.get("file") as File).name, "blob")
+  t.is((form.get("file") as File).name, "blob")
 })
 
 test("Assigns a filename argument to Blob field", t => {
   const expected = "some-file.txt"
 
   const blob = new Blob(["Some content"])
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("file", blob, expected)
+  form.set("file", blob, expected)
 
-  t.is((fd.get("file") as File).name, expected)
+  t.is((form.get("file") as File).name, expected)
 })
 
 test("User-defined filename has higher precedence", t => {
   const expected = "some-file.txt"
 
   const file = new File(["Some content"], "file.txt")
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("file", file, expected)
+  form.set("file", file, expected)
 
-  t.is((fd.get("file") as File).name, expected)
+  t.is((form.get("file") as File).name, expected)
 })
 
 test("Third argument overrides File.name even if it was set to null", t => {
   const file = new File(["Some content"], "file.txt")
-  const fd = new FormData()
+  const form = new FormData()
 
   // @ts-expect-error
-  fd.set("file", file, null)
+  form.set("file", file, null)
 
-  t.is((fd.get("file") as File).name, "null")
+  t.is((form.get("file") as File).name, "null")
 })
 
 test(".set() appends a string field", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("field", "string")
+  form.set("field", "string")
 
-  t.is(fd.get("field"), "string")
+  t.is(form.get("field"), "string")
 })
 
 test(".set() replaces a field with the same name", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("field", "one")
+  form.set("field", "one")
 
-  t.is(fd.get("field"), "one")
+  t.is(form.get("field"), "one")
 
-  fd.set("field", "two")
+  form.set("field", "two")
 
-  t.is(fd.get("field"), "two")
+  t.is(form.get("field"), "two")
 })
 
 test(".set() replaces existent field values created with .append()", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.append("field", "one")
-  fd.append("field", "two")
+  form.append("field", "one")
+  form.append("field", "two")
 
-  t.deepEqual(fd.getAll("field"), ["one", "two"])
+  t.deepEqual(form.getAll("field"), ["one", "two"])
 
-  fd.set("field", "one")
+  form.set("field", "one")
 
-  t.deepEqual(fd.getAll("field"), ["one"])
+  t.deepEqual(form.getAll("field"), ["one"])
 })
 
 test(".append() append a new field", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.append("field", "string")
+  form.append("field", "string")
 
-  t.deepEqual(fd.getAll("field"), ["string"])
+  t.deepEqual(form.getAll("field"), ["string"])
 })
 
 test(".append() appends to an existent field", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.append("field", "one")
-  fd.append("field", "two")
+  form.append("field", "one")
+  form.append("field", "two")
 
-  t.deepEqual(fd.getAll("field"), ["one", "two"])
+  t.deepEqual(form.getAll("field"), ["one", "two"])
 })
 
 test(
   ".append() appends to an existent field even if it was created with .set()",
 
   t => {
-    const fd = new FormData()
+    const form = new FormData()
 
-    fd.set("field", "one")
-    fd.append("field", "two")
+    form.set("field", "one")
+    form.append("field", "two")
 
-    t.deepEqual(fd.getAll("field"), ["one", "two"])
+    t.deepEqual(form.getAll("field"), ["one", "two"])
   }
 )
 
 test(".has() returns false for non-existent field", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  t.false(fd.has("field"))
+  t.false(form.has("field"))
 })
 
 test(".delete() removes a field", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("field", "Some data")
+  form.set("field", "Some data")
 
-  t.true(fd.has("field"))
+  t.true(form.has("field"))
 
-  fd.delete("field")
+  form.delete("field")
 
-  t.false(fd.has("field"))
+  t.false(form.has("field"))
 })
 
 test(".get() returns null for non-existent field", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  t.is(fd.get("field"), null)
+  t.is(form.get("field"), null)
 })
 
 test(".get() returns number values as string", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("field", 42)
+  form.set("field", 42)
 
-  t.is(fd.get("field"), "42")
+  t.is(form.get("field"), "42")
 })
 
 test(".get() returns only first value from the field", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.append("field", "one")
-  fd.append("field", "two")
+  form.append("field", "one")
+  form.append("field", "two")
 
-  t.is(fd.get("field"), "one")
+  t.is(form.get("field"), "one")
 })
 
 test(".get() returns Blob as a File", t => {
   const blob = new Blob(["Some text"])
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("blob", blob)
+  form.set("blob", blob)
 
-  t.true(fd.get("blob") instanceof File)
+  t.true(form.get("blob") instanceof File)
 })
 
 test(".get() returns File as-is", t => {
   const file = new File(["Some text"], "file.txt")
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("file", file)
+  form.set("file", file)
 
-  t.true(fd.get("file") instanceof File)
+  t.true(form.get("file") instanceof File)
 })
 
 test(".getAll() returns an empty array for non-existent field", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  t.deepEqual(fd.getAll("field"), [])
+  t.deepEqual(form.getAll("field"), [])
 })
 
 test(".getAll() returns all values associated with given key", t => {
   const expected = ["one", "two", "three"]
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.append("field", expected[0])
-  fd.append("field", expected[1])
-  fd.append("field", expected[2])
+  form.append("field", expected[0])
+  form.append("field", expected[1])
+  form.append("field", expected[2])
 
-  const actual = fd.getAll("field")
+  const actual = form.getAll("field")
 
   t.is(actual.length, 3)
   t.deepEqual(actual, expected)
@@ -262,11 +262,11 @@ test(
   t => {
     const cb = spy()
 
-    const fd = new FormData()
+    const form = new FormData()
 
-    fd.set("name", "John Doe")
+    form.set("name", "John Doe")
 
-    fd.forEach(cb)
+    form.forEach(cb)
 
     t.is(cb.firstCall.thisValue, undefined)
   }
@@ -277,11 +277,11 @@ test(".forEach() callback should be called with the specified context", t => {
 
   const ctx = new Map()
 
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("name", "John Doe")
+  form.set("name", "John Doe")
 
-  fd.forEach(cb, ctx)
+  form.forEach(cb, ctx)
 
   t.true(cb.firstCall.thisValue instanceof Map)
   t.is(cb.firstCall.thisValue, ctx)
@@ -292,38 +292,38 @@ test(
   t => {
     const cb = spy()
 
-    const fd = new FormData()
+    const form = new FormData()
 
-    fd.set("name", "John Doe")
+    form.set("name", "John Doe")
 
-    fd.forEach(cb)
+    form.forEach(cb)
 
     const [value, key, instance] = cb.firstCall.args
 
     t.is(value, "John Doe")
     t.is(key, "name")
-    t.is(instance, fd)
+    t.is(instance, form)
   }
 )
 
 test(".forEach() callback should be called once on each filed", t => {
   const cb = spy()
 
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("first", "value")
-  fd.set("second", 42)
-  fd.set("third", [1, 2, 3])
+  form.set("first", "value")
+  form.set("second", 42)
+  form.set("third", [1, 2, 3])
 
-  fd.forEach(cb)
+  form.forEach(cb)
 
   t.true(cb.calledThrice)
 })
 
 test(".values() is done on the first call when there's no data", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  const curr = fd.values().next()
+  const curr = form.values().next()
 
   t.deepEqual(curr, {
     done: true,
@@ -332,13 +332,13 @@ test(".values() is done on the first call when there's no data", t => {
 })
 
 test(".values() Returns the first value on the first call", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("first", "value")
-  fd.set("second", 42)
-  fd.set("third", [1, 2, 3])
+  form.set("first", "value")
+  form.set("second", 42)
+  form.set("third", [1, 2, 3])
 
-  const curr = fd.values().next()
+  const curr = form.values().next()
 
   t.deepEqual(curr, {
     done: false,
@@ -347,19 +347,19 @@ test(".values() Returns the first value on the first call", t => {
 })
 
 test(".value() yields every value from FormData", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("first", "value")
-  fd.set("second", 42)
-  fd.set("third", [1, 2, 3])
+  form.set("first", "value")
+  form.set("second", 42)
+  form.set("third", [1, 2, 3])
 
-  t.deepEqual([...fd.values()], ["value", "42", "1,2,3"])
+  t.deepEqual([...form.values()], ["value", "42", "1,2,3"])
 })
 
 test(".keys() is done on the first call when there's no data", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  const curr = fd.keys().next()
+  const curr = form.keys().next()
 
   t.deepEqual(curr, {
     done: true,
@@ -368,13 +368,13 @@ test(".keys() is done on the first call when there's no data", t => {
 })
 
 test(".keys() Returns the first value on the first call", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("first", "value")
-  fd.set("second", 42)
-  fd.set("third", [1, 2, 3])
+  form.set("first", "value")
+  form.set("second", 42)
+  form.set("third", [1, 2, 3])
 
-  const curr = fd.keys().next()
+  const curr = form.keys().next()
 
   t.deepEqual(curr, {
     done: false,
@@ -383,13 +383,13 @@ test(".keys() Returns the first value on the first call", t => {
 })
 
 test(".keys() yields every key from FormData", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
-  fd.set("first", "value")
-  fd.set("second", 42)
-  fd.set("third", [1, 2, 3])
+  form.set("first", "value")
+  form.set("second", 42)
+  form.set("third", [1, 2, 3])
 
-  t.deepEqual([...fd.keys()], ["first", "second", "third"])
+  t.deepEqual([...form.keys()], ["first", "second", "third"])
 })
 
 test(".toString() returns a proper string", t => {
@@ -397,10 +397,10 @@ test(".toString() returns a proper string", t => {
 })
 
 test(".set() throws TypeError when called with less than 2 arguments", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
   // @ts-expect-error
-  const trap = () => fd.set("field")
+  const trap = () => form.set("field")
 
   t.throws<TypeError>(trap, {
     instanceOf: TypeError,
@@ -414,9 +414,9 @@ test(
     + "but the value is not a File",
 
   t => {
-    const fd = new FormData()
+    const form = new FormData()
 
-    const trap = () => fd.set("field", "Some value", "field.txt")
+    const trap = () => form.set("field", "Some value", "field.txt")
 
     t.throws<TypeError>(trap, {
       instanceOf: TypeError,
@@ -427,10 +427,10 @@ test(
 )
 
 test(".append() throws TypeError when called with less than 2 arguments", t => {
-  const fd = new FormData()
+  const form = new FormData()
 
   // @ts-expect-error
-  const trap = () => fd.append("field")
+  const trap = () => form.append("field")
 
   t.throws<TypeError>(trap, {
     instanceOf: TypeError,
@@ -444,9 +444,9 @@ test(
     + "but the value is not a File",
 
   t => {
-    const fd = new FormData()
+    const form = new FormData()
 
-    const trap = () => fd.append("field", "Some value", "field.txt")
+    const trap = () => form.append("field", "Some value", "field.txt")
 
     t.throws<TypeError>(trap, {
       instanceOf: TypeError,
