@@ -5,11 +5,19 @@ on:
     branches: [master]
     paths:
       - "**.ts"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".eslintrc.json"
+      - ".eslintignore"
       - ".github/workflows/eslint.yml"
   pull_request:
     branches: [master]
     paths:
       - "**.ts"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".eslintrc.json"
+      - ".eslintignore"
       - ".github/workflows/eslint.yml"
 
 jobs:
@@ -17,9 +25,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: pnpm cache
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-pnpm-store
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.node }}-${{ hashFiles('**/.package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.node }}-
+
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 16
-      - run: npm install
-      - run: npm run eslint
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 6.2.1
+          run_install: true
+
+      - run: pnpm run eslint
