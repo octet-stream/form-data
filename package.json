@@ -74,7 +74,7 @@
     "@typescript-eslint/parser": "4.32.0",
     "@zoltu/typescript-transformer-append-js-extension": "1.0.1",
     "ava": "4.0.1",
-    "c8": "7.11.0",
+    "c8": "7.12.0",
     "eslint": "7.32.0",
     "eslint-config-airbnb-typescript": "12.3.1",
     "eslint-import-resolver-typescript": "2.5.0",
