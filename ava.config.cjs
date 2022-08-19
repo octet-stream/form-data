@@ -8,6 +8,9 @@ module.exports = {
   require: [
     "ts-node/register",
   ],
+  nodeArguments: [
+    "--no-warnings"
+  ],
   files: [
     "lib/**/*.test.ts"
   ]

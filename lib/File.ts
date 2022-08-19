@@ -92,6 +92,11 @@ export class File extends Blob implements FileLike {
     return this.#lastModified
   }
 
+  /* c8 ignore next 3 */
+  get webkitRelativePath(): string {
+    return ""
+  }
+
   get [Symbol.toStringTag](): string {
     return "File"
   }
