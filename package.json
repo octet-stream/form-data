@@ -58,9 +58,7 @@
     "test": "ava --fail-fast",
     "cleanup": "del-cli @type lib",
     "prepare": "npm run cleanup && npm run build",
-    "_postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "husky": "husky install"
   },
   "devDependencies": {
     "@octetstream/eslint-config": "6.2.2",
