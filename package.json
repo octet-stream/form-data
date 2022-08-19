@@ -92,6 +92,6 @@
   },
   "dependencies": {
     "node-domexception": "1.0.0",
-    "web-streams-polyfill": "4.0.0-beta.1"
+    "web-streams-polyfill": "4.0.0-beta.2"
   }
 }
