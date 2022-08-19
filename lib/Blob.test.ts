@@ -216,6 +216,7 @@ test("undefined value has no affect on property bag argument", t => {
 })
 
 test("null value has no affect on property bag argument", t => {
+  // @ts-expect-error
   const blob = new Blob([], null)
 
   t.is(blob.type, "")
@@ -249,66 +250,6 @@ test(
           + "parameter 2 cannot convert to dictionary."
       })
     })
-  }
-)
-
-test("Blob-like objects must be recognized as Blob in instanceof test", t => {
-  class BlobAlike {
-    type = ""
-
-    size = 0
-
-    stream() {
-      return new ReadableStream()
-    }
-
-    arrayBuffer() {
-      return new ArrayBuffer(0)
-    }
-
-    [Symbol.toStringTag] = "Blob"
-  }
-
-  const blob = new BlobAlike()
-
-  t.true(blob instanceof Blob)
-})
-
-test("Blob-shaped objects must be recognized as Blob in instanceof test", t => {
-  const blobAlike = {
-    type: "",
-    size: 0,
-
-    stream() {
-      return new ReadableStream()
-    },
-
-    arrayBuffer() {
-      return new ArrayBuffer(0)
-    },
-
-    [Symbol.toStringTag]: "Blob"
-  }
-
-  t.true(blobAlike instanceof Blob)
-})
-
-test(
-  "Blob-like objects with only arrayBuffer method must be recognized as Blob",
-
-  t => {
-    const blobAlike = {
-      type: "",
-      size: 0,
-
-      arrayBuffer() {
-        return new ArrayBuffer(0)
-      },
-
-      [Symbol.toStringTag]: "Blob"
-    }
-
-    t.true(blobAlike instanceof Blob)
   }
 )
 
