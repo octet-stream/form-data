@@ -62,9 +62,7 @@
     "test": "ava --fail-fast",
     "cleanup": "npx rimraf @type \"lib/**/*.js\"",
     "prepare": "npm run cleanup && npm run build",
-    "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "husky": "husky install"
   },
   "devDependencies": {
     "@octetstream/eslint-config": "5.0.0",
