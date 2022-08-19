@@ -45,6 +45,12 @@ export type FileOptions = FilePropertyBag
  * The **File** interface provides information about files and allows JavaScript to access their content.
  */
 export class File extends Blob implements FileLike {
+  static [Symbol.hasInstance](value: unknown): value is File {
+    return value instanceof Blob
+      && value[Symbol.toStringTag] === "File"
+      && typeof (value as File).name === "string"
+  }
+
   /**
    * Returns the name of the file referenced by the File object.
    */

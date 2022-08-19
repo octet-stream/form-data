@@ -62,11 +62,11 @@ test("Allows to append fields from constructor", t => {
   t.true(fd.has("file"))
 })
 
-test("Creates a new File instance for given File", t => {
+test(".set() creates a new File if 3rd argument is present", t => {
   const file = new File(["Some content"], "file.txt")
   const fd = new FormData()
 
-  fd.set("file", file)
+  fd.set("file", file, "renamed-file.txt")
 
   t.not(fd.get("file"), file)
 })
@@ -105,6 +105,7 @@ test("Third argument overrides File.name even if it was set to null", t => {
   const file = new File(["Some content"], "file.txt")
   const fd = new FormData()
 
+  // @ts-expect-error
   fd.set("file", file, null)
 
   t.is((fd.get("file") as File).name, "null")
@@ -230,6 +231,15 @@ test(".get() returns File as-is", t => {
   fd.set("file", file)
 
   t.true(fd.get("file") instanceof File)
+})
+
+test(".get() returns the same File that was added to FormData", t => {
+  const file = new File(["Some text"], "file.txt")
+  const form = new FormData()
+
+  form.set("file", file)
+
+  t.is(form.get("file"), file)
 })
 
 test(".getAll() returns an empty array for non-existent field", t => {
