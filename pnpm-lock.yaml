@@ -23,11 +23,11 @@ specifiers:
   ts-node: 10.5.0
   ttypescript: 1.5.13
   typescript: 4.5.5
-  web-streams-polyfill: 4.0.0-beta.2
+  web-streams-polyfill: 4.0.0-beta.3
 
 dependencies:
   node-domexception: 1.0.0
-  web-streams-polyfill: 4.0.0-beta.2
+  web-streams-polyfill: 4.0.0-beta.3
 
 devDependencies:
   '@octetstream/eslint-config': 5.0.0_apautjdkl4tcrnrnjzhjtcg3ji
@@ -3600,8 +3600,8 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /web-streams-polyfill/4.0.0-beta.2:
-    resolution: {integrity: sha512-UHhhnoe2M40uh2r0KVdJTN7qjFytm6o0Yp3VcjwV3bfo6rz8uqvxNoE5yNmGF0y3eFfXaFeb6M09MDSwwLmq4w==}
+  /web-streams-polyfill/4.0.0-beta.3:
+    resolution: {integrity: sha512-QW95TCTaHmsYfHDybGMwO5IJIM93I/6vTRk+daHTWFPhwh+C8Cg7j7XyKrwrj8Ib6vYXe0ocYNrmzY4xAAN6ug==}
     engines: {node: '>= 14'}
     dev: false
 
