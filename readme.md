@@ -466,7 +466,7 @@ Checks if given value is a File, Blob or file-look-a-like object.
 
   - **{unknown}** value - A value to test
 
-### Git hooks
+## Git hooks
 
 This package is using `husky` to perform git hooks on developer's machine, so your changes might be verified before you push them to `GitHub`. If you want to install these hooks, run `npm run husky` command.
 
