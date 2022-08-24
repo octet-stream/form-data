@@ -109,8 +109,8 @@ export class FormData {
     if (isFile(rawValue)) {
       // Check if fileName argument is present
       value = fileName === undefined
-        ? rawValue // if there's no fileName, return let the value be rawValue
-        : new File([rawValue], fileName, { // otherwise, create new file with given fileName
+        ? rawValue // if there's no fileName, let the value be rawValue
+        : new File([rawValue], fileName, { // otherwise, create new File with given fileName
           type: rawValue.type,
           lastModified: rawValue.lastModified
         })
