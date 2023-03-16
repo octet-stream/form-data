@@ -6,9 +6,7 @@ on:
     paths:
       - "**.ts"
       - "tsconfig.json"
-      - "tsconfig.cjs.json"
-      - "tsconfig.esm.json"
-      - "ava.config.cjs"
+      - "ava.config.js"
       - "package.json"
       - "pnpm-lock.yaml"
       - ".github/workflows/ci.yml"
@@ -17,9 +15,7 @@ on:
     paths:
       - "**.ts"
       - "tsconfig.json"
-      - "tsconfig.cjs.json"
-      - "tsconfig.esm.json"
-      - "ava.config.cjs"
+      - "ava.config.js"
       - "package.json"
       - "pnpm-lock.yaml"
       - ".github/workflows/ci.yml"
