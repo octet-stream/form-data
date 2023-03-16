@@ -48,6 +48,7 @@
     "node": ">= 14.17"
   },
   "scripts": {
+    "lint:types": "tsc --noEmit",
     "eslint": "eslint src/**/*.ts",
     "staged": "lint-staged",
     "coverage": "c8 npm test",
