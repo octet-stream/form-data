@@ -5,7 +5,6 @@ on:
     branches: [main]
     paths:
       - "**.ts"
-      - "**.tsx"
       - "package.json"
       - "pnpm-lock.yaml"
       - "tsconfig.json"
@@ -15,7 +14,6 @@ on:
     branches: [main]
     paths:
       - "**.ts"
-      - "**.tsx"
       - "package.json"
       - "pnpm-lock.yaml"
       - "tsconfig.json"
