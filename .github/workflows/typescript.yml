@@ -8,8 +8,7 @@ on:
       - "package.json"
       - "pnpm-lock.yaml"
       - "tsconfig.json"
-      - ".eslintignore"
-      - ".github/workflows/eslint.yml"
+      - ".github/workflows/typescript.yml"
   pull_request:
     branches: [main]
     paths:
@@ -17,11 +16,10 @@ on:
       - "package.json"
       - "pnpm-lock.yaml"
       - "tsconfig.json"
-      - ".eslintignore"
-      - ".github/workflows/eslint.yml"
+      - ".github/workflows/typescript.yml"
 
 jobs:
-  eslint:
+  typescript:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
