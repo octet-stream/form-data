@@ -1,1 +1,1 @@
-npm run staged
+npm run lint:types && npm run staged
