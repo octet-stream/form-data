@@ -5,6 +5,7 @@ Spec-compliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/For
 [![Code Coverage](https://codecov.io/github/octet-stream/form-data/coverage.svg?branch=master)](https://codecov.io/github/octet-stream/form-data?branch=master)
 [![CI](https://github.com/octet-stream/form-data/workflows/CI/badge.svg)](https://github.com/octet-stream/form-data/actions/workflows/ci.yml)
 [![ESLint](https://github.com/octet-stream/form-data/workflows/ESLint/badge.svg)](https://github.com/octet-stream/form-data/actions/workflows/eslint.yml)
+[![TypeScript Types](https://github.com/octet-stream/form-data/actions/workflows/typescript.yml/badge.svg)](https://github.com/octet-stream/form-data/actions/workflows/typescript.yml)
 
 ## Highlights
 
