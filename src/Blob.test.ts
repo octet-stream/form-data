@@ -1,6 +1,6 @@
-import test from "ava"
+import {ReadableStream} from "node:stream/web"
 
-import {ReadableStream} from "web-streams-polyfill"
+import test from "ava"
 
 import {Blob} from "./Blob.js"
 

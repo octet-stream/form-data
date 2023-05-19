@@ -52,7 +52,7 @@ async function* consumeNodeBlob(
 export async function* consumeBlobParts(
   parts: BlobPart[],
   clone: boolean = false
-): AsyncGenerator<Uint8Array, void> {
+): AsyncGenerator<Uint8Array, void, undefined> {
   for (const part of parts) {
     if (ArrayBuffer.isView(part)) {
       if (clone) {

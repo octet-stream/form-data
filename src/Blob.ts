@@ -1,6 +1,6 @@
 /*! Based on fetch-blob. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> & David Frank */
 
-import {ReadableStream} from "web-streams-polyfill"
+import {ReadableStream} from "node:stream/web"
 
 import type {BlobPart} from "./BlobPart.js"
 
