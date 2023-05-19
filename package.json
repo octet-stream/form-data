@@ -4,7 +4,6 @@
   "type": "module",
   "description": "Spec-compliant FormData implementation for Node.js",
   "repository": "octet-stream/form-data",
-  "packageManager": "pnpm@8.5.1",
   "sideEffects": false,
   "keywords": [
     "form-data",
@@ -16,6 +15,10 @@
   ],
   "author": "Nick K. <io@octetstream.me>",
   "license": "MIT",
+  "packageManager": "pnpm@8.5.1",
+  "engines": {
+    "node": ">= 16.5"
+  },
   "main": "./lib/index.js",
   "module": "./lib/browser.js",
   "browser": "./lib/browser.js",
@@ -44,9 +47,6 @@
         "@type/fileFromPath.d.ts"
       ]
     }
-  },
-  "engines": {
-    "node": ">= 14.17"
   },
   "scripts": {
     "lint:types": "tsc --noEmit",

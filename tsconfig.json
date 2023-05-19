@@ -7,7 +7,7 @@
   ],
   "compilerOptions": {
     "outDir": "lib",
-    "target": "es2018",
+    "target": "es2021",
     "module": "es2020",
     "noImplicitAny": true,
     "baseUrl": "src",
@@ -17,7 +17,7 @@
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "removeComments": true
