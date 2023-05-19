@@ -1,7 +1,8 @@
 {
   "extends": "./tsconfig.json",
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"],
   "ts-node": {
-    "preferTsExts": true,
     "transpileOnly": true
   }
 }
