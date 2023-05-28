@@ -24,13 +24,19 @@
   "browser": "./lib/browser.js",
   "exports": {
     "./package.json": "./package.json",
-    ".": {
-      "types": "./@type/index.d.ts",
-      "import": "./lib/index.js"
-    },
-    "./browser": {
-      "types": "./@type/browser.d.ts",
-      "import": "./lib/browser.js"      
+    "./": {
+      "node": {
+        "types": "./@type/index.d.ts",
+        "import": "./lib/index.js"
+      },
+      "browser": {
+        "types": "./@type/browser.d.ts",
+        "import": "./lib/browser.js"
+      },
+      "default": {
+        "types": "./@type/index.d.ts",
+        "import": "./lib/index.js"
+      }
     },
     "./file-from-path": {
       "types": "./@type/fileFromPath.d.ts",
@@ -40,9 +46,6 @@
   "types": "./@type/index.d.ts",
   "typesVersions": {
     "*": {
-      "browser": [
-        "@type/browser.d.ts"
-      ],
       "file-from-path": [
         "@type/fileFromPath.d.ts"
       ]
