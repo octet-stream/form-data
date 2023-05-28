@@ -24,7 +24,7 @@
   "browser": "./lib/browser.js",
   "exports": {
     "./package.json": "./package.json",
-    "./": {
+    ".": {
       "node": {
         "types": "./@type/index.d.ts",
         "import": "./lib/index.js"
