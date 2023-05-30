@@ -59,7 +59,7 @@
     "ci": "c8 npm test && c8 report --reporter=json",
     "build:types": "tsc --project tsconfig.d.ts.json",
     "build": "tsc && npm run build:types",
-    "test": "ava --fail-fast",
+    "test": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" ava",
     "cleanup": "del-cli @type lib",
     "prepare": "npm run cleanup && npm run build",
     "husky": "husky install"
@@ -72,6 +72,7 @@
     "@typescript-eslint/parser": "5.55.0",
     "ava": "5.2.0",
     "c8": "7.13.0",
+    "cross-env": "^7.0.3",
     "del-cli": "5.0.0",
     "eslint": "8.36.0",
     "eslint-config-airbnb-typescript": "17.0.0",
