@@ -29,7 +29,10 @@
         "types": "./@type/browser.d.ts",
         "import": "./lib/browser.js"
       },
-      "default": "./lib/index.js"
+      "default": {
+        "types": "./@type/index.d.ts",
+        "import": "./lib/index.js"
+      }
     },
     "./file-from-path": {
       "types": "./@type/fileFromPath.d.ts",
