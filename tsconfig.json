@@ -8,7 +8,7 @@
   "compilerOptions": {
     "outDir": "lib",
     "target": "es2021",
-    "module": "es2020",
+    "module": "node16",
     "noImplicitAny": true,
     "baseUrl": "src",
     "checkJs": false,
