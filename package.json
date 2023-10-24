@@ -76,7 +76,7 @@
     "test": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" ava",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
-    "husky": "husky install",
+    "prepare": "husky install",
     "release": "pnpm run build && pnpm exec changeset publish"
   },
   "devDependencies": {
