@@ -23,7 +23,7 @@ For this module to work consider polyfilling: [ReadableStream](https://developer
 
 ## Blob/File support
 
-While `formdata-node` ships with its own `File` and `Blob` implementations, these might eventually be removed in favour of Node.js' [`Blob`](https://nodejs.org/dist/latest-v18.x/docs/api/buffer.html#class-blob) (introduced in v14.18) and File (when it will be introduced). In order to help you smoothen that transition period, our own `Blob` and `File`, as well as FormData itself, proved support `Blob` objects created by Node.js' implementation.
+While `formdata-node` ships with its own `File` and `Blob` implementations, these might eventually be removed in favour of Node.js' [`Blob`](https://nodejs.org/dist/latest-v18.x/docs/api/buffer.html#class-blob) (introduced in v14.18) and File (when it will be introduced). In order to help you smoothen that transition period, our own `Blob` and `File`, as well as `FormData` itself, provides support `Blob` objects created by Node.js' implementation.
 
 ## Installation
 
