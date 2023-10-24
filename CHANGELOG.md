@@ -1,5 +1,11 @@
 # formdata-node
 
+## 6.0.3
+
+### Patch Changes
+
+- [`996b4b5`](https://github.com/octet-stream/form-data/commit/996b4b528b7a54aa1f8c7ce0e002d044613958e9) Thanks [@octet-stream](https://github.com/octet-stream)! - Remove removeComments from tsconfig.json
+
 ## 6.0.2
 
 ### Patch Changes
