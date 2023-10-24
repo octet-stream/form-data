@@ -17,7 +17,6 @@
     "isolatedModules": true,
     "moduleResolution": "node16",
     "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
-    "removeComments": true
+    "allowSyntheticDefaultImports": true
   }
 }
