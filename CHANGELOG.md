@@ -1,5 +1,11 @@
 # formdata-node
 
+## 6.0.1
+
+### Patch Changes
+
+- [`32fa6da`](https://github.com/octet-stream/form-data/commit/32fa6da19096fbdd29401452d40e61ef9619343a) Thanks [@octet-stream](https://github.com/octet-stream)! - Remove changeset config from distro
+
 ## 6.0.0
 
 ### Major Changes
