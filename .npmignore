@@ -26,4 +26,7 @@ pnpm-lock.yaml
 /tsconfig.ava.json
 /src/**/*.ts
 
+/CHANGELOG.md
+/tsup.config.ts
+
 !/src/node-domexception.d.ts
