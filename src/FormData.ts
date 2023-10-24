@@ -247,7 +247,7 @@ export class FormData {
    * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through all keys contained in this `FormData` object.
    * Each key is a `string`.
    */
-  * keys(): Generator<string> {
+  * keys(): IterableIterator<string> {
     for (const key of this.#entries.keys()) {
       yield key
     }
@@ -257,7 +257,7 @@ export class FormData {
    * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through the `FormData` key/value pairs.
    * The key of each pair is a string; the value is a [`FormDataValue`](https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue).
    */
-  * entries(): Generator<[string, FormDataEntryValue]> {
+  * entries(): IterableIterator<[string, FormDataEntryValue]> {
     for (const name of this.keys()) {
       const values = this.getAll(name)
 
@@ -272,7 +272,7 @@ export class FormData {
    * Returns an [`iterator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) allowing to go through all values contained in this object `FormData` object.
    * Each value is a [`FormDataValue`](https://developer.mozilla.org/en-US/docs/Web/API/FormDataEntryValue).
    */
-  * values(): Generator<FormDataEntryValue> {
+  * values(): IterableIterator<FormDataEntryValue> {
     for (const [, value] of this) {
       yield value
     }

@@ -187,7 +187,7 @@ export class Blob {
   stream(): ReadableStream<Uint8Array> {
     const iterator = consumeBlobParts(this.#parts, true)
 
-    return new ReadableStream<Uint8Array>({
+    return new ReadableStream({
       async pull(controller) {
         const {value, done} = await iterator.next()
 
