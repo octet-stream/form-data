@@ -1,3 +1,5 @@
+**FOLLOWING DOCUMENTATION IS RELATED TO *UPCOMING MAJOR RELEASE*. IF YOU ARE LOOKING FOR DOCUMENTATION FOR *CURRENT RELEASE*, PLEASE CHECK OUT THE [`5.x`](https://github.com/octet-stream/form-data/tree/5.x) BRANCH**
+
 # FormData
 
 Spec-compliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) implementation for Node.js
@@ -6,6 +8,10 @@ Spec-compliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/For
 [![CI](https://github.com/octet-stream/form-data/workflows/CI/badge.svg)](https://github.com/octet-stream/form-data/actions/workflows/ci.yml)
 [![ESLint](https://github.com/octet-stream/form-data/workflows/ESLint/badge.svg)](https://github.com/octet-stream/form-data/actions/workflows/eslint.yml)
 [![TypeScript Types](https://github.com/octet-stream/form-data/actions/workflows/typescript.yml/badge.svg)](https://github.com/octet-stream/form-data/actions/workflows/typescript.yml)
+
+## Requirements
+
+For this module to work consider polyfilling: [ReadableStream](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream), and [DOMException](https://developer.mozilla.org/en-US/docs/Web/API/DOMException) (if you use `file-from-path` utilities)
 
 ## Highlights
 
@@ -41,7 +47,7 @@ pnpm add formdata-node
 
 ## ESM/CJS support
 
-This package is native [ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) and no longer provides CommonJS exports. Use `4.x` version if you still need to use this package with CommonJS, or use [dynamic `import()`](https://v8.dev/features/dynamic-import) syntax.
+This package is build for and bundled for both ESM and CommonJS, so you can use it in both environments.
 
 ## Usage
 
