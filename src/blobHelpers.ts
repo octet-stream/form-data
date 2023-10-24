@@ -6,10 +6,12 @@ import type {BlobPart} from "./BlobPart.js"
 import {isFunction} from "./isFunction.js"
 import {isAsyncIterable} from "./isAsyncIterable.js"
 
-const CHUNK_SIZE = 65536 // 64 KiB (same size chrome slice theirs blob into Uint8array's)
+export const MAX_CHUNK_SIZE = 65536 // 64 KiB (same size chrome slice theirs blob into Uint8array's)
 
-async function* clonePart(value: Uint8Array): AsyncGenerator<Uint8Array, void> {
-  if (value.byteLength <= CHUNK_SIZE) {
+export async function* clonePart(
+  value: Uint8Array
+): AsyncGenerator<Uint8Array, void> {
+  if (value.byteLength <= MAX_CHUNK_SIZE) {
     yield value
 
     return
@@ -17,7 +19,7 @@ async function* clonePart(value: Uint8Array): AsyncGenerator<Uint8Array, void> {
 
   let offset = 0
   while (offset < value.byteLength) {
-    const size = Math.min(value.byteLength - offset, CHUNK_SIZE)
+    const size = Math.min(value.byteLength - offset, MAX_CHUNK_SIZE)
     const buffer = value.buffer.slice(offset, offset + size)
 
     offset += buffer.byteLength
@@ -80,7 +82,6 @@ export const getStreamIterator = (
 /**
  * Consumes builtin Node.js Blob that does not have stream method.
  */
-/* c8 ignore start */
 async function* consumeNodeBlob(
   blob: BlobLike
 ): AsyncGenerator<Uint8Array, void> {
@@ -89,7 +90,7 @@ async function* consumeNodeBlob(
     const chunk = blob.slice(
       position,
 
-      Math.min(blob.size, position + CHUNK_SIZE)
+      Math.min(blob.size, position + MAX_CHUNK_SIZE)
     )
 
     const buffer = await chunk.arrayBuffer()
@@ -99,7 +100,6 @@ async function* consumeNodeBlob(
     yield new Uint8Array(buffer)
   }
 }
-/* c8 ignore stop */
 
 /**
  * Creates an iterator allowing to go through blob parts and consume their content
@@ -119,12 +119,10 @@ export async function* consumeBlobParts(
       }
     } else if (isFunction((part as Blob).stream)) {
       yield* getStreamIterator((part as Blob).stream())
-    /* c8 ignore start */
     } else {
       // Special case for an old Node.js Blob that have no stream() method.
       yield* consumeNodeBlob(part as BlobLike)
     }
-    /* c8 ignore stop */
   }
 }
 

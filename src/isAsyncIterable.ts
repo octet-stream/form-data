@@ -2,7 +2,7 @@ import {isFunction} from "./isFunction.js"
 import {isObject} from "./isObject.js"
 
 /**
- * Checks if the object implements `Symbol.asyncIterable` method
+ * Checks if the object implements `Symbol.asyncIterator` method
  */
 export const isAsyncIterable = (
   value: unknown
