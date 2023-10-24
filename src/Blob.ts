@@ -1,7 +1,5 @@
 /*! Based on fetch-blob. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> & David Frank */
 
-import {ReadableStream} from "node:stream/web"
-
 import type {BlobPart} from "./BlobPart.js"
 
 import {isFunction} from "./isFunction.js"

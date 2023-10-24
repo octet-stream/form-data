@@ -40,7 +40,7 @@ export interface FilePropertyBag extends BlobPropertyBag {
 /**
  * The **File** interface provides information about files and allows JavaScript to access their content.
  */
-export class File extends Blob implements FileLike {
+export class File extends Blob {
   static [Symbol.hasInstance](value: unknown): value is File {
     return value instanceof Blob
       && value[Symbol.toStringTag] === "File"

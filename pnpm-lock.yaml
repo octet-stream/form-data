@@ -1,10 +1,5 @@
 lockfileVersion: '6.0'
 
-dependencies:
-  node-domexception:
-    specifier: 1.0.0
-    version: 1.0.0
-
 devDependencies:
   '@octetstream/eslint-config':
     specifier: 7.2.1
@@ -3166,11 +3161,6 @@ packages:
       just-extend: 4.2.1
       path-to-regexp: 1.8.0
     dev: true
-
-  /node-domexception@1.0.0:
-    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
-    engines: {node: '>=10.5.0'}
-    dev: false
 
   /nofilter@3.1.0:
     resolution: {integrity: sha512-l2NNj07e9afPnhAhvgVrCD/oy2Ai1yfLpuo3EpiO1jFTsB4sFz6oIfAfSZyQzVpkZQ9xS8ZS5g1jCBgq4Hwo0g==}

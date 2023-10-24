@@ -3,18 +3,12 @@ import {stat} from "node:fs/promises"
 import type {Stats} from "node:fs"
 import {basename} from "node:path"
 
-import DOMException from "node-domexception"
-
 import type {FileLike, FilePropertyBag} from "./File.js"
 import {File} from "./File.js"
 
 import isPlainObject from "./isPlainObject.js"
 
 export * from "./isFile.js"
-
-const MESSAGE = "The requested file could not be read, "
-  + "typically due to permission problems that have occurred after a reference "
-  + "to a file was acquired."
 
 export type FileFromPathOptions = Omit<FilePropertyBag, "lastModified">
 
@@ -67,7 +61,13 @@ class FileFromPath implements Omit<FileLike, "type"> {
 
     if (mtimeMs > this.lastModified) {
       // eslint-disable-next-line @typescript-eslint/no-throw-literal
-      throw new DOMException(MESSAGE, "NotReadableError")
+      throw new DOMException(
+        "The requested file could not be read, "
+          + "typically due to permission problems that have occurred "
+          + "after a reference to a file was acquired.",
+
+        "NotReadableError"
+      )
     }
 
     if (this.size) {
