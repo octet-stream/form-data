@@ -37,13 +37,17 @@
       },
       "browser": {
         "import": {
-          "types": "./@type/browser.d.ts",
+          "types": "./lib/browser.d.ts",
           "default": "./lib/browser.js"
         },
         "require": {
-          "types": "./@type/browser.d.cts",
+          "types": "./lib/browser.d.cts",
           "default": "./lib/browser.cjs"
         }
+      },
+      "default": {
+        "types": "./lib/form-data.d.ts",
+        "import": "./lib/form-data.js"
       }
     },
     "./file-from-path": {
