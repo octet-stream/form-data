@@ -19,35 +19,49 @@
   "engines": {
     "node": ">= 16.5"
   },
-  "main": "./lib/index.js",
+  "main": "./lib/form-data.js",
   "module": "./lib/browser.js",
   "browser": "./lib/browser.js",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "node": {
-        "types": "./@type/index.d.ts",
-        "import": "./lib/index.js"
+        "import": {
+          "types": "./lib/form-data.d.ts",
+          "default": "./lib/form-data.js"
+        },
+        "require": {
+          "types": "./lib/form-data.d.cts",
+          "default": "./lib/form-data.cjs"
+        }
       },
       "browser": {
-        "types": "./@type/browser.d.ts",
-        "import": "./lib/browser.js"
-      },
-      "default": {
-        "types": "./@type/index.d.ts",
-        "import": "./lib/index.js"
+        "import": {
+          "types": "./@type/browser.d.ts",
+          "default": "./lib/browser.js"
+        },
+        "require": {
+          "types": "./@type/browser.d.cts",
+          "default": "./lib/browser.cjs"
+        }
       }
     },
     "./file-from-path": {
-      "types": "./@type/fileFromPath.d.ts",
-      "import": "./lib/fileFromPath.js"
+      "import": {
+        "types": "./@lib/file-from-path.d.ts",
+        "default": "./lib/file-from-path.js"
+      },
+      "require": {
+        "types": "./@lib/file-from-path.d.cts",
+        "default": "./lib/file-from-path.cjs"
+      }
     }
   },
-  "types": "./@type/index.d.ts",
+  "types": "./lib/form-data.d.ts",
   "typesVersions": {
     "*": {
       "file-from-path": [
-        "@type/fileFromPath.d.ts"
+        "./lib/file-from-path.d.ts"
       ]
     }
   },
@@ -58,11 +72,9 @@
     "coverage": "c8 pnpm test",
     "report:html": "c8 -r=html pnpm test",
     "ci": "c8 pnpm test && c8 report --reporter=json",
-    "build:types": "tsc --project tsconfig.d.ts.json",
-    "build": "tsc && pnpm run build:types",
+    "build": "pnpm tsup",
     "test": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" ava",
-    "cleanup": "del-cli @type lib",
-    "prepublishOnly": "pnpm run cleanup && pnpm run build && pinst --disable",
+    "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
     "husky": "husky install"
   },
@@ -86,6 +98,7 @@
     "pinst": "3.0.0",
     "sinon": "15.2.0",
     "ts-node": "10.9.1",
+    "tsup": "^7.2.0",
     "typescript": "5.1.6"
   },
   "dependencies": {

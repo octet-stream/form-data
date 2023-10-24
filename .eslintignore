@@ -1,4 +1,5 @@
 @type
-*.js
-*.mjs
-*.cjs
+/lib
+
+# TODO: Remove this later
+tsup.config.ts
