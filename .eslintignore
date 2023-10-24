@@ -1,4 +1,4 @@
-@type
+*.js
 /lib
 
 # TODO: Remove this later
