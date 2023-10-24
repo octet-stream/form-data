@@ -76,9 +76,12 @@
     "test": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" ava",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
-    "husky": "husky install"
+    "husky": "husky install",
+    "release": "pnpm run build && pnpm exec changeset publish"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.4.8",
+    "@changesets/cli": "^2.26.2",
     "@octetstream/eslint-config": "7.2.1",
     "@types/node": "20.8.7",
     "@types/sinon": "10.0.20",
