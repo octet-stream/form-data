@@ -1,5 +1,11 @@
 # formdata-node
 
+## 6.0.2
+
+### Patch Changes
+
+- [`d88ffae`](https://github.com/octet-stream/form-data/commit/d88ffae5a66dd4d75b7ae4639578f3d97731dad9) Thanks [@octet-stream](https://github.com/octet-stream)! - Remove tsup config and changelog from distro
+
 ## 6.0.1
 
 ### Patch Changes
