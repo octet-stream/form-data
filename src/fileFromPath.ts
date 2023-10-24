@@ -4,9 +4,8 @@ import type {Stats} from "node:fs"
 import {basename} from "node:path"
 
 import type {FileLike, FilePropertyBag} from "./File.js"
+import {isObject} from "./isObject.js"
 import {File} from "./File.js"
-
-import isPlainObject from "./isPlainObject.js"
 
 export * from "./isFile.js"
 
@@ -90,7 +89,7 @@ function createFileFromPath(
   options: FileFromPathOptions = {}
 ): File {
   let filename: string | undefined
-  if (isPlainObject(filenameOrOptions)) {
+  if (isObject(filenameOrOptions)) {
     [options, filename] = [filenameOrOptions, undefined]
   } else {
     filename = filenameOrOptions
