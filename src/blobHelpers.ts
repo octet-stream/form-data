@@ -31,7 +31,7 @@ async function* clonePart(value: Uint8Array): AsyncGenerator<Uint8Array, void> {
  *
  * @param readable A ReadableStream to read from
  */
-async function* readStream(
+export async function* readStream(
   readable: ReadableStream<Uint8Array>
 ): AsyncGenerator<Uint8Array, void, undefined> {
   const reader = readable.getReader()
@@ -47,7 +47,7 @@ async function* readStream(
   }
 }
 
-async function* chunkStream(
+export async function* chunkStream(
   stream: AsyncIterable<Uint8Array>
 ): AsyncGenerator<Uint8Array, void> {
   for await (const value of stream) {

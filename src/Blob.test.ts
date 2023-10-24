@@ -1,7 +1,9 @@
 import {ReadableStream} from "node:stream/web"
+import {buffer} from "node:stream/consumers"
 
 import test from "ava"
 
+import {readStream} from "./blobHelpers.js"
 import {Blob} from "./Blob.js"
 
 test("Constructor creates a new Blob when called without arguments", t => {
@@ -367,14 +369,10 @@ test(".stream() returns ReadableStream", t => {
 test(".stream() allows to read Blob as a stream", async t => {
   const source = Buffer.from("Some content")
 
-  const stream = new Blob([source]).stream()
+  // ! Blob.stream() return type falls back to TypeScript typings for web which lacks Symbol.asyncIterator method, so we read stream with out readStream helper
+  const actual = await buffer(readStream(new Blob([source]).stream()))
 
-  const chunks: Uint8Array[] = []
-  for await (const chunk of stream) {
-    chunks.push(chunk)
-  }
-
-  t.true(Buffer.concat(chunks).equals(source))
+  t.true(actual.equals(source))
 })
 
 test(".stream() returned ReadableStream can be cancelled", async t => {
