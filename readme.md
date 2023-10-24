@@ -1,5 +1,3 @@
-**FOLLOWING DOCUMENTATION IS RELATED TO *UPCOMING MAJOR RELEASE*. IF YOU ARE LOOKING FOR DOCUMENTATION FOR *CURRENT RELEASE*, PLEASE CHECK OUT THE [`5.x`](https://github.com/octet-stream/form-data/tree/5.x) BRANCH**
-
 # FormData
 
 Spec-compliant [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) implementation for Node.js
