@@ -1,4 +1,3 @@
 {
-  "lib/**/.ts": "eslint --fix",
-  "ava.config.cjs": "eslint --fix"
+  "*.ts": "pnpm exec eslint --fix"
 }
