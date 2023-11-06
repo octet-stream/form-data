@@ -44,6 +44,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
+        env:
+          NO_HUSKY_HOOKS: 1
 
       - name: Create a Pull Request for a new release
         id: changesets
