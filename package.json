@@ -78,7 +78,7 @@
     "ci": "c8 pnpm test && c8 report --reporter=json",
     "build": "pnpm exec del-cli lib && pnpm exec tsup",
     "test": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" ava",
-    "prepare": "node -e 'process.exit(+(process.env.CI === undefined && process.env.NO_HUSKY_HOOKS === undefined));' && husky install || true",
+    "prepare": "node -e 'process.exit(+(process.env.CI !== undefined || process.env.NO_HUSKY_HOOKS !== undefined));' && husky install || true",
     "release": "pnpm run build && pnpm exec changeset publish"
   },
   "devDependencies": {
