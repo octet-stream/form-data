@@ -169,6 +169,8 @@ test("Fails attempt to read modified file", async t => {
   await utimes(path, now, now)
 
   await t.throwsAsync(() => file.text(), {
+    any: true,
+    instanceOf: DOMException,
     name: "NotReadableError",
     message: "The requested file could not be read, "
       + "typically due to permission problems that have occurred "
