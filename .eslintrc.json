@@ -1,17 +1,6 @@
 {
-  "root": true,
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
   "extends": [
-    "@octetstream/eslint-config/esm/typescript"
-  ],
-  "rules": {
-    // These 4 rules are false-positive and have no solution for TS
-    "no-redeclare": 0,
-    "no-dupe-class-members": 0,
-    "lines-between-class-members": 0,
-    "default-param-last": 0,
-    "react/jsx-filename-extension": 0
-  }
+    "@octetstream/eslint-config/typescript/esm",
+    "@octetstream/eslint-config/typescript/ava"
+  ]
 }

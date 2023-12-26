@@ -202,7 +202,7 @@ test("Casts elements of the blobPart array to a string", async t => {
     [],
     {0: "FAIL", length: 1},
     {toString() { return "stringA" }},
-    {toString: undefined, valueOf() { return "stringB" }},
+    {toString: undefined, valueOf() { return "stringB" }}
   ]
 
   const expected = source.map(element => String(element)).join("")
@@ -342,7 +342,7 @@ test(
       "a",
       new TextEncoder().encode("b"),
       new Blob(["c"]),
-      new TextEncoder().encode("d").buffer,
+      new TextEncoder().encode("d").buffer
     ])
 
     t.is(await blob.text(), "abcd")
