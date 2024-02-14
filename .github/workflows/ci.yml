@@ -61,7 +61,7 @@ jobs:
       - run: pnpm run ci
 
       - name: Upload codecov report
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         if: matrix.node == '20.x' && matrix.os == 'ubuntu-latest'
         env:
           CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
