@@ -18,5 +18,8 @@
     "moduleResolution": "node16",
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true
+  },
+  "ts-node": {
+    "transpileOnly": true
   }
 }
