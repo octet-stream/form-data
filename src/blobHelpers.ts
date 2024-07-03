@@ -5,6 +5,7 @@ import type {BlobPart} from "./BlobPart.js"
 
 import {isFunction} from "./isFunction.js"
 import {isAsyncIterable} from "./isAsyncIterable.js"
+import {isReadableStreamFallback} from "./isReadableStreamFallback.js"
 
 export const MAX_CHUNK_SIZE = 65536 // 64 KiB (same size chrome slice theirs blob into Uint8array's)
 
@@ -69,7 +70,7 @@ export const getStreamIterator = (
     return chunkStream(source)
   }
 
-  if (isFunction(source.getReader)) {
+  if (isReadableStreamFallback(source)) {
     return chunkStream(readStream(source))
   }
 
