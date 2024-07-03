@@ -1,6 +1,6 @@
 import {defineConfig} from "tsup"
 
-export default defineConfig(() => ({
+export default defineConfig({
   entry: {
     "form-data": "src/index.ts",
     "file-from-path": "src/fileFromPath.ts",
@@ -10,4 +10,4 @@ export default defineConfig(() => ({
   format: ["esm", "cjs"],
   dts: true,
   splitting: false
-}))
+})
