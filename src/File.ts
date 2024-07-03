@@ -42,9 +42,11 @@ export interface FilePropertyBag extends BlobPropertyBag {
  */
 export class File extends Blob {
   static [Symbol.hasInstance](value: unknown): value is File {
-    return value instanceof Blob
-      && value[Symbol.toStringTag] === "File"
-      && typeof (value as File).name === "string"
+    return (
+      value instanceof Blob &&
+      value[Symbol.toStringTag] === "File" &&
+      typeof (value as File).name === "string"
+    )
   }
 
   /**
@@ -69,17 +71,17 @@ export class File extends Blob {
 
     if (arguments.length < 2) {
       throw new TypeError(
-        "Failed to construct 'File': 2 arguments required, "
-          + `but only ${arguments.length} present.`
+        `Failed to construct 'File': 2 arguments required, but only ${arguments.length} present.`
       )
     }
 
     this.#name = String(name)
 
     // Simulate WebIDL type casting for NaN value in lastModified option.
-    const lastModified = options.lastModified === undefined
-      ? Date.now()
-      : Number(options.lastModified)
+    const lastModified =
+      options.lastModified === undefined
+        ? Date.now()
+        : Number(options.lastModified)
 
     if (!Number.isNaN(lastModified)) {
       this.#lastModified = lastModified

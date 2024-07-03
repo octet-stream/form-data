@@ -21,8 +21,12 @@ test("Empty Blob returned by Blob constructor has the size of 0", t => {
 test("The size property is read-only", t => {
   const blob = new Blob()
 
-  // @ts-expect-error
-  try { blob.size = 42 } catch { /* noop */ }
+  try {
+    // @ts-expect-error expected for tests
+    blob.size = 42
+  } catch {
+    /* noop */
+  }
 
   t.is(blob.size, 0)
 })
@@ -30,8 +34,13 @@ test("The size property is read-only", t => {
 test("The size property cannot be removed", t => {
   const blob = new Blob()
 
-  // @ts-expect-error
-  try { delete blob.size } catch { /* noop */ }
+  try {
+    // @ts-expect-error expected for tests
+    // biome-ignore lint/performance/noDelete: expected for tests
+    delete blob.size
+  } catch {
+    /* noop */
+  }
 
   t.true("size" in blob)
 })
@@ -46,8 +55,12 @@ test("The type property is read-only", t => {
   const expected = "text/plain"
   const blob = new Blob([], {type: expected})
 
-  // @ts-expect-error
-  try { blob.type = "application/json" } catch { /* noop */ }
+  try {
+    // @ts-expect-error expected for tests
+    blob.type = "application/json"
+  } catch {
+    /* noop */
+  }
 
   t.is(blob.type, expected)
 })
@@ -55,50 +68,49 @@ test("The type property is read-only", t => {
 test("The type property cannot be removed", t => {
   const blob = new Blob()
 
-  // @ts-expect-error
-  try { delete blob.type } catch { /* noop */ }
+  try {
+    // @ts-expect-error expected for tests
+    // biome-ignore lint/performance/noDelete: expected for tests
+    delete blob.type
+  } catch {
+    /* noop */
+  }
 
   t.true("type" in blob)
 })
 
-test(
-  "Constructor throws an error when first argument is not an object",
+test("Constructor throws an error when first argument is not an object", t => {
+  const rounds: unknown[] = [null, true, false, 0, 1, 1.5, "FAIL"]
 
-  t => {
-    const rounds: unknown[] = [null, true, false, 0, 1, 1.5, "FAIL"]
+  rounds.forEach(round => {
+    // @ts-expect-error
+    const trap = () => new Blob(round)
 
-    rounds.forEach(round => {
-      // @ts-expect-error
-      const trap = () => new Blob(round)
-
-      t.throws(trap, {
-        instanceOf: TypeError,
-        message: "Failed to construct 'Blob': "
-          + "The provided value cannot be converted to a sequence."
-      })
+    t.throws(trap, {
+      instanceOf: TypeError,
+      message:
+        "Failed to construct 'Blob': " +
+        "The provided value cannot be converted to a sequence."
     })
-  }
-)
+  })
+})
 
-test(
-  "Constructor throws an error when first argument is not an iterable object",
+test("Constructor throws an error when first argument is not an iterable object", t => {
+  // eslint-disable-next-line prefer-regex-literals
+  const rounds = [new Date(), /(?:)/, {}, {0: "FAIL", length: 1}]
 
-  t => {
-    // eslint-disable-next-line prefer-regex-literals
-    const rounds = [new Date(), new RegExp(""), {}, {0: "FAIL", length: 1}]
+  rounds.forEach(round => {
+    // @ts-expect-error
+    const trap = () => new Blob(round)
 
-    rounds.forEach(round => {
-      // @ts-expect-error
-      const trap = () => new Blob(round)
-
-      t.throws(trap, {
-        instanceOf: TypeError,
-        message: "Failed to construct 'Blob': "
-          + "The object must have a callable @@iterator property."
-      })
+    t.throws(trap, {
+      instanceOf: TypeError,
+      message:
+        "Failed to construct 'Blob': " +
+        "The object must have a callable @@iterator property."
     })
-  }
-)
+  })
+})
 
 test("Creates a new Blob from an array of strings", async t => {
   const source = ["one", "two", "three"]
@@ -161,7 +173,7 @@ test("Constructor reads blobParts from iterable object", async t => {
   const expected = source.join("")
 
   const blob = new Blob({
-    * [Symbol.iterator]() {
+    *[Symbol.iterator]() {
       yield* source
     }
   })
@@ -201,8 +213,17 @@ test("Casts elements of the blobPart array to a string", async t => {
 
     [],
     {0: "FAIL", length: 1},
-    {toString() { return "stringA" }},
-    {toString: undefined, valueOf() { return "stringB" }}
+    {
+      toString() {
+        return "stringA"
+      }
+    },
+    {
+      toString: undefined,
+      valueOf() {
+        return "stringB"
+      }
+    }
   ]
 
   const expected = source.map(element => String(element)).join("")
@@ -231,30 +252,21 @@ test("Invalid type in property bag will result in an empty string", t => {
   t.is(blob.type, "")
 })
 
-test(
-  "Throws an error if invalid property bag passed",
+test("Throws an error if invalid property bag passed", t => {
+  const rounds = [123, 123.4, true, false, "FAIL"]
 
-  t => {
-    const rounds = [
-      123,
-      123.4,
-      true,
-      false,
-      "FAIL"
-    ]
+  rounds.forEach(round => {
+    // @ts-expect-error
+    const trap = () => new Blob([], round)
 
-    rounds.forEach(round => {
-      // @ts-expect-error
-      const trap = () => new Blob([], round)
-
-      t.throws(trap, {
-        instanceOf: TypeError,
-        message: "Failed to construct 'Blob': "
-          + "parameter 2 cannot convert to dictionary."
-      })
+    t.throws(trap, {
+      instanceOf: TypeError,
+      message:
+        "Failed to construct 'Blob': " +
+        "parameter 2 cannot convert to dictionary."
     })
-  }
-)
+  })
+})
 
 test(".slice() a new blob when called without arguments", async t => {
   const blob = new Blob(["a", "b", "c"])
@@ -286,27 +298,19 @@ test(".slice() slices the Blob from arbitary start", async t => {
   t.is(await blob.text(), "MIT License")
 })
 
-test(
-  ".slice() slices the Blob from the end when start argument is negative",
+test(".slice() slices the Blob from the end when start argument is negative", async t => {
+  const text = "The MIT License"
+  const blob = new Blob([text]).slice(-7)
 
-  async t => {
-    const text = "The MIT License"
-    const blob = new Blob([text]).slice(-7)
+  t.is(await blob.text(), "License")
+})
 
-    t.is(await blob.text(), "License")
-  }
-)
+test(".slice() slices the Blob from the start when end argument is negative", async t => {
+  const text = "The MIT License"
+  const blob = new Blob([text]).slice(0, -8)
 
-test(
-  ".slice() slices the Blob from the start when end argument is negative",
-
-  async t => {
-    const text = "The MIT License"
-    const blob = new Blob([text]).slice(0, -8)
-
-    t.is(await blob.text(), "The MIT")
-  }
-)
+  t.is(await blob.text(), "The MIT")
+})
 
 test(".slice() slices Blob in blob parts", async t => {
   const text = "The MIT License"
@@ -334,31 +338,23 @@ test(".slice() takes type as the 3rd argument", t => {
   t.is(blob.type, expected)
 })
 
-test(
-  ".text() returns a the Blob content as string when awaited",
+test(".text() returns a the Blob content as string when awaited", async t => {
+  const blob = new Blob([
+    "a",
+    new TextEncoder().encode("b"),
+    new Blob(["c"]),
+    new TextEncoder().encode("d").buffer
+  ])
 
-  async t => {
-    const blob = new Blob([
-      "a",
-      new TextEncoder().encode("b"),
-      new Blob(["c"]),
-      new TextEncoder().encode("d").buffer
-    ])
+  t.is(await blob.text(), "abcd")
+})
 
-    t.is(await blob.text(), "abcd")
-  }
-)
+test(".arrayBuffer() returns the Blob content as ArrayBuffer when awaited", async t => {
+  const source = new TextEncoder().encode("abc")
+  const blob = new Blob([source])
 
-test(
-  ".arrayBuffer() returns the Blob content as ArrayBuffer when awaited",
-
-  async t => {
-    const source = new TextEncoder().encode("abc")
-    const blob = new Blob([source])
-
-    t.true(Buffer.from(await blob.arrayBuffer()).equals(source))
-  }
-)
+  t.true(Buffer.from(await blob.arrayBuffer()).equals(source))
+})
 
 test(".stream() returns ReadableStream", t => {
   const stream = new Blob().stream()

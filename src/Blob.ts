@@ -53,14 +53,12 @@ export class Blob {
 
   static [Symbol.hasInstance](value: unknown): value is Blob {
     return Boolean(
-      value
-        && typeof value === "object"
-        && isFunction((value as Blob).constructor)
-        && (
-          isFunction((value as Blob).stream)
-            || isFunction((value as Blob).arrayBuffer)
-        )
-        && /^(Blob|File)$/.test((value as Blob)[Symbol.toStringTag])
+      value &&
+        typeof value === "object" &&
+        isFunction((value as Blob).constructor) &&
+        (isFunction((value as Blob).stream) ||
+          isFunction((value as Blob).arrayBuffer)) &&
+        /^(Blob|File)$/.test((value as Blob)[Symbol.toStringTag])
     )
   }
 
@@ -76,15 +74,15 @@ export class Blob {
 
     if (typeof blobParts !== "object" || blobParts === null) {
       throw new TypeError(
-        "Failed to construct 'Blob': "
-          + "The provided value cannot be converted to a sequence."
+        "Failed to construct 'Blob': " +
+          "The provided value cannot be converted to a sequence."
       )
     }
 
     if (!isFunction(blobParts[Symbol.iterator])) {
       throw new TypeError(
-        "Failed to construct 'Blob': "
-          + "The object must have a callable @@iterator property."
+        "Failed to construct 'Blob': " +
+          "The object must have a callable @@iterator property."
       )
     }
 
@@ -99,11 +97,13 @@ export class Blob {
     for (const raw of blobParts) {
       let part: BlobPart
       if (ArrayBuffer.isView(raw)) {
-        part = new Uint8Array(raw.buffer.slice(
-          raw.byteOffset,
+        part = new Uint8Array(
+          raw.buffer.slice(
+            raw.byteOffset,
 
-          raw.byteOffset + raw.byteLength
-        ))
+            raw.byteOffset + raw.byteLength
+          )
+        )
       } else if (raw instanceof ArrayBuffer) {
         part = new Uint8Array(raw.slice(0))
       } else if (raw instanceof Blob) {
@@ -193,7 +193,7 @@ export class Blob {
           return queueMicrotask(() => controller.close())
         }
 
-        controller.enqueue(value!)
+        controller.enqueue(value)
       },
 
       async cancel() {

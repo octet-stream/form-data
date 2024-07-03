@@ -1,7 +1,4 @@
-/* eslint-disable func-names */
-/* eslint-disable no-undef, no-restricted-globals */
-
-const globalObject = (function (): typeof globalThis {
+const globalObject = ((): typeof globalThis => {
   // new standardized access to the global object
   if (typeof globalThis !== "undefined") {
     return globalThis
@@ -13,6 +10,6 @@ const globalObject = (function (): typeof globalThis {
   }
 
   return window
-}())
+})()
 
 export const {FormData, Blob, File} = globalObject

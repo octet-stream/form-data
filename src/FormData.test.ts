@@ -14,41 +14,43 @@ test("Recognizes FormData instances", t => {
 
 test("Recognizes custom FormData implementation as FormData instance", t => {
   class MyFormData {
-    append() { }
+    append() {}
 
-    set() { }
+    set() {}
 
-    get() { }
+    get() {}
 
-    getAll() { }
+    getAll() {}
 
-    has() { }
+    has() {}
 
-    delete() { }
+    delete() {}
 
-    entries() { }
+    entries() {}
 
-    values() { }
+    values() {}
 
-    keys() { }
+    keys() {}
 
-    forEach() { }
+    forEach() {}
 
-    [Symbol.iterator]() { }
+    [Symbol.iterator]() {}
 
-    get [Symbol.toStringTag]() { return "FormData" }
+    get [Symbol.toStringTag]() {
+      return "FormData"
+    }
   }
 
   t.true(new MyFormData() instanceof FormData)
 })
 
 test("Returns false for instanceof checks with null", t => {
-  // @ts-expect-error
+  // @ts-expect-error expected for tests
   t.false(null instanceof FormData)
 })
 
 test("Returns false for instanceof checks with undefined", t => {
-  // @ts-expect-error
+  // @ts-expect-error expected for tests
   t.false(undefined instanceof FormData)
 })
 
@@ -95,7 +97,7 @@ test("Third argument overrides File.name even if it was set to null", t => {
   const file = new File(["Some content"], "file.txt")
   const form = new FormData()
 
-  // @ts-expect-error
+  // @ts-expect-error expected for tests
   form.set("file", file, null)
 
   t.is((form.get("file") as File).name, "null")
@@ -151,18 +153,14 @@ test(".append() appends to an existent field", t => {
   t.deepEqual(form.getAll("field"), ["one", "two"])
 })
 
-test(
-  ".append() appends to an existent field even if it was created with .set()",
+test(".append() appends to an existent field even if it was created with .set()", t => {
+  const form = new FormData()
 
-  t => {
-    const form = new FormData()
+  form.set("field", "one")
+  form.append("field", "two")
 
-    form.set("field", "one")
-    form.append("field", "two")
-
-    t.deepEqual(form.getAll("field"), ["one", "two"])
-  }
-)
+  t.deepEqual(form.getAll("field"), ["one", "two"])
+})
 
 test(".has() returns false for non-existent field", t => {
   const form = new FormData()
@@ -252,34 +250,27 @@ test(".getAll() returns all values associated with given key", t => {
   t.deepEqual(actual, expected)
 })
 
-test(
-  ".forEach() callback should not be called when FormData has no fields",
+test(".forEach() callback should not be called when FormData has no fields", t => {
+  const cb = spy()
 
-  t => {
-    const cb = spy()
+  const fd = new FormData()
 
-    const fd = new FormData()
+  fd.forEach(cb)
 
-    fd.forEach(cb)
+  t.false(cb.called)
+})
 
-    t.false(cb.called)
-  }
-)
+test(".forEach() callback should be called with the nullish context by default", t => {
+  const cb = spy()
 
-test(
-  ".forEach() callback should be called with the nullish context by default",
-  t => {
-    const cb = spy()
+  const form = new FormData()
 
-    const form = new FormData()
+  form.set("name", "John Doe")
 
-    form.set("name", "John Doe")
+  form.forEach(cb)
 
-    form.forEach(cb)
-
-    t.is(cb.firstCall.thisValue, undefined)
-  }
-)
+  t.is(cb.firstCall.thisValue, undefined)
+})
 
 test(".forEach() callback should be called with the specified context", t => {
   const cb = spy()
@@ -296,24 +287,21 @@ test(".forEach() callback should be called with the specified context", t => {
   t.is(cb.firstCall.thisValue, ctx)
 })
 
-test(
-  ".forEach() callback should be called with value, name and FormData itself",
-  t => {
-    const cb = spy()
+test(".forEach() callback should be called with value, name and FormData itself", t => {
+  const cb = spy()
 
-    const form = new FormData()
+  const form = new FormData()
 
-    form.set("name", "John Doe")
+  form.set("name", "John Doe")
 
-    form.forEach(cb)
+  form.forEach(cb)
 
-    const [value, key, instance] = cb.firstCall.args
+  const [value, key, instance] = cb.firstCall.args
 
-    t.is(value, "John Doe")
-    t.is(key, "name")
-    t.is(instance, form)
-  }
-)
+  t.is(value, "John Doe")
+  t.is(key, "name")
+  t.is(instance, form)
+})
 
 test(".forEach() callback should be called once on each filed", t => {
   const cb = spy()
@@ -408,19 +396,20 @@ test(".toString() returns a proper string", t => {
 test(".set() throws TypeError when called with less than 2 arguments", t => {
   const form = new FormData()
 
-  // @ts-expect-error
+  // @ts-expect-error expected for tests
   const trap = () => form.set("field")
 
   t.throws<TypeError>(trap, {
     instanceOf: TypeError,
-    message: "Failed to execute 'set' on 'FormData': "
-      + "2 arguments required, but only 1 present."
+    message:
+      "Failed to execute 'set' on 'FormData': " +
+      "2 arguments required, but only 1 present."
   })
 })
 
 test(
-  ".set() throws TypeError when the filename argument is present, "
-    + "but the value is not a File",
+  ".set() throws TypeError when the filename argument is present, " +
+    "but the value is not a File",
 
   t => {
     const form = new FormData()
@@ -429,8 +418,9 @@ test(
 
     t.throws<TypeError>(trap, {
       instanceOf: TypeError,
-      message: "Failed to execute 'set' on 'FormData': "
-        + "parameter 2 is not of type 'Blob'."
+      message:
+        "Failed to execute 'set' on 'FormData': " +
+        "parameter 2 is not of type 'Blob'."
     })
   }
 )
@@ -438,19 +428,20 @@ test(
 test(".append() throws TypeError when called with less than 2 arguments", t => {
   const form = new FormData()
 
-  // @ts-expect-error
+  // @ts-expect-error expected for tests
   const trap = () => form.append("field")
 
   t.throws<TypeError>(trap, {
     instanceOf: TypeError,
-    message: "Failed to execute 'append' on 'FormData': "
-      + "2 arguments required, but only 1 present."
+    message:
+      "Failed to execute 'append' on 'FormData': " +
+      "2 arguments required, but only 1 present."
   })
 })
 
 test(
-  ".append() throws TypeError when the filename argument is present, "
-    + "but the value is not a File",
+  ".append() throws TypeError when the filename argument is present, " +
+    "but the value is not a File",
 
   t => {
     const form = new FormData()
@@ -459,8 +450,9 @@ test(
 
     t.throws<TypeError>(trap, {
       instanceOf: TypeError,
-      message: "Failed to execute 'append' on 'FormData': "
-        + "parameter 2 is not of type 'Blob'."
+      message:
+        "Failed to execute 'append' on 'FormData': " +
+        "parameter 2 is not of type 'Blob'."
     })
   }
 )

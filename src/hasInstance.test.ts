@@ -18,46 +18,38 @@ test("Blob object is not recognized as File", t => {
 test("Blob-ish object is recognized as Blob", t => {
   const blob = {
     [Symbol.toStringTag]: "Blob",
-    stream() { }
+    stream() {}
   }
 
   t.true(blob instanceof Blob)
 })
 
-test(
-  "Blob-ish objects with only arrayBuffer method is recognized as Blob",
-
-  t => {
-    const blobAlike = {
-      arrayBuffer() { },
-      [Symbol.toStringTag]: "Blob"
-    }
-
-    t.true(blobAlike instanceof Blob)
+test("Blob-ish objects with only arrayBuffer method is recognized as Blob", t => {
+  const blobAlike = {
+    arrayBuffer() {},
+    [Symbol.toStringTag]: "Blob"
   }
-)
+
+  t.true(blobAlike instanceof Blob)
+})
 
 test("Blob-ish object is not recognized as File", t => {
   const blob = {
     [Symbol.toStringTag]: "Blob",
-    stream() { }
+    stream() {}
   }
 
   t.false(blob instanceof File)
 })
 
-test(
-  "Blob-ish objects with only arrayBuffer method is not recognized as File",
-
-  t => {
-    const blobAlike = {
-      arrayBuffer() { },
-      [Symbol.toStringTag]: "Blob"
-    }
-
-    t.false(blobAlike instanceof File)
+test("Blob-ish objects with only arrayBuffer method is not recognized as File", t => {
+  const blobAlike = {
+    arrayBuffer() {},
+    [Symbol.toStringTag]: "Blob"
   }
-)
+
+  t.false(blobAlike instanceof File)
+})
 
 test("File is recognized as Blob instance", t => {
   const file = new File([], "file.txt")
@@ -75,7 +67,7 @@ test("File-ish object is recognized as Blob", t => {
   const file = {
     name: "",
     [Symbol.toStringTag]: "File",
-    stream() { }
+    stream() {}
   }
 
   t.true(file instanceof Blob)
@@ -85,7 +77,7 @@ test("File-ish object is recognized as File", t => {
   const file = {
     name: "",
     [Symbol.toStringTag]: "File",
-    stream() { }
+    stream() {}
   }
 
   t.true(file instanceof File)

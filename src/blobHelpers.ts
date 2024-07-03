@@ -108,7 +108,7 @@ async function* consumeNodeBlob(
  */
 export async function* consumeBlobParts(
   parts: BlobPart[],
-  clone: boolean = false
+  clone = false
 ): AsyncGenerator<Uint8Array, void, undefined> {
   for (const part of parts) {
     if (ArrayBuffer.isView(part)) {
@@ -129,18 +129,16 @@ export async function* consumeBlobParts(
 export function* sliceBlob(
   blobParts: BlobPart[],
   blobSize: number,
-  start: number = 0,
+  start = 0,
   end?: number
 ): Generator<BlobPart, void> {
   end ??= blobSize
 
-  let relativeStart = start < 0
-    ? Math.max(blobSize + start, 0)
-    : Math.min(start, blobSize)
+  let relativeStart =
+    start < 0 ? Math.max(blobSize + start, 0) : Math.min(start, blobSize)
 
-  let relativeEnd = end < 0
-    ? Math.max(blobSize + end, 0)
-    : Math.min(end, blobSize)
+  let relativeEnd =
+    end < 0 ? Math.max(blobSize + end, 0) : Math.min(end, blobSize)
 
   const span = Math.max(relativeEnd - relativeStart, 0)
 

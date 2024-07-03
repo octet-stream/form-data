@@ -6,7 +6,5 @@ export default {
   extensions: {
     ts: "module"
   },
-  files: [
-    "src/**/*.test.ts"
-  ]
+  files: ["src/**/*.test.ts"]
 }

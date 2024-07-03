@@ -55,15 +55,14 @@ class FileFromPath implements Omit<FileLike, "type"> {
     })
   }
 
-  async* stream(): AsyncGenerator<Buffer, void, undefined> {
+  async *stream(): AsyncGenerator<Buffer, void, undefined> {
     const {mtimeMs} = await stat(this.#path)
 
     if (mtimeMs > this.lastModified) {
-      // eslint-disable-next-line @typescript-eslint/no-throw-literal
       throw new DOMException(
-        "The requested file could not be read, "
-          + "typically due to permission problems that have occurred "
-          + "after a reference to a file was acquired.",
+        "The requested file could not be read, " +
+          "typically due to permission problems that have occurred " +
+          "after a reference to a file was acquired.",
 
         "NotReadableError"
       )
@@ -90,7 +89,7 @@ function createFileFromPath(
 ): File {
   let filename: string | undefined
   if (isObject(filenameOrOptions)) {
-    [options, filename] = [filenameOrOptions, undefined]
+    ;[options, filename] = [filenameOrOptions, undefined]
   } else {
     filename = filenameOrOptions
   }
@@ -102,7 +101,8 @@ function createFileFromPath(
   }
 
   return new File([file], filename, {
-    ...options, lastModified: file.lastModified
+    ...options,
+    lastModified: file.lastModified
   })
 }
 

@@ -3,7 +3,7 @@
 import test from "ava"
 
 import {expectType} from "ts-expect"
-import {type BodyInit as NodeFetchBodyInit} from "node-fetch"
+import type {BodyInit as NodeFetchBodyInit} from "node-fetch"
 
 import {FormData} from "./FormData.js"
 import {Blob} from "./Blob.js"

@@ -1,0 +1,6 @@
+{
+  "*.{ts,js,json,jsonc}": [
+    "pnpm biome format --write --no-errors-on-unmatched",
+    "pnpm biome lint --write --no-errors-on-unmatched"
+  ]
+}

@@ -6,5 +6,6 @@ import {isObject} from "./isObject.js"
  */
 export const isAsyncIterable = (
   value: unknown
-): value is AsyncIterable<Uint8Array> => isObject(value)
-  && isFunction((value as AsyncIterable<Uint8Array>)[Symbol.asyncIterator])
+): value is AsyncIterable<Uint8Array> =>
+  isObject(value) &&
+  isFunction((value as AsyncIterable<Uint8Array>)[Symbol.asyncIterator])

@@ -10,7 +10,7 @@ test("Takes a name as the second argument", t => {
 })
 
 test("Casts the name argument to string", t => {
-  // @ts-expect-error
+  // @ts-expect-error expected for tests
   const file = new File(["Some content"], 42)
 
   t.is(file.name, "42")
@@ -24,8 +24,12 @@ test("The name property keeps its value after being reassigned", t => {
   // even though they seem to use the same approach with getters
   // to make the property read-only. But in Node.js the reassignment will cause an error.
   // Maybe it's platform specific behaviour?
-  // @ts-expect-error
-  try { file.name = "another-file.txt" } catch { /* noop */ }
+  try {
+    // @ts-expect-error expected for tests
+    file.name = "another-file.txt"
+  } catch {
+    /* noop */
+  }
 
   t.is(file.name, expected)
 })
@@ -41,8 +45,12 @@ test("The lastModified property keeps its value after being reassigned", t => {
 
   const {lastModified: expected} = file
 
-  // @ts-expect-error
-  try { file.lastModified = Date.now() + 3000 } catch { /* noop */ }
+  try {
+    // @ts-expect-error expected for tests
+    file.lastModified = Date.now() + 3000
+  } catch {
+    /* noop */
+  }
 
   t.is(file.lastModified, expected)
 })
@@ -57,29 +65,30 @@ test("Takes the lastModified value from options", t => {
 test("Converts Date object in lastModified option to a number", t => {
   const now = new Date()
 
-  // @ts-expect-error
+  // @ts-expect-error expected for tests
   const file = new File(["Some content"], "file.txt", {lastModified: now})
 
   t.is(file.lastModified, Number(now))
 })
 
 test("Interpretes undefined value in lastModified option as Date.now()", t => {
-  const lastModified = new File(["Some content"], "file.txt", {
-    lastModified: undefined
-  }).lastModified - Date.now()
+  const lastModified =
+    new File(["Some content"], "file.txt", {
+      lastModified: undefined
+    }).lastModified - Date.now()
 
   t.true(lastModified <= 0 && lastModified >= -20)
 })
 
 test("Interpretes true value in lastModified option as 1", t => {
-  // @ts-expect-error
+  // @ts-expect-error expected for tests
   const file = new File(["Some content"], "file.txt", {lastModified: true})
 
   t.is(file.lastModified, 1)
 })
 
 test("Interpretes null value in lastModified option as 0", t => {
-  // @ts-expect-error
+  // @ts-expect-error expected for tests
   const file = new File(["Some content"], "file.txt", {lastModified: null})
 
   t.is(file.lastModified, 0)
@@ -93,7 +102,7 @@ test("Interpretes NaN value in lastModified option as 0", t => {
   // I can't really see anything about this in the spec,
   // but this is how browsers handle type casting for this option...
   values.forEach(lastModified => {
-    // @ts-expect-error
+    // @ts-expect-error expected for tests
     const file = new File(["Some content"], "file.txt", {lastModified})
 
     t.is(file.lastModified, 0)
@@ -101,23 +110,25 @@ test("Interpretes NaN value in lastModified option as 0", t => {
 })
 
 test("Throws TypeError when constructed with less than 2 arguments", t => {
-  // @ts-expect-error
+  // @ts-expect-error expected for tests
   const trap = () => new File(["Some content"])
 
   t.throws(trap, {
     instanceOf: TypeError,
-    message: "Failed to construct 'File': "
-      + "2 arguments required, but only 1 present."
+    message:
+      "Failed to construct 'File': " +
+      "2 arguments required, but only 1 present."
   })
 })
 
 test("Throws TypeError when constructed without arguments", t => {
-  // @ts-expect-error
+  // @ts-expect-error expected for tests
   const trap = () => new File()
 
   t.throws(trap, {
     instanceOf: TypeError,
-    message: "Failed to construct 'File': "
-      + "2 arguments required, but only 0 present."
+    message:
+      "Failed to construct 'File': " +
+      "2 arguments required, but only 0 present."
   })
 })

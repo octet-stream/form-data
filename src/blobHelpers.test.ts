@@ -1,5 +1,5 @@
 import {ReadableStream} from "node:stream/web"
-import {text} from "stream/consumers"
+import {text} from "node:stream/consumers"
 
 import test from "ava"
 
@@ -15,14 +15,11 @@ import {Blob} from "./Blob.js"
 
 import {isAsyncIterable} from "./isAsyncIterable.js"
 
-test(
-  "getStreamIterator: returns AsyncIterable for ReadableStream",
-  t => {
-    const stream = new ReadableStream()
+test("getStreamIterator: returns AsyncIterable for ReadableStream", t => {
+  const stream = new ReadableStream()
 
-    t.true(isAsyncIterable(getStreamIterator(stream)))
-  }
-)
+  t.true(isAsyncIterable(getStreamIterator(stream)))
+})
 
 test("getStreamIterator: iterates over given stream", async t => {
   const expected = "Some text"
@@ -46,8 +43,8 @@ test("getStreamIterator: iterates over given stream", async t => {
 })
 
 test(
-  "getStreamIterator: returns AsyncIterable "
-    + "for streams w/o Symbol.asyncIterator",
+  "getStreamIterator: returns AsyncIterable " +
+    "for streams w/o Symbol.asyncIterator",
 
   t => {
     const stream = new ReadableStream()
@@ -116,7 +113,8 @@ test("getStreamIterator: throws TypeError for unsupported data sources", t => {
 
   t.throws(trap, {
     instanceOf: TypeError,
-    message: "Unsupported data source: Expected either "
-      + "ReadableStream or async iterable."
+    message:
+      "Unsupported data source: Expected either " +
+      "ReadableStream or async iterable."
   })
 })

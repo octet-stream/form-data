@@ -1,3 +1,0 @@
-{
-  "*.ts": "pnpm exec eslint --fix"
-}
