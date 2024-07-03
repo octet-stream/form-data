@@ -1,27 +1,27 @@
-name: ESLint
+name: Lint
 
 on:
   push:
     branches: [main]
     paths:
       - "**.ts"
+      - "**.js"
       - "package.json"
       - "pnpm-lock.yaml"
-      - ".eslintrc.json"
-      - ".eslintignore"
-      - ".github/workflows/eslint.yml"
+      - "biome.json"
+      - ".github/workflows/lint.yml"
   pull_request:
     branches: [main]
     paths:
       - "**.ts"
+      - "**.js"
       - "package.json"
       - "pnpm-lock.yaml"
-      - ".eslintrc.json"
-      - ".eslintignore"
-      - ".github/workflows/eslint.yml"
+      - "biome.json"
+      - ".github/workflows/lint.yml"
 
 jobs:
-  eslint:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -54,4 +54,4 @@ jobs:
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 
-      - run: pnpm run eslint
+      - run: pnpm run lint
