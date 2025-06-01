@@ -5,11 +5,13 @@ yarn-error.log
 yarn-error.log
 npm-debug.log
 node_modules
-.nyc_output
-coverage
 *.map
 ..map
 *.old
 @type
+
+/.nyc_output
+/.direnv
+/coverage
 
 /lib
