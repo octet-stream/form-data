@@ -1,2 +1,3 @@
 pnpm lint:types
-pnpm lint-staged
+pnpm biome check --write --staged --no-errors-on-unmatched .
+git update-index --again
